@@ -26,8 +26,8 @@ This is a full-featured **Learning Management System (LMS)** designed to provide
    ```bash
    cd lms-project
    
-##Contributing
-###Contributions are welcome! Please follow these steps to contribute:
+## Contributing
+### Contributions are welcome! Please follow these steps to contribute:
 
 1. Fork the repository.
 2. Create a new branch (git checkout -b feature-branch).
