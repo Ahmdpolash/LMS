@@ -25,10 +25,7 @@ This is a full-featured **Learning Management System (LMS)** designed to provide
 2. Navigate to the project folder: 
    ```bash
    cd lms-project
-3. Install dependencies:
-  ```bash
-   npm I
-
+   
 ##Contributing
 ###Contributions are welcome! Please follow these steps to contribute:
 
@@ -37,6 +34,7 @@ This is a full-featured **Learning Management System (LMS)** designed to provide
 3. Commit your changes (git commit -m 'Add some feature').
 4. Push to the branch (git push origin feature-branch).
 5. Open a pull request.
+
 
 
 
