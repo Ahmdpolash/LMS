@@ -25,6 +25,15 @@ This is a full-featured **Learning Management System (LMS)** designed to provide
 2. Navigate to the project folder: 
    ```bash
    cd lms-project
+3. Create a .env file in the root directory and add your MongoDB connection string(backend):
+
+   ```bash
+   PORT: 
+   MONGODB_URI=your_mongodb_connection_string
+   BCRYPT_SALT_ROUND= 
+   JWT_ACCESS_TOKEN=
+   JWT_REFRESH_TOKEN=
+
    
 ## Contributing
 ### Contributions are welcome! Please follow these steps to contribute:
@@ -37,4 +46,6 @@ This is a full-featured **Learning Management System (LMS)** designed to provide
 
 
 
+### Feel free to mail for any queries : 
+      ahmedpolash732@gmail.com
 
