@@ -9,4 +9,6 @@ export default {
   origin: process.env.ORIGIN,
   node_env: process.env.NODE_ENV,
   redis_url: process.env.REDIS_URL,
+  jwt_access_token: process.env.JWT_ACCESS_SECRET,
+
 };

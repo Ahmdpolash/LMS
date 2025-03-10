@@ -4,7 +4,7 @@ export type IUser = {
   name: string;
   email: string;
   password: string;
-  avatar: {
+  avatar?: {
     public_id: string;
     url: string;
   };
@@ -14,6 +14,8 @@ export type IUser = {
   comparePassword: (password: string) => Promise<boolean>;
 };
 
+
+
 export interface UserModel extends Model<IUser> {
   isPasswordMathced(
     plainTextPassword: string,
@@ -21,4 +23,5 @@ export interface UserModel extends Model<IUser> {
   ): Promise<boolean>;
 
   isUserExistsByCustomId(id: string): Promise<IUser>;
+  isUserExistsByEmail(email: string): Promise<IUser>;
 }
