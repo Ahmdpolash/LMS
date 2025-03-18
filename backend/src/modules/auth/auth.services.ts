@@ -47,7 +47,7 @@ const LoginUser = async (payload: ILogin) => {
     email: user.email,
     role: user.role,
   };
-  
+
   // access token
   const accessToken = jwtHelper.generateJwtToken(
     userData,
@@ -58,7 +58,7 @@ const LoginUser = async (payload: ILogin) => {
   const refreshToken = jwtHelper.generateJwtToken(
     userData,
     config.jwt.jwt_refresh_token as string,
-    "30d"
+    config.jwt.jwt_refresh_token_expiresIn as string
   );
 
   redis.set(user._id, JSON.stringify(user) as any);
@@ -174,8 +174,44 @@ const UpdateAccessToken = async (token: string) => {
   return {
     accessToken,
     refToken,
+    user,
   };
 };
 
+//CHANGE PASSWORD
+const ChangePassword = async (
+  id: string,
+  payload: { oldPassword: string; newPassword: string }
+) => {
+  const user = await User.findById(id).select("+password");
+  console.log(user);
+  if (!user) {
+    throw new AppError("User not found", httpStatus.NOT_FOUND);
+  }
 
-export const AuthServices = { LoginUser, LogOut, UpdateAccessToken };
+  // compare password
+
+  const isPasswordMatched: boolean = await bcrypt.compare(
+    payload.oldPassword,
+    user?.password
+  );
+
+  console.log(isPasswordMatched);
+
+  // if (!(await User.isPasswordMatched(payload.oldPassword, user?.password))) {
+  //   throw new AppError("password do not matched", httpStatus.FORBIDDEN);
+  // }
+
+  user.password = payload.newPassword;
+
+  await user.save();
+
+  return user;
+};
+
+export const AuthServices = {
+  LoginUser,
+  LogOut,
+  UpdateAccessToken,
+  ChangePassword,
+};

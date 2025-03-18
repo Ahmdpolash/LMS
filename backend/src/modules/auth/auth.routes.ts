@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { AuthControllers } from "./auth.controller";
 import { auth } from "../../middleware/auth";
-
+import { USER_ROLE } from "../user/user.constant";
 
 const router = Router();
 
@@ -11,5 +11,10 @@ router.post("/logout", auth(), AuthControllers.LogOut);
 
 router.post("/refresh-token", AuthControllers.UpdateAccessToken);
 
+router.post(
+  "/change-password",
+  auth(USER_ROLE.admin, USER_ROLE.instructor, USER_ROLE.user),
+  AuthControllers.ChangePassword
+);
 
 export const AuthRoutes = router;

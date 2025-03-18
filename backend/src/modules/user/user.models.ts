@@ -76,9 +76,6 @@ UserSchema.pre("save", async function (next) {
 
 // COMPARE PASSWORD
 
-// UserSchema.methods.isPasswordMatched = async function (plainTextPassword:string) {
-//   return await bcrypt.compare(plainTextPassword, this.password);
-// };
 
 UserSchema.statics.isPasswordMatched = async function (
   plainTextPassword,

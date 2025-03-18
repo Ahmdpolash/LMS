@@ -66,7 +66,8 @@ const UpdateAccessToken = catchAsync(async (req, res) => {
 
   const result = await AuthServices.UpdateAccessToken(refreshToken);
 
-  const { accessToken, refToken } = result;
+  const { accessToken, refToken, user } = result;
+  req.user = user;
 
   // set the cookie again
   res.cookie("accessToken", accessToken, accessTokenOptions);
@@ -81,4 +82,23 @@ const UpdateAccessToken = catchAsync(async (req, res) => {
   });
 });
 
-export const AuthControllers = { LoginUser, LogOut, UpdateAccessToken };
+// CHANGE PASSWORD
+
+const ChangePassword = catchAsync(async (req, res) => {
+  const { userId } = req.user;
+ 
+  const result = await AuthServices.ChangePassword(userId, req.body);
+
+  res.status(httpStatus.OK).json({
+    success: true,
+    message: "Password changed successfully",
+    data: result,
+  });
+});
+
+export const AuthControllers = {
+  LoginUser,
+  LogOut,
+  UpdateAccessToken,
+  ChangePassword,
+};

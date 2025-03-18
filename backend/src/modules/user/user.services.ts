@@ -82,7 +82,7 @@ const SocialAuth = async (payload: ISocialAuth, res: Response) => {
       const newUser = await User.create(payload);
       return sendToken(newUser, res);
     } else {
-     return sendToken(user, res);
+      return sendToken(user, res);
     }
   } catch (error: any) {
     throw new AppError(error.message, 400);
@@ -92,14 +92,16 @@ const SocialAuth = async (payload: ISocialAuth, res: Response) => {
 // UPDATE USER
 
 const UpdateUser = async (id: string, payload: Partial<IUser>) => {
-  const user = await User.findById(id);
-
   const result = await User.findByIdAndUpdate(id, payload, {
     new: true,
     runValidators: true,
   });
 
-  await redis.set(id, JSON.stringify(user));
+  if (!result) {
+    throw new AppError("User not found", 404);
+  }
+
+  await redis.set(id, JSON.stringify(result)); // ✅ Updated user data saved
 
   return result;
 };

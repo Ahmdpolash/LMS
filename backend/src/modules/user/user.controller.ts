@@ -52,11 +52,7 @@ const GetMe = catchAsync(async (req, res) => {
 //SOCIAL AUTH
 
 const SocialAuth = catchAsync(async (req, res) => {
-
-
   await UserServices.SocialAuth(req.body, res);
-
-  
 });
 
 // UPDATE
