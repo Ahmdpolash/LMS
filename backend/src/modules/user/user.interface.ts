@@ -18,6 +18,11 @@ export type IUser = {
   courses: Array<{ courseId: string }>;
   comparePassword: (password: string) => Promise<boolean>;
 };
+export type ISocialAuth = {
+  name: string;
+  email: string;
+  avatar: string;
+};
 
 export type IActivteUser = {
   activation_token: string;

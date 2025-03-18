@@ -47,7 +47,7 @@ const LoginUser = async (payload: ILogin) => {
     email: user.email,
     role: user.role,
   };
-
+  
   // access token
   const accessToken = jwtHelper.generateJwtToken(
     userData,

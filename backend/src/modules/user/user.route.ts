@@ -14,4 +14,8 @@ router.get("/", UserControllers.GetAllStudentFromDb);
 
 router.get("/me", auth(), UserControllers.GetMe);
 
+router.post("/social-auth", UserControllers.SocialAuth);
+
+router.patch("/update", auth(), UserControllers.UpdateUser);
+
 export const UserRoutes = router;

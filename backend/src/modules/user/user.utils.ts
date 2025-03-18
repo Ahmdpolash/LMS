@@ -17,7 +17,7 @@ export const createActivationToken = (user: IUser): IActivationToken => {
       activationCode,
     },
     config.jwt.activation_token as string,
-    { expiresIn: "5m" }
+    { expiresIn: "10m" }
   );
 
   return { token, activationCode };

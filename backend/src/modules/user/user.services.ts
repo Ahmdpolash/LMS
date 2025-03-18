@@ -1,11 +1,14 @@
 import AppError from "../../errors/AppError";
-import { IActivteUser, IUser } from "./user.interface";
+import { IActivteUser, ISocialAuth, IUser } from "./user.interface";
 import { User } from "./user.models";
 import httpStatus from "http-status";
 import { createActivationToken } from "./user.utils";
 import { sendEmail } from "../../utils/sendMail";
 import config from "../../config";
 import { jwtHelper } from "../../helper/JwtHelper";
+import { sendToken } from "../../utils/sentToken";
+import { Response } from "express";
+import { redis } from "../../redis";
 
 // CREATE USER
 const CreateStudentIntoDb = async (payload: IUser) => {
@@ -71,9 +74,41 @@ const getMe = async (id: string) => {
   return result;
 };
 
+// SOCIAL AUTH
+const SocialAuth = async (payload: ISocialAuth, res: Response) => {
+  try {
+    const user = await User.findOne({ email: payload.email });
+    if (!user) {
+      const newUser = await User.create(payload);
+      return sendToken(newUser, res);
+    } else {
+     return sendToken(user, res);
+    }
+  } catch (error: any) {
+    throw new AppError(error.message, 400);
+  }
+};
+
+// UPDATE USER
+
+const UpdateUser = async (id: string, payload: Partial<IUser>) => {
+  const user = await User.findById(id);
+
+  const result = await User.findByIdAndUpdate(id, payload, {
+    new: true,
+    runValidators: true,
+  });
+
+  await redis.set(id, JSON.stringify(user));
+
+  return result;
+};
+
 export const UserServices = {
   CreateStudentIntoDb,
   ActivateUser,
   GetAllStudentFromDb,
   getMe,
+  SocialAuth,
+  UpdateUser,
 };
