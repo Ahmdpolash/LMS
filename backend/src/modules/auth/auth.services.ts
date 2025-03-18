@@ -184,7 +184,7 @@ const ChangePassword = async (
   payload: { oldPassword: string; newPassword: string }
 ) => {
   const user = await User.findById(id).select("+password");
-  console.log(user);
+
   if (!user) {
     throw new AppError("User not found", httpStatus.NOT_FOUND);
   }
@@ -196,18 +196,22 @@ const ChangePassword = async (
     user?.password
   );
 
-  console.log(isPasswordMatched);
-
-  // if (!(await User.isPasswordMatched(payload.oldPassword, user?.password))) {
-  //   throw new AppError("password do not matched", httpStatus.FORBIDDEN);
-  // }
+  if (!isPasswordMatched) {
+    throw new AppError("Old password is incorrect", httpStatus.FORBIDDEN);
+  }
 
   user.password = payload.newPassword;
 
   await user.save();
 
+  await redis.set(id, JSON.stringify(user));
+
   return user;
 };
+
+//TODO:: FORGOT PASSWORD
+
+//TODO:: RESET PASSWORD
 
 export const AuthServices = {
   LoginUser,

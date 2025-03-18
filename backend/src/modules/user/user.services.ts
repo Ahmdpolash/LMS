@@ -106,6 +106,10 @@ const UpdateUser = async (id: string, payload: Partial<IUser>) => {
   return result;
 };
 
+
+//UPLOAD IMAGE
+
+
 export const UserServices = {
   CreateStudentIntoDb,
   ActivateUser,
