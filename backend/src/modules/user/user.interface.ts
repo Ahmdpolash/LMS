@@ -14,7 +14,10 @@ export type IUser = {
   comparePassword: (password: string) => Promise<boolean>;
 };
 
-
+export type IActivteUser = {
+  activation_token: string;
+  activation_code: string;
+};
 
 export interface UserModel extends Model<IUser> {
   isPasswordMathced(
