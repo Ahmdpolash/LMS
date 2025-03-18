@@ -9,6 +9,6 @@ router.post("/signin", AuthControllers.LoginUser);
 
 router.post("/logout", auth(), AuthControllers.LogOut);
 
-router.post("/refresh-token", AuthControllers.RefreshToken);
+router.post("/refresh-token", AuthControllers.UpdateAccessToken);
 
 export const AuthRoutes = router;

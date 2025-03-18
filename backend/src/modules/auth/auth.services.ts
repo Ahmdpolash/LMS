@@ -52,13 +52,13 @@ const LoginUser = async (payload: ILogin) => {
   const accessToken = jwtHelper.generateJwtToken(
     userData,
     config.jwt.jwt_access_token as string,
-    config.jwt.jwt_access_token_expiresIn as string
+    "3d"
   );
 
   const refreshToken = jwtHelper.generateJwtToken(
     userData,
     config.jwt.jwt_refresh_token as string,
-    config.jwt.jwt_refresh_token_expiresIn as string
+    "30d"
   );
 
   redis.set(user._id, JSON.stringify(user) as any);
@@ -90,7 +90,39 @@ const LogOut = async (id: string) => {
 };
 
 // REFRESH TOKEN
-const RefreshToken = async (token: string) => {
+// const RefreshToken = async (token: string) => {
+//   let decodedData;
+
+//   try {
+//     decodedData = jwtHelper.verifyToken(
+//       token,
+//       config.jwt.jwt_refresh_token as string
+//     );
+//   } catch (error) {
+//     throw new Error("You are not authorized!");
+//   }
+
+//   const user = await User.findOne({ email: decodedData.email });
+//   if (!user) {
+//     throw new AppError("User not found", httpStatus.NOT_FOUND);
+//   }
+
+//   const accessToken = jwtHelper.generateJwtToken(
+//     {
+//       userId: user._id,
+//       email: user.email,
+//       role: user.role,
+//     },
+//     config.jwt.jwt_access_token as string,
+//     config.jwt.jwt_access_token_expiresIn as string
+//   );
+
+//   return {
+//     accessToken,
+//   };
+// };
+
+const UpdateAccessToken = async (token: string) => {
   let decodedData;
 
   try {
@@ -99,13 +131,23 @@ const RefreshToken = async (token: string) => {
       config.jwt.jwt_refresh_token as string
     );
   } catch (error) {
-    throw new Error("You are not authorized!");
+    throw new AppError("You are not authorized!", httpStatus.UNAUTHORIZED);
   }
 
-  const user = await User.findOne({ email: decodedData.email });
-  if (!user) {
-    throw new AppError("User not found", httpStatus.NOT_FOUND);
+  if (!decodedData || !decodedData.userId) {
+    throw new AppError("Invalid token payload", httpStatus.UNAUTHORIZED);
   }
+
+  const session = await redis.get(decodedData.userId);
+
+  if (!session) {
+    throw new AppError(
+      "Session not available or expired",
+      httpStatus.NOT_FOUND
+    );
+  }
+
+  const user = JSON.parse(session);
 
   const accessToken = jwtHelper.generateJwtToken(
     {
@@ -117,9 +159,20 @@ const RefreshToken = async (token: string) => {
     config.jwt.jwt_access_token_expiresIn as string
   );
 
+  const refToken = jwtHelper.generateJwtToken(
+    {
+      userId: user._id,
+      email: user.email,
+      role: user.role,
+    },
+    config.jwt.jwt_refresh_token as string,
+    config.jwt.jwt_refresh_token_expiresIn as string
+  );
+
   return {
     accessToken,
+    refToken,
   };
 };
 
-export const AuthServices = { LoginUser, LogOut, RefreshToken };
+export const AuthServices = { LoginUser, LogOut, UpdateAccessToken };

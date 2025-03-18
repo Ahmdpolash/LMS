@@ -1,7 +1,13 @@
 import config from "../../config";
 import AppError from "../../errors/AppError";
+import {
+  accessTokenOptions,
+  refreshTokenOptions,
+} from "../../helper/JwtHelper";
 import catchAsync from "../../utils/catchAsync";
 import { AuthServices } from "./auth.services";
+
+import httpStatus from "http-status";
 
 // LOGIN USER
 const LoginUser = catchAsync(async (req, res) => {
@@ -11,14 +17,11 @@ const LoginUser = catchAsync(async (req, res) => {
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     secure: config.node_env === "production", // set to true if using HTTPS
-    maxAge: 1000 * 60 * 60 * 24 * 365, // 1yr
     sameSite: "lax",
   });
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
     secure: config.node_env === "production", // set to true if using HTTPS
-    // maxAge: 1000 * 60 * 60 * 24 * 365, // 1yr
-    maxAge: 1000 * 60 * 60 * 24 * 5,
     sameSite: "lax",
   });
 
@@ -54,15 +57,28 @@ const LogOut = catchAsync(async (req, res) => {
 });
 
 //REFRESH TOKEN
-const RefreshToken = catchAsync(async (req, res) => {
+const UpdateAccessToken = catchAsync(async (req, res) => {
   const { refreshToken } = req.cookies;
 
-  const result = await AuthServices.RefreshToken(refreshToken);
+  if (!refreshToken) {
+    throw new AppError("Refresh token missing!", httpStatus.UNAUTHORIZED);
+  }
+
+  const result = await AuthServices.UpdateAccessToken(refreshToken);
+
+  const { accessToken, refToken } = result;
+
+  // set the cookie again
+  res.cookie("accessToken", accessToken, accessTokenOptions);
+  res.cookie("refreshToken", refToken, refreshTokenOptions);
+
   res.status(200).json({
     success: true,
-    message: "access token generated",
-    data: result,
+    message: "Access token generated successfully",
+    data: {
+      accessToken,
+    },
   });
 });
 
-export const AuthControllers = { LoginUser, LogOut, RefreshToken };
+export const AuthControllers = { LoginUser, LogOut, UpdateAccessToken };
