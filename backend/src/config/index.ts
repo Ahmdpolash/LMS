@@ -16,4 +16,10 @@ export default {
     jwt_refresh_token_expiresIn: process.env.JWT_REFRESH_SECRET_EXPIRES_IN,
     activation_token: process.env.ACTIVATION_SECRET,
   },
+  emailSender: {
+    email: process.env.EMAIL,
+    app_password: process.env.APP_PASSWORD,
+    hostName: process.env.HOST,
+    port: process.env.PORT
+  },
 };

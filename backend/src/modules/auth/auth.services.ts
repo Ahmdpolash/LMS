@@ -72,10 +72,7 @@ const LoginUser = async (payload: ILogin) => {
 const LogOut = async (id: string) => {
   // check the user id
   if (!id) {
-    throw new AppError(
-      "User ID is required for logout",
-      httpStatus.BAD_REQUEST
-    );
+    throw new AppError("user not found", httpStatus.BAD_REQUEST);
   }
 
   // get the user from redis
@@ -92,4 +89,37 @@ const LogOut = async (id: string) => {
   return { message: "User logged out successfully" };
 };
 
-export const AuthServices = { LoginUser, LogOut };
+// REFRESH TOKEN
+const RefreshToken = async (token: string) => {
+  let decodedData;
+
+  try {
+    decodedData = jwtHelper.verifyToken(
+      token,
+      config.jwt.jwt_refresh_token as string
+    );
+  } catch (error) {
+    throw new Error("You are not authorized!");
+  }
+
+  const user = await User.findOne({ email: decodedData.email });
+  if (!user) {
+    throw new AppError("User not found", httpStatus.NOT_FOUND);
+  }
+
+  const accessToken = jwtHelper.generateJwtToken(
+    {
+      userId: user._id,
+      email: user.email,
+      role: user.role,
+    },
+    config.jwt.jwt_access_token as string,
+    config.jwt.jwt_access_token_expiresIn as string
+  );
+
+  return {
+    accessToken,
+  };
+};
+
+export const AuthServices = { LoginUser, LogOut, RefreshToken };

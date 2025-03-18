@@ -44,19 +44,18 @@ export const sendEmail = async (
 
   // Create transporter
   const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: config.emailSender.hostName,
     port: 587,
     secure: config.node_env === "production", // true for port 465, false for other ports
-
     auth: {
-      user: "ahmedpolash732@gmail.com",
-      pass: "fbra rbqc xkms jdck",
+      user: config.emailSender.email,
+      pass: config.emailSender.app_password,
     },
   });
 
   // Send mail
   await transporter.sendMail({
-    from: "ahmedpolash732@gmail.com",
+    from: '"LMS" <ahmedpolash732@gmail.com>',
     to,
     subject: "Activate Your LMS Account",
     html: htmlTemplate,

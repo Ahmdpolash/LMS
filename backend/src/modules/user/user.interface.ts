@@ -1,4 +1,5 @@
 import { Model } from "mongoose";
+import { USER_ROLE } from "./user.constant";
 
 export type IUser = {
   _id: string;
@@ -9,7 +10,8 @@ export type IUser = {
     public_id: string;
     url: string;
   };
-  role: string;
+  role: "admin" | "user" | "admin";
+
   isVerified: boolean;
   isDeleted: boolean;
   status: "active" | "blocked";
@@ -31,3 +33,4 @@ export interface UserModel extends Model<IUser> {
   isUserExistsByCustomId(id: string): Promise<IUser>;
   isUserExistsByEmail(email: string): Promise<IUser>;
 }
+export type TUserRole = keyof typeof USER_ROLE;

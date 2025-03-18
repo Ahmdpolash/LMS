@@ -12,6 +12,14 @@ const LoginUser = catchAsync(async (req, res) => {
     httpOnly: true,
     secure: config.node_env === "production", // set to true if using HTTPS
     maxAge: 1000 * 60 * 60 * 24 * 365, // 1yr
+    sameSite: "lax",
+  });
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    secure: config.node_env === "production", // set to true if using HTTPS
+    // maxAge: 1000 * 60 * 60 * 24 * 365, // 1yr
+    maxAge: 1000 * 60 * 60 * 24 * 5,
+    sameSite: "lax",
   });
 
   res.status(200).json({
@@ -34,10 +42,27 @@ const LogOut = catchAsync(async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
   });
+  res.clearCookie("accessToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+  });
+
   res.status(200).json({
     success: true,
     message: result.message,
   });
 });
 
-export const AuthControllers = { LoginUser, LogOut };
+//REFRESH TOKEN
+const RefreshToken = catchAsync(async (req, res) => {
+  const { refreshToken } = req.cookies;
+
+  const result = await AuthServices.RefreshToken(refreshToken);
+  res.status(200).json({
+    success: true,
+    message: "access token generated",
+    data: result,
+  });
+});
+
+export const AuthControllers = { LoginUser, LogOut, RefreshToken };
