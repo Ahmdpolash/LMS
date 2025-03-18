@@ -156,7 +156,8 @@ const UpdateAccessToken = async (token: string) => {
       role: user.role,
     },
     config.jwt.jwt_access_token as string,
-    config.jwt.jwt_access_token_expiresIn as string
+    "5m"
+    // config.jwt.jwt_access_token_expiresIn as string
   );
 
   const refToken = jwtHelper.generateJwtToken(
@@ -166,7 +167,8 @@ const UpdateAccessToken = async (token: string) => {
       role: user.role,
     },
     config.jwt.jwt_refresh_token as string,
-    config.jwt.jwt_refresh_token_expiresIn as string
+    // config.jwt.jwt_refresh_token_expiresIn as string
+    "5d"
   );
 
   return {
@@ -174,5 +176,6 @@ const UpdateAccessToken = async (token: string) => {
     refToken,
   };
 };
+
 
 export const AuthServices = { LoginUser, LogOut, UpdateAccessToken };

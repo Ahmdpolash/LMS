@@ -3,7 +3,6 @@ import catchAsync from "../../utils/catchAsync";
 import { UserServices } from "./user.services";
 import httpStatus from "http-status";
 
-
 // CREATE ACCOUNT
 const CreateUser = catchAsync(async (req, res) => {
   const result = await UserServices.CreateStudentIntoDb(req.body);
@@ -15,8 +14,7 @@ const CreateUser = catchAsync(async (req, res) => {
   });
 });
 
-
-// ACTIVATE ACCOUNT 
+// ACTIVATE ACCOUNT
 const ActivateUser = catchAsync(async (req, res) => {
   const result = await UserServices.ActivateUser(req.body);
 
@@ -26,7 +24,6 @@ const ActivateUser = catchAsync(async (req, res) => {
     data: result,
   });
 });
-
 
 // GET ALL STUDENTS
 
@@ -40,8 +37,21 @@ const GetAllStudentFromDb = catchAsync(async (req, res) => {
   });
 });
 
+//GET ME
+const GetMe = catchAsync(async (req, res) => {
+  const { userId } = req.user;
+  const result = await UserServices.getMe(userId);
+
+  res.status(200).json({
+    success: true,
+    message: "User data fetched successfully",
+    data: result,
+  });
+});
+
 export const UserControllers = {
   CreateUser,
   ActivateUser,
   GetAllStudentFromDb,
+  GetMe,
 };

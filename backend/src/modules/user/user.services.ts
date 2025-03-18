@@ -63,8 +63,17 @@ const GetAllStudentFromDb = async () => {
   return result;
 };
 
+// GET ME
+
+const getMe = async (id: string) => {
+  const result = await User.findById(id);
+
+  return result;
+};
+
 export const UserServices = {
   CreateStudentIntoDb,
   ActivateUser,
   GetAllStudentFromDb,
+  getMe,
 };
