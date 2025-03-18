@@ -1,21 +1,6 @@
-import jwt, { JwtPayload, Secret } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { IUser } from "./user.interface";
 import config from "../../config";
-
-// create Jwt token
-
-export const generateJwtToken = (
-  payload: any,
-  secret: Secret,
-  expiresIn: string
-) => {
-  return jwt.sign(payload, secret, { expiresIn } as any);
-};
-
-// verify jwt token
-export const verifyToken = (token: string, secret: string) => {
-  return jwt.verify(token, secret) as JwtPayload;
-};
 
 interface IActivationToken {
   token: string;

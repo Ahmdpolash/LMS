@@ -5,7 +5,7 @@ import httpStatus from "http-status";
 
 
 // CREATE ACCOUNT
-const CreateStudent = catchAsync(async (req, res) => {
+const CreateUser = catchAsync(async (req, res) => {
   const result = await UserServices.CreateStudentIntoDb(req.body);
 
   res.status(httpStatus.OK).json({
@@ -41,7 +41,7 @@ const GetAllStudentFromDb = catchAsync(async (req, res) => {
 });
 
 export const UserControllers = {
-  CreateStudent,
+  CreateUser,
   ActivateUser,
   GetAllStudentFromDb,
 };

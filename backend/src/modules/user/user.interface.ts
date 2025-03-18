@@ -1,6 +1,7 @@
 import { Model } from "mongoose";
 
 export type IUser = {
+  _id: string;
   name: string;
   email: string;
   password: string;
@@ -10,6 +11,8 @@ export type IUser = {
   };
   role: string;
   isVerified: boolean;
+  isDeleted: boolean;
+  status: "active" | "blocked";
   courses: Array<{ courseId: string }>;
   comparePassword: (password: string) => Promise<boolean>;
 };
@@ -20,7 +23,7 @@ export type IActivteUser = {
 };
 
 export interface UserModel extends Model<IUser> {
-  isPasswordMathced(
+  isPasswordMatched(
     plainTextPassword: string,
     hashedPassword: string
   ): Promise<boolean>;

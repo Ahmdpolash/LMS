@@ -3,7 +3,7 @@ import { IUser, UserModel } from "./user.interface";
 
 import bcrypt from "bcryptjs";
 
-const UserSchema = new Schema<IUser,UserModel>(
+const UserSchema = new Schema<IUser, UserModel>(
   {
     name: {
       type: String,
@@ -33,6 +33,15 @@ const UserSchema = new Schema<IUser,UserModel>(
       type: Boolean,
       default: false,
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    status: {
+      type: String,
+      enum: ["active", "blocked"],
+      default: "active",
+    },
     courses: [
       {
         courseId: {
@@ -52,16 +61,25 @@ const UserSchema = new Schema<IUser,UserModel>(
 
 UserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
-    next();
+    return next();
   }
 
-  const user = this;
-
-  user.password = await bcrypt.hash(user.password, 10);
+  this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
+// //post empty string after saving password
+// UserSchema.post("save", async function (doc, next) {
+//   doc.password = "";
+//   next();
+// });
+
 // COMPARE PASSWORD
+
+// UserSchema.methods.isPasswordMatched = async function (plainTextPassword:string) {
+//   return await bcrypt.compare(plainTextPassword, this.password);
+// };
+
 UserSchema.statics.isPasswordMatched = async function (
   plainTextPassword,
   hashedPassword
@@ -74,7 +92,7 @@ UserSchema.statics.isUserExistsByCustomId = async function (id: string) {
   return await User.findOne({ id }).select("+password");
 };
 UserSchema.statics.isUserExistsByEmail = async function (email: string) {
-  return await User.findOne({ email })
+  return await User.findOne({ email });
 };
 
-export const User = model<IUser,UserModel>("Users", UserSchema);
+export const User = model<IUser, UserModel>("Users", UserSchema);

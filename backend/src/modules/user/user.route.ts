@@ -3,10 +3,12 @@ import { UserControllers } from "./user.controller";
 
 const router = Router();
 
-router.post("/signup", UserControllers.CreateStudent);
+router.post("/signup", UserControllers.CreateUser);
+
+router.post("/signin", UserControllers.CreateUser);
 
 router.post("/activate-user", UserControllers.ActivateUser);
 
 router.get("/", UserControllers.GetAllStudentFromDb);
 
-export const userRoutes = router;
+export const UserRoutes = router;

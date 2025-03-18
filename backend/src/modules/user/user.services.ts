@@ -2,9 +2,10 @@ import AppError from "../../errors/AppError";
 import { IActivteUser, IUser } from "./user.interface";
 import { User } from "./user.models";
 import httpStatus from "http-status";
-import { createActivationToken, verifyToken } from "./user.utils";
+import { createActivationToken } from "./user.utils";
 import { sendEmail } from "../../utils/sendMail";
 import config from "../../config";
+import { jwtHelper } from "../../helper/JwtHelper";
 
 // CREATE USER
 const CreateStudentIntoDb = async (payload: IUser) => {
@@ -29,7 +30,7 @@ const CreateStudentIntoDb = async (payload: IUser) => {
 // ACTIVATE USER
 const ActivateUser = async (payload: IActivteUser) => {
   //verify token
-  const tokenInfo = await verifyToken(
+  const tokenInfo = await jwtHelper.verifyToken(
     payload.activation_token,
     config.jwt.activation_token as string
   );

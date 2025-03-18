@@ -41,5 +41,5 @@ export const globalErrorHandler = (
     stack: config.node_env === "development" ? err?.stack : null,
   });
 
-  next();
+  // next();
 };
