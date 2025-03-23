@@ -23,7 +23,6 @@ export interface ICourseData {
   title: string;
   description: string;
   videoUrl: string;
-  videoThumbnail: object;
   videoSection: string;
   videoLength: number;
   videoPlayer: string;
@@ -38,7 +37,7 @@ export interface ICourse {
   description: string;
   price: number;
   estimatedPrice?: number;
-  thumbnail: { public_id: string; url: string };
+  thumbnail?: { public_id: string; url: string };
   tags: string;
   level: string;
   demoUrl: string;

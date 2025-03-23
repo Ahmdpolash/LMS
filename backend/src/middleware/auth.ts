@@ -17,7 +17,6 @@ export const auth = (...role: TUserRole[]) => {
     ) => {
       // const token = req.headers.authorization;
       const token = req.cookies.accessToken;
- 
 
       //check if token is exist
       if (!token) {

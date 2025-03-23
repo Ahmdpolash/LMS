@@ -15,6 +15,21 @@ const uploadCourse = catchAsync(async (req, res) => {
   });
 });
 
+// EDIT COURSE
+
+const editCourse = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await CourseServices.editCourse(id, req.body);
+
+  res.status(200).json({
+    success: true,
+    message: "Course updated successfully",
+    data: result,
+  });
+});
+
 export const CourseControllers = {
   uploadCourse,
+  editCourse,
 };
