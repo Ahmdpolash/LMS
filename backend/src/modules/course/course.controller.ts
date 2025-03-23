@@ -42,8 +42,21 @@ const getSingleCourse = catchAsync(async (req, res) => {
   });
 });
 
+// GET SINGLE COURSE
+
+const getAllCourse = catchAsync(async (req, res) => {
+  const result = await CourseServices.getAllCourse();
+
+  res.status(200).json({
+    success: true,
+    message: "All course retrieved successfully",
+    data: result,
+  });
+});
+
 export const CourseControllers = {
   uploadCourse,
   editCourse,
   getSingleCourse,
+  getAllCourse,
 };

@@ -11,7 +11,9 @@ router.post(
   CourseControllers.uploadCourse
 );
 
-router.get("/:id",  CourseControllers.getSingleCourse);
+router.get("/", CourseControllers.getAllCourse);
+
+router.get("/:id", CourseControllers.getSingleCourse);
 
 router.patch("/:id", auth(USER_ROLE.admin), CourseControllers.editCourse);
 

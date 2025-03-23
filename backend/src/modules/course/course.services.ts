@@ -63,10 +63,22 @@ const getSingleCourse = async (id: string) => {
   return result;
 };
 
+// GET ALL COURSE
+const getAllCourse = async () => {
+  const result = await Course.find()
+    .select(
+      "-courseData.videoUrl -courseData.suggestion  -courseData.questions -courseData.links "
+    )
+    .lean();
+
+  return result;
+};
+
 export const CourseServices = {
   uploadCourse,
   editCourse,
   getSingleCourse,
+  getAllCourse,
 };
 
 /*
