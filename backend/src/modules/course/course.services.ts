@@ -25,6 +25,7 @@ const uploadCourse = async (payload: ICourse) => {
   return course;
 };
 
+// EDIT COURSE
 const editCourse = async (id: string, payload: Partial<ICourse>) => {
   const thumbnail = payload.thumbnail;
 
@@ -51,9 +52,21 @@ const editCourse = async (id: string, payload: Partial<ICourse>) => {
   return course;
 };
 
+// GET SINGLE COURSE
+const getSingleCourse = async (id: string) => {
+  const result = await Course.findById(id)
+    .select(
+      "-courseData.videoUrl -courseData.suggestion  -courseData.questions -courseData.links "
+    )
+    .lean();
+
+  return result;
+};
+
 export const CourseServices = {
   uploadCourse,
   editCourse,
+  getSingleCourse,
 };
 
 /*

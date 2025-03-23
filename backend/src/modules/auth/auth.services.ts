@@ -8,6 +8,7 @@ import bcrypt from "bcryptjs";
 import { storeSession } from "../../helper/storeSessionToRedis";
 import { redis } from "../../redis";
 import cloudinary from "cloudinary";
+
 // LOGIN USER
 const LoginUser = async (payload: ILogin) => {
   const { email, password } = payload;

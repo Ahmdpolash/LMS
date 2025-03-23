@@ -29,7 +29,21 @@ const editCourse = catchAsync(async (req, res) => {
   });
 });
 
+// GET SINGLE COURSE
+
+const getSingleCourse = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await CourseServices.getSingleCourse(id);
+
+  res.status(200).json({
+    success: true,
+    message: "Signle course retrieved successfully",
+    data: result,
+  });
+});
+
 export const CourseControllers = {
   uploadCourse,
   editCourse,
+  getSingleCourse,
 };

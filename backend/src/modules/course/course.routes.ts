@@ -11,6 +11,8 @@ router.post(
   CourseControllers.uploadCourse
 );
 
+router.get("/:id",  CourseControllers.getSingleCourse);
+
 router.patch("/:id", auth(USER_ROLE.admin), CourseControllers.editCourse);
 
 export const CourseRoutes = router;
