@@ -7,7 +7,7 @@ import httpStatus from "http-status";
 import bcrypt from "bcryptjs";
 import { storeSession } from "../../helper/storeSessionToRedis";
 import { redis } from "../../redis";
-
+import cloudinary from "cloudinary";
 // LOGIN USER
 const LoginUser = async (payload: ILogin) => {
   const { email, password } = payload;
@@ -213,9 +213,47 @@ const ChangePassword = async (
 
 //TODO:: RESET PASSWORD
 
+// UPDATE PROFILE PHOTO
+const updatedProfilePhoto = async (id: string, payload: { avatar: string }) => {
+  const { avatar } = payload;
+
+  const user = await User.findById(id);
+
+  if (avatar && user) {
+    // first delete if avatar already exists
+    if (user?.avatar?.public_id) {
+      await cloudinary.v2.uploader.destroy(user?.avatar?.public_id);
+
+      const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+        folder: "avatars",
+        width: 150,
+      });
+      user.avatar = {
+        public_id: myCloud.public_id,
+        url: myCloud.url,
+      };
+    } else {
+      const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+        folder: "avatars",
+        width: 150,
+      });
+      user.avatar = {
+        public_id: myCloud.public_id,
+        url: myCloud.url,
+      };
+    }
+  }
+
+  await user?.save();
+  await redis.set(id, JSON.stringify(user));
+
+  return user;
+};
+
 export const AuthServices = {
   LoginUser,
   LogOut,
   UpdateAccessToken,
   ChangePassword,
+  updatedProfilePhoto,
 };

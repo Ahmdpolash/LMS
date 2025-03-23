@@ -20,6 +20,14 @@ export default {
     email: process.env.EMAIL,
     app_password: process.env.APP_PASSWORD,
     hostName: process.env.HOST,
-    port: process.env.PORT
+    port: process.env.PORT,
+  },
+
+  cloudinary: {
+    cloud_name: process.env.CLOUD_NAME,
+
+    cloud_api_key: process.env.CLOUD_API_KEY,
+
+    cloud_secret_key: process.env.CLOUD_SECRET_KEY,
   },
 };

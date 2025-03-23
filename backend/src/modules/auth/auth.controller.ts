@@ -86,7 +86,7 @@ const UpdateAccessToken = catchAsync(async (req, res) => {
 
 const ChangePassword = catchAsync(async (req, res) => {
   const { userId } = req.user;
- 
+
   const result = await AuthServices.ChangePassword(userId, req.body);
 
   res.status(httpStatus.OK).json({
@@ -96,9 +96,23 @@ const ChangePassword = catchAsync(async (req, res) => {
   });
 });
 
+//UPDATE AVATAR
+const updatedProfilePhoto = catchAsync(async (req, res) => {
+  const { userId } = req.user;
+
+  const result = await AuthServices.updatedProfilePhoto(userId, req.body);
+
+  res.status(httpStatus.OK).json({
+    success: true,
+    message: "Profile photo updated successfully",
+    data: result,
+  });
+});
+
 export const AuthControllers = {
   LoginUser,
   LogOut,
   UpdateAccessToken,
   ChangePassword,
+  updatedProfilePhoto,
 };

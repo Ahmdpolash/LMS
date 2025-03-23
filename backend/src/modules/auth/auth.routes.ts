@@ -17,4 +17,6 @@ router.post(
   AuthControllers.ChangePassword
 );
 
+router.patch("/change-avatar", auth(), AuthControllers.updatedProfilePhoto);
+
 export const AuthRoutes = router;

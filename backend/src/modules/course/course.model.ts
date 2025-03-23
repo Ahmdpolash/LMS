@@ -81,7 +81,7 @@ const courseDataSchema = new Schema<ICourseData>({
   questions: [commentSchema],
 });
 
-const courseSchema = new Schema({
+const courseSchema = new Schema<ICourse>({
   name: {
     type: String,
     required: true,
@@ -109,15 +109,15 @@ const courseSchema = new Schema({
   },
   tags: {
     type: String,
-    require: true,
+    required: true, // Fix typo
   },
   level: {
     type: String,
-    require: true,
+    required: true, // Fix typo
   },
   demoUrl: {
     type: String,
-    require: true,
+    required: true, // Fix typo
   },
 
   benefits: [{ title: String }],
