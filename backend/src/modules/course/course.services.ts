@@ -2,6 +2,7 @@ import { ICourse } from "./course.interface";
 import cloudinary from "cloudinary";
 import Course from "./course.model";
 import { redis } from "../../redis";
+import AppError from "../../errors/AppError";
 
 // create a new Course
 
@@ -24,6 +25,68 @@ const uploadCourse = async (payload: ICourse) => {
   const course = await Course.create(payload);
 
   return course;
+};
+
+// GET ALL COURSE
+const getAllCourse = async () => {
+  // check first in redis if course is already available
+  const isCourseExists = await redis.get("allCourses");
+
+  if (isCourseExists) {
+    const result = JSON.parse(isCourseExists);
+    return result;
+  }
+
+  const result = await Course.find()
+    .select(
+      "-courseData.videoUrl -courseData.suggestion  -courseData.questions -courseData.links "
+    )
+    .lean();
+  // set the data on redis now
+  await redis.set("allCourses", JSON.stringify(result));
+
+  return result;
+};
+
+// GET SINGLE COURSE
+const getSingleCourse = async (id: string) => {
+  // check first in redis if course is already available
+  const isCourseExists = await redis.get(id);
+
+  if (isCourseExists) {
+    const result = JSON.parse(isCourseExists);
+    return result;
+  }
+
+  // find from mongodb
+  const result = await Course.findById(id)
+    .select(
+      "-courseData.videoUrl -courseData.suggestion  -courseData.questions -courseData.links "
+    )
+    .lean();
+
+  // set the data on redis now
+  await redis.set(id, JSON.stringify(result));
+
+  return result;
+};
+
+// GET COURSE CONTENT-- 0NLY FOR VALID USER
+const getCourseContentByUser = async (courseId: string, courseList: any) => {
+  const courseExists = courseList.find(
+    (c: any) => c._id.toString() === courseId
+  );
+
+  // console.log(courseExists, "from s");
+
+  if (!courseExists) {
+    throw new AppError("you are not aligable to access this course", 404);
+  }
+
+  const course = await Course.findById(courseId);
+  const content = course?.courseData;
+
+  return { ...course, ...content };
 };
 
 // EDIT COURSE
@@ -53,55 +116,12 @@ const editCourse = async (id: string, payload: Partial<ICourse>) => {
   return course;
 };
 
-// GET SINGLE COURSE
-const getSingleCourse = async (id: string) => {
-  // check first in redis if course is already available
-  const isCourseExists = await redis.get(id);
-
-  if (isCourseExists) {
-    const result = JSON.parse(isCourseExists);
-    return result;
-  }
-
-  // find from mongodb
-  const result = await Course.findById(id)
-    .select(
-      "-courseData.videoUrl -courseData.suggestion  -courseData.questions -courseData.links "
-    )
-    .lean();
-
-  // set the data on redis now
-  await redis.set(id, JSON.stringify(result));
-
-  return result;
-};
-
-// GET ALL COURSE
-const getAllCourse = async () => {
-  // check first in redis if course is already available
-  const isCourseExists = await redis.get("allCourses");
-
-  if (isCourseExists) {
-    const result = JSON.parse(isCourseExists);
-    return result;
-  }
-
-  const result = await Course.find()
-    .select(
-      "-courseData.videoUrl -courseData.suggestion  -courseData.questions -courseData.links "
-    )
-    .lean();
-  // set the data on redis now
-  await redis.set("allCourses", JSON.stringify(result));
-
-  return result;
-};
-
 export const CourseServices = {
   uploadCourse,
   editCourse,
   getSingleCourse,
   getAllCourse,
+  getCourseContentByUser,
 };
 
 /*

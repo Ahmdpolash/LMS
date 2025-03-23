@@ -54,9 +54,28 @@ const getAllCourse = catchAsync(async (req, res) => {
   });
 });
 
+// GET COURSE CONTENT BY VALID USER
+
+const getCourseContentByUser = catchAsync(async (req, res) => {
+  const courseList = req.user?.courses;
+  const courseId = req.params.id;
+
+  const result = await CourseServices.getCourseContentByUser(
+    courseId,
+    courseList
+  );
+
+  res.status(200).json({
+    success: true,
+    message: "course content fetched successfully",
+    data: result,
+  });
+});
+
 export const CourseControllers = {
   uploadCourse,
   editCourse,
   getSingleCourse,
   getAllCourse,
+  getCourseContentByUser,
 };
