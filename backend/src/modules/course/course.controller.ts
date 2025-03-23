@@ -15,20 +15,6 @@ const uploadCourse = catchAsync(async (req, res) => {
   });
 });
 
-// EDIT COURSE
-
-const editCourse = catchAsync(async (req, res) => {
-  const { id } = req.params;
-
-  const result = await CourseServices.editCourse(id, req.body);
-
-  res.status(200).json({
-    success: true,
-    message: "Course updated successfully",
-    data: result,
-  });
-});
-
 // GET SINGLE COURSE
 
 const getSingleCourse = catchAsync(async (req, res) => {
@@ -60,6 +46,8 @@ const getCourseContentByUser = catchAsync(async (req, res) => {
   const courseList = req.user?.courses;
   const courseId = req.params.id;
 
+
+
   const result = await CourseServices.getCourseContentByUser(
     courseId,
     courseList
@@ -68,6 +56,20 @@ const getCourseContentByUser = catchAsync(async (req, res) => {
   res.status(200).json({
     success: true,
     message: "course content fetched successfully",
+    data: result,
+  });
+});
+
+// EDIT COURSE
+
+const editCourse = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await CourseServices.editCourse(id, req.body);
+
+  res.status(200).json({
+    success: true,
+    message: "Course updated successfully",
     data: result,
   });
 });

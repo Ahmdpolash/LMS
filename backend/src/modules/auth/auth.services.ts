@@ -71,10 +71,6 @@ const LoginUser = async (payload: ILogin) => {
 
 // LOGOUT USER
 const LogOut = async (id: string) => {
-  // check the user id
-  if (!id) {
-    throw new AppError("user not found", httpStatus.BAD_REQUEST);
-  }
 
   // get the user from redis
 

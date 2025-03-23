@@ -39,8 +39,8 @@ const GetAllStudentFromDb = catchAsync(async (req, res) => {
 
 //GET ME
 const GetMe = catchAsync(async (req, res) => {
-  const { userId } = req.user;
-  const result = await UserServices.getMe(userId);
+  const { _id } = req.user;
+  const result = await UserServices.getMe(_id);
 
   res.status(200).json({
     success: true,
@@ -58,9 +58,9 @@ const SocialAuth = catchAsync(async (req, res) => {
 // UPDATE
 
 const UpdateUser = catchAsync(async (req, res) => {
-  const { userId } = req.user;
+  const { _id } = req.user;
 
-  const result = await UserServices.UpdateUser(userId, req.body);
+  const result = await UserServices.UpdateUser(_id, req.body);
 
   res.status(200).json({
     success: true,

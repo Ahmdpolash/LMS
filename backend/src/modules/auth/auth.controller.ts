@@ -38,7 +38,8 @@ const LoginUser = catchAsync(async (req, res) => {
 // LogOut
 
 const LogOut = catchAsync(async (req, res) => {
-  const userId = req.user?.userId;
+  const userId = req.user?._id;
+  console.log(userId);
   const result = await AuthServices.LogOut(userId);
 
   res.clearCookie("refreshToken", {
@@ -85,9 +86,9 @@ const UpdateAccessToken = catchAsync(async (req, res) => {
 // CHANGE PASSWORD
 
 const ChangePassword = catchAsync(async (req, res) => {
-  const { userId } = req.user;
+  const { _id } = req.user;
 
-  const result = await AuthServices.ChangePassword(userId, req.body);
+  const result = await AuthServices.ChangePassword(_id, req.body);
 
   res.status(httpStatus.OK).json({
     success: true,
@@ -98,9 +99,9 @@ const ChangePassword = catchAsync(async (req, res) => {
 
 //UPDATE AVATAR
 const updatedProfilePhoto = catchAsync(async (req, res) => {
-  const { userId } = req.user;
+  const { _id } = req.user;
 
-  const result = await AuthServices.updatedProfilePhoto(userId, req.body);
+  const result = await AuthServices.updatedProfilePhoto(_id, req.body);
 
   res.status(httpStatus.OK).json({
     success: true,

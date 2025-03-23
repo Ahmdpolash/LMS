@@ -73,20 +73,21 @@ const getSingleCourse = async (id: string) => {
 
 // GET COURSE CONTENT-- 0NLY FOR VALID USER
 const getCourseContentByUser = async (courseId: string, courseList: any) => {
+  // find the course is available or not
   const courseExists = courseList.find(
     (c: any) => c._id.toString() === courseId
   );
-
-  // console.log(courseExists, "from s");
 
   if (!courseExists) {
     throw new AppError("you are not aligable to access this course", 404);
   }
 
+
+  // if exists then fetch from Course
   const course = await Course.findById(courseId);
   const content = course?.courseData;
 
-  return { ...course, ...content };
+  return content;
 };
 
 // EDIT COURSE
