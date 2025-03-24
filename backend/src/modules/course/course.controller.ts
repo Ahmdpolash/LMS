@@ -90,7 +90,7 @@ const replieQuestionAnswer = catchAsync(async (req, res) => {
   const result = await CourseServices.replieQuestionAnswer(req?.user, req.body);
   res.status(200).json({
     success: true,
-    message: "Added Question Answer successfully",
+    message: "Replies added successfully",
     data: result,
   });
 });

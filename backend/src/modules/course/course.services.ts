@@ -9,6 +9,8 @@ import Course from "./course.model";
 import { redis } from "../../redis";
 import AppError from "../../errors/AppError";
 import mongoose from "mongoose";
+import { sendEmail } from "../../utils/sendMail";
+import { User } from "../user/user.models";
 
 // create a new Course
 
@@ -201,15 +203,33 @@ const replieQuestionAnswer = async (
 
   await course?.save();
 
-  // if replies sent notification
-  if (user?._id.equals(question?.user?._id)) {
+  // find question owner by id from user
+  const questionOwner = await User.findById(question.user);
+  console.log("owner", questionOwner);
+
+  // === Notification / Email Logic ===
+  if (user?._id === question?.user?._id) {
     // notification sent
   } else {
     const data = {
-      name: question.user?.name,
+      name: questionOwner?.name,
       title: courseContent.title,
+      answer: payload.answer,
     };
+
+    await sendEmail({
+      to: questionOwner?.email as string,
+      subject: "New Reply to Your Question",
+      templateName: "notification",
+      replacements: {
+        name: data.name as string,
+        courseTitle: data.title,
+        answer: data.answer,
+      },
+    });
   }
+
+  return course;
 };
 
 export const CourseServices = {
