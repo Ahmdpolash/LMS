@@ -309,6 +309,9 @@ const addReviewReply = async (user: any, payload: IReviewReplies) => {
   };
 
   // push it
+  if (!review.commentReplies) {
+    review.commentReplies = [];
+  }
   review.commentReplies?.push(replyReview);
 
   await course?.save();
