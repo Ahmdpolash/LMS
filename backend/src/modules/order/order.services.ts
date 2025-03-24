@@ -30,7 +30,12 @@ const createOrder = async (userInfo: any, payload: TOrder) => {
     );
   }
 
-  const course = await Course.findById(payload.courseId);
+  const course = (await Course.findById(payload.courseId)) as {
+    _id: string;
+    name: string;
+    price: number;
+  };
+
   if (!course) {
     throw new AppError("Course not found", httpStatus.NOT_FOUND);
   }
@@ -42,14 +47,14 @@ const createOrder = async (userInfo: any, payload: TOrder) => {
   };
 
   const result = await Order.create(orderData);
-
+  const courseIdString = course._id.toString().slice(0, 6);
   // sent mail to confiramtion order
   await sendEmail({
     to: user.email,
     subject: "Order Confirmation",
     templateName: "order",
     replacements: {
-      courseId: course._id.toString().slice(0, 6),
+      courseId: courseIdString,
       name: course?.name,
       username: user.name,
       price: course.price.toString(),
@@ -61,7 +66,7 @@ const createOrder = async (userInfo: any, payload: TOrder) => {
     },
   });
 
-  user?.courses.push(course?._id);
+  user?.courses.push({ courseId: course._id })
 
   user?.save();
 
