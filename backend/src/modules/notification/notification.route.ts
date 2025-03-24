@@ -1,9 +1,18 @@
-// import { Router } from "express";
-// import { OrderController } from "./order.controller";
+import { Router } from "express";
+import { NotificationController } from "./notification.controller";
+import { auth } from "../../middleware/auth";
+import { USER_ROLE } from "../user/user.constant";
 
-// const router = Router();
+const router = Router();
 
-// // CREATE ORDER ROUTE
-// router.post("/create-order", OrderController.createOrder);
+// GET NOTIFICATION ROUTE
+router.get(
+  "/",
+  auth(USER_ROLE.admin),
+  NotificationController.getAllNotification
+);
 
-// export const OrderRoutes = router;
+// UPDATE STATUS 
+router.patch('/update-notification-status/:id', auth(USER_ROLE.admin), NotificationController.updateNotificationStatus)
+
+export const NotificationRoutes = router;
