@@ -3,6 +3,7 @@ import {
   IComment,
   ICourse,
   IQuestionData,
+  IReview,
 } from "./course.interface";
 import cloudinary from "cloudinary";
 import Course from "./course.model";
@@ -11,6 +12,7 @@ import AppError from "../../errors/AppError";
 import mongoose from "mongoose";
 import { sendEmail } from "../../utils/sendMail";
 import { User } from "../user/user.models";
+import { Request } from "express";
 
 // create a new Course
 
@@ -152,7 +154,7 @@ const addQuestion = async (user: any, payload: IQuestionData) => {
   }
 
   const newQuestion: any = {
-    user,
+    userId: user?._id,
     question: payload.question,
     questionReplies: [],
   };
@@ -194,7 +196,7 @@ const replieQuestionAnswer = async (
   }
 
   const RepliesComments: any = {
-    user,
+    userId: user._id,
     answer: payload.answer,
     createdAt: new Date(),
   };
@@ -232,6 +234,53 @@ const replieQuestionAnswer = async (
   return course;
 };
 
+// ADD REVIEWS
+
+const addReviews = async (req: Request, payload: IReview) => {
+  const userCourseList = req.user?.courses;
+  const courseId = req.params.id;
+
+  // find the course of the user
+  const isCourseExists = userCourseList?.some(
+    (course: any) => course._id.toString() === courseId.toString()
+  );
+
+  if (!isCourseExists) {
+    throw new AppError("You are not aligable to access this course", 404);
+  }
+
+  const course = await Course.findById(courseId);
+
+  const review: any = {
+    user: req.user._id,
+    rating: payload.rating,
+    comment: payload.comment,
+    createdAt: new Date(),
+  };
+
+  course?.reviews.push(review);
+
+  let avg = 0;
+  course?.reviews.forEach((rev) => {
+    avg += rev.rating;
+  });
+
+  if (course) {
+    course.ratings = avg / course.reviews.length;
+  }
+
+  await course?.save();
+
+  const notification = {
+    title: "New Review Received",
+    message: `${req.user?.name} has given a review in ${course?.name}`,
+  };
+
+  //todo: create notification
+
+  return course;
+};
+
 export const CourseServices = {
   uploadCourse,
   editCourse,
@@ -240,6 +289,7 @@ export const CourseServices = {
   getCourseContentByUser,
   addQuestion,
   replieQuestionAnswer,
+  addReviews,
 };
 
 /*

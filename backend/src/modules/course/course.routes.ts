@@ -33,4 +33,6 @@ router.put("/add-question", auth(), CourseControllers.addQuestion);
 
 router.put("/reply-question", auth(), CourseControllers.replieQuestionAnswer);
 
+router.put("/add-review/:id", auth(), CourseControllers.addReviews);
+
 export const CourseRoutes = router;

@@ -16,6 +16,7 @@ export interface IReview {
   rating: number;
   comment: string;
   commentReplies?: IComment[]; // Add this only if your schema has it!
+
 }
 
 export interface ICourseData {

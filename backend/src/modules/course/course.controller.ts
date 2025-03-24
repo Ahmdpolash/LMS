@@ -95,6 +95,18 @@ const replieQuestionAnswer = catchAsync(async (req, res) => {
   });
 });
 
+// ADD REVIEWS
+
+const addReviews = catchAsync(async (req, res) => {
+  const result = await CourseServices.addReviews(req, req.body);
+
+  res.status(200).json({
+    success: true,
+    message: "Reviews added successfully",
+    data: result,
+  });
+});
+
 export const CourseControllers = {
   uploadCourse,
   editCourse,
@@ -103,4 +115,5 @@ export const CourseControllers = {
   getCourseContentByUser,
   addQuestion,
   replieQuestionAnswer,
+  addReviews,
 };
