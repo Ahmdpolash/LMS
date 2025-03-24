@@ -1,7 +1,9 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
+import { IUser } from "../user/user.interface";
 
 interface IComment extends Document {
-  user: object;
+  user: IUser;
+  // user: object;
   question: string;
   questionReplies?: IComment[];
 }

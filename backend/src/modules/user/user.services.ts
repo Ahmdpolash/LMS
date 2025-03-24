@@ -25,7 +25,17 @@ const CreateStudentIntoDb = async (payload: IUser) => {
   const token = activationToken.token;
 
   // Send activation email
-  await sendEmail(payload.email, payload.name, activationCode);
+  // await sendEmail(payload.email, payload.name, activationCode);
+
+  await sendEmail({
+    to: payload.email,
+    subject: "Activate Your LMS Account",
+    templateName: "activation",
+    replacements: {
+      name: payload.name,
+      activationCode,
+    },
+  });
 
   return { activationToken: token };
 };
@@ -106,9 +116,7 @@ const UpdateUser = async (id: string, payload: Partial<IUser>) => {
   return result;
 };
 
-
 //UPLOAD IMAGE
-
 
 export const UserServices = {
   CreateStudentIntoDb,

@@ -1,3 +1,5 @@
+import { IUser } from "../user/user.interface";
+
 export interface ILink {
   title: string;
   url: string;
@@ -49,4 +51,16 @@ export interface IQuestionData {
   question: string;
   courseId: string;
   contentId: string;
+}
+
+export interface IAddQuestionReplies {
+  answer: string;
+  courseId: string;
+  contentId: string;
+  questionId: string;
+}
+
+export interface INewQuestionReplies {
+  user: IUser;
+  answer: string;
 }

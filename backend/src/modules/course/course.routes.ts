@@ -31,4 +31,6 @@ router.patch(
 
 router.put("/add-question", auth(), CourseControllers.addQuestion);
 
+router.put("/reply-question", auth(), CourseControllers.replieQuestionAnswer);
+
 export const CourseRoutes = router;

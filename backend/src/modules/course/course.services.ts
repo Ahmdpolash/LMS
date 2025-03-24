@@ -1,4 +1,9 @@
-import { IComment, ICourse, IQuestionData } from "./course.interface";
+import {
+  IAddQuestionReplies,
+  IComment,
+  ICourse,
+  IQuestionData,
+} from "./course.interface";
 import cloudinary from "cloudinary";
 import Course from "./course.model";
 import { redis } from "../../redis";
@@ -157,6 +162,56 @@ const addQuestion = async (user: any, payload: IQuestionData) => {
   return course;
 };
 
+// REPLIES QUESTION
+const replieQuestionAnswer = async (
+  user: any,
+  payload: IAddQuestionReplies
+) => {
+  // finding course id courseId
+  const course = await Course.findById(payload.courseId);
+  if (!course) {
+    throw new AppError("Course not found", 404);
+  }
+
+  // find course content using id
+  const courseContent = course.courseData.find((item: any) =>
+    item._id.equals(payload.contentId)
+  );
+
+  if (!courseContent) {
+    throw new AppError("Course Content not found", 404);
+  }
+
+  // question id matchig
+  const question = courseContent.questions.find((item: any) =>
+    item._id.equals(payload.questionId)
+  );
+
+  if (!question) {
+    throw new AppError(" Invalid question Id", 404);
+  }
+
+  const RepliesComments: any = {
+    user,
+    answer: payload.answer,
+    createdAt: new Date(),
+  };
+
+  question.questionReplies?.push(RepliesComments);
+
+  await course?.save();
+
+  // if replies sent notification
+  if (user?._id.equals(question?.user?._id)) {
+    // notification sent
+  } else {
+    const data = {
+      name: question.user?.name,
+      title: courseContent.title,
+    };
+  }
+};
+
 export const CourseServices = {
   uploadCourse,
   editCourse,
@@ -164,6 +219,7 @@ export const CourseServices = {
   getAllCourse,
   getCourseContentByUser,
   addQuestion,
+  replieQuestionAnswer,
 };
 
 /*
