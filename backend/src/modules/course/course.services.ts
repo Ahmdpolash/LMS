@@ -1,6 +1,5 @@
 import {
   IAddQuestionReplies,
-  IComment,
   ICourse,
   IQuestionData,
   IReview,
@@ -15,6 +14,7 @@ import { sendEmail } from "../../utils/sendMail";
 import { User } from "../user/user.models";
 import { Request } from "express";
 import { IUser } from "../user/user.interface";
+import { Notification } from "../notification/notification.model";
 
 // create a new Course
 
@@ -162,6 +162,12 @@ const addQuestion = async (user: any, payload: IQuestionData) => {
   };
 
   courseContent.questions.push(newQuestion);
+  // ✅ Create notification
+  await Notification.create({
+    userId: user._id,
+    title: "Got a new comment",
+    message: `You have a new comment in  ${courseContent?.title}`,
+  });
 
   await course.save();
 
@@ -214,6 +220,13 @@ const replieQuestionAnswer = async (
   // === Notification / Email Logic ===
   if (user?._id === question?.user?._id) {
     // notification sent
+
+    // ✅ Create notification
+    await Notification.create({
+      userId: user._id,
+      title: "New Comment Reply Received",
+      message: `You have a new order for ${courseContent?.title}`,
+    });
   } else {
     const data = {
       name: questionOwner?.name,
