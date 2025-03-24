@@ -21,6 +21,14 @@ router.get(
   CourseControllers.getCourseContentByUser
 );
 
-router.patch("/:id", auth(USER_ROLE.admin), CourseControllers.editCourse);
+router.patch(
+  "/:id",
+  auth(USER_ROLE.admin, USER_ROLE.instructor),
+  CourseControllers.editCourse
+);
+
+// add question
+
+router.put("/add-question", auth(), CourseControllers.addQuestion);
 
 export const CourseRoutes = router;

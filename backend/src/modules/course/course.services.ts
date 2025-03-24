@@ -1,8 +1,9 @@
-import { ICourse } from "./course.interface";
+import { IComment, ICourse, IQuestionData } from "./course.interface";
 import cloudinary from "cloudinary";
 import Course from "./course.model";
 import { redis } from "../../redis";
 import AppError from "../../errors/AppError";
+import mongoose from "mongoose";
 
 // create a new Course
 
@@ -82,7 +83,6 @@ const getCourseContentByUser = async (courseId: string, courseList: any) => {
     throw new AppError("you are not aligable to access this course", 404);
   }
 
-
   // if exists then fetch from Course
   const course = await Course.findById(courseId);
   const content = course?.courseData;
@@ -117,12 +117,53 @@ const editCourse = async (id: string, payload: Partial<ICourse>) => {
   return course;
 };
 
+// ADD QUESTION IN COURSE
+
+const addQuestion = async (user: any, payload: IQuestionData) => {
+  // Validate courseId
+  if (!mongoose.Types.ObjectId.isValid(payload.courseId)) {
+    throw new AppError(`Invalid Course Id: ${payload.courseId}`, 400);
+  }
+
+  const course = await Course.findById(payload.courseId);
+
+  if (!course) {
+    throw new AppError("Course not found", 404);
+  }
+
+  // Validate contentId
+  if (!mongoose.Types.ObjectId.isValid(payload.contentId)) {
+    throw new AppError(`Invalid Content Id: ${payload.contentId}`, 400);
+  }
+
+  const courseContent = course.courseData.find((item: any) =>
+    item._id.equals(payload.contentId)
+  );
+
+  if (!courseContent) {
+    throw new AppError("Course Content not found", 404);
+  }
+
+  const newQuestion: any = {
+    user,
+    question: payload.question,
+    questionReplies: [],
+  };
+
+  courseContent.questions.push(newQuestion);
+
+  await course.save();
+
+  return course;
+};
+
 export const CourseServices = {
   uploadCourse,
   editCourse,
   getSingleCourse,
   getAllCourse,
   getCourseContentByUser,
+  addQuestion,
 };
 
 /*

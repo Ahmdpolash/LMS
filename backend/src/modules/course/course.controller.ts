@@ -46,8 +46,6 @@ const getCourseContentByUser = catchAsync(async (req, res) => {
   const courseList = req.user?.courses;
   const courseId = req.params.id;
 
-
-
   const result = await CourseServices.getCourseContentByUser(
     courseId,
     courseList
@@ -74,10 +72,24 @@ const editCourse = catchAsync(async (req, res) => {
   });
 });
 
+// ADD QUESTION IN COURSE
+const addQuestion = catchAsync(async (req, res) => {
+  const user = req?.user;
+
+  const result = await CourseServices.addQuestion(user, req.body);
+
+  res.status(200).json({
+    success: true,
+    message: "Question added successfully.",
+    data: result,
+  });
+});
+
 export const CourseControllers = {
   uploadCourse,
   editCourse,
   getSingleCourse,
   getAllCourse,
   getCourseContentByUser,
+  addQuestion,
 };

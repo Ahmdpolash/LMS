@@ -1,6 +1,3 @@
-// course.interface.ts
-
-// Define interfaces for each sub-schema used in the Course schema
 export interface ILink {
   title: string;
   url: string;
@@ -8,15 +5,15 @@ export interface ILink {
 
 export interface IComment {
   user: object;
-  comment: string;
-  commentReplies?: IComment[];
+  question: string;
+  questionReplies?: [];
 }
 
 export interface IReview {
   user: object;
   rating: number;
   comment: string;
-  commentReplies: IComment[];
+  commentReplies?: IComment[]; // Add this only if your schema has it!
 }
 
 export interface ICourseData {
@@ -31,7 +28,6 @@ export interface ICourseData {
   questions: IComment[];
 }
 
-// Main Course interface
 export interface ICourse {
   name: string;
   description: string;
@@ -47,4 +43,10 @@ export interface ICourse {
   courseData: ICourseData[];
   ratings?: number;
   purchased?: number;
+}
+
+export interface IQuestionData {
+  question: string;
+  courseId: string;
+  contentId: string;
 }

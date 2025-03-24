@@ -16,6 +16,7 @@ export const auth = (...role: TUserRole[]) => {
       next: NextFunction
     ) => {
       // const token = req.headers.authorization;
+      // / const token = req.headers.authorization?.split(' ')[1];
       const token = req.cookies.accessToken;
 
       //check if token is exist
