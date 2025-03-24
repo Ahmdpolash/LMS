@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 
 export type TOrder = {
-  courseId: Types.ObjectId;
-  userId: Types.ObjectId;
+  courseId: string;
+  userId: string;
   payment_info: object;
 };

@@ -4,13 +4,11 @@ import { TOrder } from "./order.interface";
 const OrderSchema = new Schema<TOrder>(
   {
     courseId: {
-      type: Schema.Types.ObjectId,
-      ref: "Course",
+      type: String,
       required: true,
     },
     userId: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
     },
     payment_info: {

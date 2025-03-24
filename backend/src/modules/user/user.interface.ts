@@ -19,9 +19,6 @@ export type IUser = {
   comparePassword: (password: string) => Promise<boolean>;
 };
 
-
-
-
 export type ISocialAuth = {
   name: string;
   email: string;

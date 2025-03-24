@@ -1,9 +1,9 @@
-// CREATE ORDER
+// // CREATE ORDER
 
-import { TOrder } from "./order.interface";
+// import { TOrder } from "./order.interface";
 
-const createOrder = async (payload: TOrder) => {
+// const createOrder = async (payload: TOrder) => {
   
-};
+// };
 
-export const OrderServices = {createOrder};
+// export const OrderServices = {createOrder};

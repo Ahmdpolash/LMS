@@ -13,8 +13,8 @@ const NotificationSchema = new Schema<TNotification>(
     },
     status: {
       type: String,
-      // enum: ["unread", "read"],
-      // default: "unread",
+      enum: ["unread", "read"],
+      default: "unread",
     },
     userId: {
       type: Schema.Types.ObjectId,

@@ -45,8 +45,7 @@ const UserSchema = new Schema<IUser, UserModel>(
     courses: [
       {
         courseId: {
-          type: Schema.Types.ObjectId,
-          ref: "Course",
+          type: String,
         },
       },
     ],
@@ -75,7 +74,6 @@ UserSchema.pre("save", async function (next) {
 // });
 
 // COMPARE PASSWORD
-
 
 UserSchema.statics.isPasswordMatched = async function (
   plainTextPassword,
