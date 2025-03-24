@@ -16,7 +16,6 @@ export interface IReview {
   rating: number;
   comment: string;
   commentReplies?: IComment[]; // Add this only if your schema has it!
-
 }
 
 export interface ICourseData {
@@ -64,4 +63,10 @@ export interface IAddQuestionReplies {
 export interface INewQuestionReplies {
   user: IUser;
   answer: string;
+}
+
+export interface IReviewReplies {
+  comment: string;
+  courseId: string;
+  reviewId: string;
 }

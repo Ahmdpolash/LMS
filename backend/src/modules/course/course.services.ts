@@ -4,6 +4,7 @@ import {
   ICourse,
   IQuestionData,
   IReview,
+  IReviewReplies,
 } from "./course.interface";
 import cloudinary from "cloudinary";
 import Course from "./course.model";
@@ -13,6 +14,7 @@ import mongoose from "mongoose";
 import { sendEmail } from "../../utils/sendMail";
 import { User } from "../user/user.models";
 import { Request } from "express";
+import { IUser } from "../user/user.interface";
 
 // create a new Course
 
@@ -281,6 +283,39 @@ const addReviews = async (req: Request, payload: IReview) => {
   return course;
 };
 
+// REPLY REVIEWS
+
+const addReviewReply = async (user: any, payload: IReviewReplies) => {
+  // find cours by course id
+  const course = await Course.findById(payload.courseId);
+
+  if (!course) {
+    throw new AppError("Course not found", 404);
+  }
+
+  // find review by id
+
+  const review = course.reviews.find(
+    (rev: any) => rev._id.toString() === payload.reviewId
+  );
+
+  if (!review) {
+    throw new AppError("Review not found", 404);
+  }
+
+  const replyReview: any = {
+    userId: user?._id,
+    comment: payload.comment,
+  };
+
+  // push it
+  review.commentReplies?.push(replyReview);
+
+  await course?.save();
+
+  return course;
+};
+
 export const CourseServices = {
   uploadCourse,
   editCourse,
@@ -290,6 +325,7 @@ export const CourseServices = {
   addQuestion,
   replieQuestionAnswer,
   addReviews,
+  addReviewReply,
 };
 
 /*

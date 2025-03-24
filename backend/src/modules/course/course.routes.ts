@@ -35,4 +35,10 @@ router.put("/reply-question", auth(), CourseControllers.replieQuestionAnswer);
 
 router.put("/add-review/:id", auth(), CourseControllers.addReviews);
 
+router.put(
+  "/reply-review",
+  auth(USER_ROLE.admin, USER_ROLE.instructor),
+  CourseControllers.replyReview
+);
+
 export const CourseRoutes = router;
