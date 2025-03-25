@@ -4,6 +4,7 @@ import {
   accessTokenOptions,
   refreshTokenOptions,
 } from "../../helper/JwtHelper";
+import { redis } from "../../redis";
 import catchAsync from "../../utils/catchAsync";
 import { AuthServices } from "./auth.services";
 
@@ -73,10 +74,11 @@ const UpdateAccessToken = catchAsync(async (req, res) => {
   // set the cookie again
   res.cookie("accessToken", accessToken, accessTokenOptions);
   res.cookie("refreshToken", refToken, refreshTokenOptions);
+  await redis.set(user._id, JSON.stringify(user), "EX", 604800);  // 7d
 
   res.status(200).json({
     success: true,
-    message: "Access token generated successfully",
+    message: "Access token generated successfully", 
     data: {
       accessToken,
     },

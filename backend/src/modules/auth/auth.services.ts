@@ -137,8 +137,8 @@ const UpdateAccessToken = async (token: string) => {
 
   if (!session) {
     throw new AppError(
-      "Session not available or expired",
-      httpStatus.NOT_FOUND
+      "Please login for access this resources",
+      httpStatus.UNAUTHORIZED
     );
   }
 

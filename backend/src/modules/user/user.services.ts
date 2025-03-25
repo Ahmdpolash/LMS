@@ -37,6 +37,8 @@ const CreateUser = async (payload: IUser) => {
     },
   });
 
+  // redis.set(userExists.)
+
   return { activationToken: token };
 };
 

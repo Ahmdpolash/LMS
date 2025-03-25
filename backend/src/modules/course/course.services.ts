@@ -13,7 +13,7 @@ import mongoose from "mongoose";
 import { sendEmail } from "../../utils/sendMail";
 import { User } from "../user/user.models";
 import { Request } from "express";
-import { IUser } from "../user/user.interface";
+
 import { Notification } from "../notification/notification.model";
 
 // create a new Course
@@ -60,7 +60,7 @@ const getAllCourse = async () => {
     .lean();
 
   // set the data on redis now
-  await redis.set("allCourses", JSON.stringify(result));
+  await redis.set("allCourses", JSON.stringify(result), "EX", 604800);
 
   return result;
 };
@@ -83,7 +83,7 @@ const getSingleCourse = async (id: string) => {
     .lean();
 
   // set the data on redis now
-  await redis.set(id, JSON.stringify(result));
+  await redis.set(id, JSON.stringify(result), "EX", 604800);
 
   return result;
 };
