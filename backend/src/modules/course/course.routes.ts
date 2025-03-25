@@ -49,4 +49,8 @@ router.put(
   CourseControllers.replyReview
 );
 
+// DELETE COURSE 
+
+router.delete("/:id", auth(USER_ROLE.admin, USER_ROLE.instructor), CourseControllers.deleteCourse);
+
 export const CourseRoutes = router;

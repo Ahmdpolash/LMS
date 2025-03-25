@@ -48,6 +48,7 @@ interface ICourse extends Document {
   courseData: ICourseData[];
   ratings?: number;
   purchased?: number;
+  isDeleted?: boolean;
 }
 
 const reviewSchema = new Schema<IReview>({
@@ -143,13 +144,14 @@ const courseSchema = new Schema<ICourse>({
     type: Number,
     default: 0,
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Course = mongoose.model("Course", courseSchema);
 
 export default Course;
-
-
-
 
 //TODO: NEED TO CUSTOMIZE IT LATER ..

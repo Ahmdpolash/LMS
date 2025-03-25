@@ -36,6 +36,9 @@ const uploadCourse = async (payload: ICourse) => {
   // Save course to database
   const course = await Course.create(payload);
 
+  // Clear the cached courses
+  await redis.del("allCourses");
+
   return course;
 };
 
@@ -55,6 +58,7 @@ const getAllCourse = async () => {
     )
     .sort({ createdAt: -1 })
     .lean();
+
   // set the data on redis now
   await redis.set("allCourses", JSON.stringify(result));
 
@@ -333,7 +337,30 @@ const addReviewReply = async (user: any, payload: IReviewReplies) => {
   return course;
 };
 
+// DELETE COURSE
+const deleteCourse = async (id: string) => {
+  const course = await Course.findById(id);
+  if (!course) {
+    throw new AppError("course not found", 404);
+  }
 
+  await Course.findByIdAndDelete(id);
+
+  // Get the cached course list from Redis
+  const cachedCourses = await redis.get("allCourses");
+
+  if (cachedCourses) {
+    // Parse the cached data and remove the deleted course
+    const updatedCourses = JSON.parse(cachedCourses).filter(
+      (course: any) => course._id !== id
+    );
+
+    await redis.set("allCourses", JSON.stringify(updatedCourses));
+
+  }
+
+  return { message: "Course marked as deleted" };
+};
 
 export const CourseServices = {
   uploadCourse,
@@ -345,7 +372,7 @@ export const CourseServices = {
   replieQuestionAnswer,
   addReviews,
   addReviewReply,
- 
+  deleteCourse,
 };
 
 /*

@@ -118,6 +118,18 @@ const replyReview = catchAsync(async (req, res) => {
   });
 });
 
+// DELETE COURSE
+const deleteCourse = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const result = await CourseServices.deleteCourse(id);
+
+  res.status(200).json({
+    success: true,
+    message: result.message,
+    data: null,
+  });
+});
+
 export const CourseControllers = {
   uploadCourse,
   editCourse,
@@ -128,4 +140,5 @@ export const CourseControllers = {
   replieQuestionAnswer,
   addReviews,
   replyReview,
+  deleteCourse,
 };
