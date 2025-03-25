@@ -92,63 +92,66 @@ const courseDataSchema = new Schema<ICourseData>({
   questions: [commentSchema],
 });
 
-const courseSchema = new Schema<ICourse>({
-  name: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  estimatedPrice: {
-    type: Number,
-  },
-  thumbnail: {
-    public_id: {
+const courseSchema = new Schema<ICourse>(
+  {
+    name: {
       type: String,
-      required: false,
+      required: true,
     },
-    url: {
+    description: {
       type: String,
-      required: false,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    estimatedPrice: {
+      type: Number,
+    },
+    thumbnail: {
+      public_id: {
+        type: String,
+        required: false,
+      },
+      url: {
+        type: String,
+        required: false,
+      },
+    },
+    tags: {
+      type: String,
+      required: true, // Fix typo
+    },
+    level: {
+      type: String,
+      required: true, // Fix typo
+    },
+    demoUrl: {
+      type: String,
+      required: true, // Fix typo
+    },
+
+    benefits: [{ title: String }],
+    prerequisites: [{ title: String }],
+    reviews: [reviewSchema],
+    courseData: [courseDataSchema],
+
+    ratings: {
+      type: Number,
+      default: 0,
+    },
+    purchased: {
+      type: Number,
+      default: 0,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
     },
   },
-  tags: {
-    type: String,
-    required: true, // Fix typo
-  },
-  level: {
-    type: String,
-    required: true, // Fix typo
-  },
-  demoUrl: {
-    type: String,
-    required: true, // Fix typo
-  },
-
-  benefits: [{ title: String }],
-  prerequisites: [{ title: String }],
-  reviews: [reviewSchema],
-  courseData: [courseDataSchema],
-
-  ratings: {
-    type: Number,
-    default: 0,
-  },
-  purchased: {
-    type: Number,
-    default: 0,
-  },
-  isDeleted: {
-    type: Boolean,
-    default: false,
-  },
-});
+  { timestamps: true }
+);
 
 const Course = mongoose.model("Course", courseSchema);
 
