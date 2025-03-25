@@ -5,7 +5,7 @@ import httpStatus from "http-status";
 
 // CREATE ACCOUNT
 const CreateUser = catchAsync(async (req, res) => {
-  const result = await UserServices.CreateStudentIntoDb(req.body);
+  const result = await UserServices.CreateUser(req.body);
 
   res.status(httpStatus.OK).json({
     success: true,
@@ -27,12 +27,12 @@ const ActivateUser = catchAsync(async (req, res) => {
 
 // GET ALL STUDENTS
 
-const GetAllStudentFromDb = catchAsync(async (req, res) => {
-  const result = await UserServices.GetAllStudentFromDb();
+const GetAllUSers = catchAsync(async (req, res) => {
+  const result = await UserServices.GetAllUSers();
 
   res.status(httpStatus.OK).json({
     success: true,
-    message: "Student retrived successfully",
+    message: "All users retrived successfully",
     data: result,
   });
 });
@@ -44,7 +44,7 @@ const GetMe = catchAsync(async (req, res) => {
 
   res.status(200).json({
     success: true,
-    message: "User data fetched successfully",
+    message: "My data fetched successfully",
     data: result,
   });
 });
@@ -72,7 +72,7 @@ const UpdateUser = catchAsync(async (req, res) => {
 export const UserControllers = {
   CreateUser,
   ActivateUser,
-  GetAllStudentFromDb,
+  GetAllUSers,
   GetMe,
   SocialAuth,
   UpdateUser,

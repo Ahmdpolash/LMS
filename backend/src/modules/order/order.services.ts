@@ -13,72 +13,6 @@ import { IUser } from "../user/user.interface";
 
 // CREATE ORDER
 
-// const createOrder = async (userInfo: any, payload: TOrder) => {
-//   //find the user
-
-//   const user = await User.findById(userInfo._id);
-//   if (!user) {
-//     throw new AppError("User not found", httpStatus.NOT_FOUND);
-//   }
-
-//   // check if the user is already purchased this course
-
-//   const isCourseExists = user?.courses.some(
-//     (course: any) => course._id.toString() === payload.courseId
-//   );
-
-//   if (isCourseExists) {
-//     throw new AppError(
-//       "You have already purchased this course",
-//       httpStatus.CONFLICT
-//     );
-//   }
-
-//   // find the course by courseId
-//   const course = await Course.findById(payload.courseId);
-
-//   if (!course) {
-//     throw new AppError("Course not found", httpStatus.NOT_FOUND);
-//   }
-
-//   // sent mail to confiramtion order
-//   await sendEmail({
-//     to: user.email,
-//     subject: "Order Confirmation",
-//     templateName: "order",
-//     replacements: {
-//       courseId: course._id as string,
-//       name: course?.name,
-//       username: user.name,
-//       price: course.price.toString(),
-//       date: new Date().toLocaleDateString("en-US", {
-//         year: "numeric",
-//         month: "long",
-//         day: "numeric",
-//       }),
-//     },
-//   });
-
-//   // push the course id in user.courses
-//   user?.courses.push(course?._id);
-//   await user?.save();
-
-//   await Notification.create({
-//     userId: user?._id,
-//     title: "New Order",
-//     message: `You have a new order from ${course?.name}`,
-//   });
-
-//   // update course purchased count
-//   course?.purchased ? (course.purchased += 1) : course?.purchased;
-//   await course.save();
-
-//   // create order to order model
-//   payload.userId = user._id;
-//   const result = await Order.create(payload);
-//   return result;
-// };
-
 const createOrder = async (userInfo: any, payload: TOrder) => {
   const session = await mongoose.startSession();
 
@@ -167,6 +101,13 @@ const createOrder = async (userInfo: any, payload: TOrder) => {
   }
 };
 
-export const OrderServices = { createOrder };
+// GET ALL ORDER
+const getAllOrders = async () => {
+  const result = await Order.find().sort({ createdAt: -1 }).lean();
+
+  return result;
+};
+
+export const OrderServices = { createOrder, getAllOrders };
 
 // transaction and remove

@@ -11,7 +11,7 @@ import { Response } from "express";
 import { redis } from "../../redis";
 
 // CREATE USER
-const CreateStudentIntoDb = async (payload: IUser) => {
+const CreateUser = async (payload: IUser) => {
   // check if user email is already registered
   const userExists = await User.isUserExistsByEmail(payload.email);
 
@@ -70,8 +70,8 @@ const ActivateUser = async (payload: IActivteUser) => {
 };
 
 // GET ALL USERS
-const GetAllStudentFromDb = async () => {
-  const result = await User.find();
+const GetAllUSers = async () => {
+  const result = await User.find().sort({ createdAt: -1 }).lean();
 
   return result;
 };
@@ -119,9 +119,9 @@ const UpdateUser = async (id: string, payload: Partial<IUser>) => {
 //UPLOAD IMAGE
 
 export const UserServices = {
-  CreateStudentIntoDb,
+  CreateUser,
   ActivateUser,
-  GetAllStudentFromDb,
+  GetAllUSers,
   getMe,
   SocialAuth,
   UpdateUser,

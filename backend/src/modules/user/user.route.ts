@@ -10,7 +10,7 @@ router.post("/signin", UserControllers.CreateUser);
 
 router.post("/activate-user", UserControllers.ActivateUser);
 
-router.get("/", UserControllers.GetAllStudentFromDb);
+router.get("/", UserControllers.GetAllUSers);
 
 router.get("/me", auth(), UserControllers.GetMe);
 
