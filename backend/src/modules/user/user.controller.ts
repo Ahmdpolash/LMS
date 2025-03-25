@@ -1,4 +1,3 @@
-import { Request, Response } from "express";
 import catchAsync from "../../utils/catchAsync";
 import { UserServices } from "./user.services";
 import httpStatus from "http-status";
@@ -80,6 +79,19 @@ const updateUserRole = catchAsync(async (req, res) => {
   });
 });
 
+// DELETE USER
+
+const deleteUser = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const result = await UserServices.deleteUser(id);
+
+  res.status(200).json({
+    success: true,
+    message: "user deleted successfull",
+    data: null,
+  });
+});
+
 export const UserControllers = {
   CreateUser,
   ActivateUser,
@@ -88,4 +100,5 @@ export const UserControllers = {
   SocialAuth,
   UpdateUser,
   updateUserRole,
+  deleteUser,
 };

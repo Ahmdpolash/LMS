@@ -5,7 +5,6 @@ import { User } from "../user/user.models";
 import { ILogin } from "./auth.interface";
 import httpStatus from "http-status";
 import bcrypt from "bcryptjs";
-import { storeSession } from "../../helper/storeSessionToRedis";
 import { redis } from "../../redis";
 import cloudinary from "cloudinary";
 
@@ -71,7 +70,6 @@ const LoginUser = async (payload: ILogin) => {
 
 // LOGOUT USER
 const LogOut = async (id: string) => {
-
   // get the user from redis
 
   const session = await redis.get(id);

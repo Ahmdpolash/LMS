@@ -125,11 +125,41 @@ const updateUserRole = async (payload: { id: string; role: string }) => {
     throw new AppError("Invalid role", httpStatus.BAD_REQUEST);
   }
 
+  // Find user
+  const user = await User.findById(payload.id);
+
+  if (!user) {
+    throw new AppError("User not found", httpStatus.NOT_FOUND);
+  }
+
+  // Check if user is deleted or blocked
+  if (user.isDeleted || user.status === "blocked") {
+    throw new AppError(
+      "Cannot update role. User is either deleted or blocked.",
+      httpStatus.FORBIDDEN
+    );
+  }
+
   const result = await User.findByIdAndUpdate(
     payload.id,
     { role: payload.role },
     { new: true }
   );
+
+  return result;
+};
+
+// DELETE USR
+
+const deleteUser = async (id: string) => {
+  const user = await User.findById(id);
+  if (!user) {
+    throw new AppError("user not found", 404);
+  }
+
+  const result = await User.findByIdAndDelete(id);
+
+  await redis.del(id);
 
   return result;
 };
@@ -144,4 +174,5 @@ export const UserServices = {
   SocialAuth,
   UpdateUser,
   updateUserRole,
+  deleteUser,
 };
