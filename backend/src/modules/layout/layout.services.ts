@@ -60,8 +60,8 @@ export const CreateLayout = async (type: string, req: Request) => {
 };
 
 // get layout
-export const GetLayout = async () => {
-  const result = await Layout.find();
+export const GetLayoutByType = async (type: string) => {
+  const result = await Layout.findOne({ type });
 
   return result;
 };
