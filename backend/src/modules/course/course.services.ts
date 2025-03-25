@@ -356,7 +356,6 @@ const deleteCourse = async (id: string) => {
     );
 
     await redis.set("allCourses", JSON.stringify(updatedCourses));
-
   }
 
   return { message: "Course marked as deleted" };
