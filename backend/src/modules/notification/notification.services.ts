@@ -1,7 +1,6 @@
-
 import AppError from "../../errors/AppError";
 import { Notification } from "./notification.model";
-
+import cron from "node-cron";
 // GET ALL NOTIFICATIONS
 
 const getAllNotification = async () => {
@@ -9,7 +8,6 @@ const getAllNotification = async () => {
 
   return result;
 };
-
 
 // UPDATE STATUS
 const updateNotificationStatus = async (id: string, status: string) => {
@@ -27,6 +25,18 @@ const updateNotificationStatus = async (id: string, status: string) => {
 
   return result;
 };
+
+// DELETE NOTIFICATION AFTER 30 DAYS : those who's status is read
+
+cron.schedule("0 0 0 * * *", async () => {
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+  await Notification.deleteMany({
+    status: "read",
+    createdAt: { $lt: thirtyDaysAgo },
+  });
+
+  console.log("deleted notification");
+});
 
 export const NotificationServices = {
   getAllNotification,
