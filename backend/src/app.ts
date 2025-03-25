@@ -21,7 +21,7 @@ app.use(cookieParser());
 //routes
 app.use("/api/v1", router);
 
-app.get("/check", (req: Request, res: Response) => {
+app.get("/", (req: Request, res: Response) => {
   res.send("LMS IS RUNNING..");
 });
 
