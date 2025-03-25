@@ -19,4 +19,6 @@ router.post(
 
 router.patch("/change-avatar", auth(), AuthControllers.updatedProfilePhoto);
 
+// need to add forgot password system 
+
 export const AuthRoutes = router;
