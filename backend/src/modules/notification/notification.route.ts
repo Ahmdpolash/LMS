@@ -12,7 +12,11 @@ router.get(
   NotificationController.getAllNotification
 );
 
-// UPDATE STATUS 
-router.patch('/update-notification-status/:id', auth(USER_ROLE.admin), NotificationController.updateNotificationStatus)
+// UPDATE STATUS
+router.patch(
+  "/update-notification-status/:id",
+  auth(USER_ROLE.admin),
+  NotificationController.updateNotificationStatus
+);
 
 export const NotificationRoutes = router;

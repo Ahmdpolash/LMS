@@ -69,6 +69,17 @@ const UpdateUser = catchAsync(async (req, res) => {
   });
 });
 
+// UPDATE USER ROLE
+const updateUserRole = catchAsync(async (req, res) => {
+  const result = await UserServices.updateUserRole(req.body);
+
+  res.status(200).json({
+    success: true,
+    message: "User role updated successfully",
+    data: result,
+  });
+});
+
 export const UserControllers = {
   CreateUser,
   ActivateUser,
@@ -76,4 +87,5 @@ export const UserControllers = {
   GetMe,
   SocialAuth,
   UpdateUser,
+  updateUserRole,
 };

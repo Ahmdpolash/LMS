@@ -116,6 +116,24 @@ const UpdateUser = async (id: string, payload: Partial<IUser>) => {
   return result;
 };
 
+// UPDATE USER ROLE -- FOR ADMIN ONLY
+const updateUserRole = async (payload: { id: string; role: string }) => {
+  // validat role
+  const validRoles = ["user", "admin", "instructor"];
+
+  if (!validRoles.includes(payload.role)) {
+    throw new AppError("Invalid role", httpStatus.BAD_REQUEST);
+  }
+
+  const result = await User.findByIdAndUpdate(
+    payload.id,
+    { role: payload.role },
+    { new: true }
+  );
+
+  return result;
+};
+
 //UPLOAD IMAGE
 
 export const UserServices = {
@@ -125,4 +143,5 @@ export const UserServices = {
   getMe,
   SocialAuth,
   UpdateUser,
+  updateUserRole,
 };

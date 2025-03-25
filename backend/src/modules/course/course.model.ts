@@ -148,3 +148,8 @@ const courseSchema = new Schema<ICourse>({
 const Course = mongoose.model("Course", courseSchema);
 
 export default Course;
+
+
+
+
+//TODO: NEED TO CUSTOMIZE IT LATER ..

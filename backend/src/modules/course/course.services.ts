@@ -53,6 +53,7 @@ const getAllCourse = async () => {
     .select(
       "-courseData.videoUrl -courseData.suggestion  -courseData.questions -courseData.links "
     )
+    .sort({ createdAt: -1 })
     .lean();
   // set the data on redis now
   await redis.set("allCourses", JSON.stringify(result));
@@ -332,6 +333,8 @@ const addReviewReply = async (user: any, payload: IReviewReplies) => {
   return course;
 };
 
+
+
 export const CourseServices = {
   uploadCourse,
   editCourse,
@@ -342,6 +345,7 @@ export const CourseServices = {
   replieQuestionAnswer,
   addReviews,
   addReviewReply,
+ 
 };
 
 /*
