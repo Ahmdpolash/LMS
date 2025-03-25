@@ -15,7 +15,7 @@ export interface IBannerImage {
 export interface ILayout {
   type: string;
   faq: IFaq[];
-  courseCategory: ICourseCategory[];
+  categories: ICourseCategory[];
   banner: {
     image: IBannerImage;
     title: string;

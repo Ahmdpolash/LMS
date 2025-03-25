@@ -31,7 +31,7 @@ const BannerSchema = new Schema<IBannerImage>({
 const LayoutSchema = new Schema<ILayout>({
   type: { type: String },
   faq: [FaqSchema],
-  courseCategory: [CategorySchema],
+  categories: [CategorySchema],
   banner: {
     image: BannerSchema,
     title: { type: String },

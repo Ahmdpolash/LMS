@@ -5,6 +5,7 @@ import { CourseRoutes } from "../modules/course/course.routes";
 import { OrderRoutes } from "../modules/order/order.route";
 import { NotificationRoutes } from "../modules/notification/notification.route";
 import { AnalyticsRoutes } from "../modules/analytics/analytics.route";
+import { LayoutRoutes } from "../modules/layout/layout.route";
 
 const router = Router();
 
@@ -32,6 +33,10 @@ const moduleRoutes = [
   {
     path: "/analytics",
     route: AnalyticsRoutes,
+  },
+  {
+    path: "/layout",
+    route: LayoutRoutes,
   },
 ];
 
