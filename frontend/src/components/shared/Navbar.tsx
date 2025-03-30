@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Sun, Moon, User, CrossIcon, MenuIcon } from "lucide-react";
+import { Sun, Moon, User, CrossIcon, MenuIcon, CircleUser } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -53,6 +53,13 @@ export default function Navbar() {
       }`}
     >
       <div className=" ">
+
+      <div
+        onClick={() => setOpen(false)}
+        className={`fixed duration-200 ${
+          !open ? "invisible" : "visible"
+        } w-screen h-screen backdrop-blur-sm top-0 left-0 z-10`}
+      ></div>
         <Container>
           <div className="">
             <div className="flex items-center justify-between">
@@ -91,12 +98,12 @@ export default function Navbar() {
                   variant="ghost"
                   size="icon"
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")} // ✅ Toggle theme
-                  className="text-gray-900 dark:text-white"
+                  className="text-gray-900 dark:text-white cursor-pointer"
                 >
                   {theme === "dark" ? (
-                    <Sun className="h-5 w-5" />
+                    <Sun className="h-5 w-5 size-6" />
                   ) : (
-                    <Moon className="h-5 w-5" />
+                    <Moon className="h-5 w-5 size-6" />
                   )}
                 </Button>
 
@@ -106,9 +113,9 @@ export default function Navbar() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="text-gray-900 dark:text-white"
+                      className="text-gray-900 cursor-pointer dark:text-white"
                     >
-                      <User className="h-5 w-5" />
+                      <CircleUser className="size-6" />
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px] bg-[#111827] text-white border-gray-700">
