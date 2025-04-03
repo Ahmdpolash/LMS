@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${poppins.variable} ${josefin.variable} overflow-x-hidden !bg-white bg-no-repeat dark:bg-gradient-to-b dark:from-gray-900 dark:to-black duration-300`}
+        className={`${poppins.variable} ${josefin.variable} overflow-x-hidden bg-gray-50 dark:bg-[#0C111B]`}
       >
         <div>
           <Suspense fallback={<Loading />}>
@@ -57,3 +57,6 @@ export default function RootLayout({
 }
 
 //bg-gradient-to-b from-white to-gray-50 dark:from-[#0C111B] dark:to-[#131c36]
+// /bg-gray-50 dark:bg-[#0C111B]
+
+//overflow-x-hidden !bg-white bg-no-repeat dark:bg-gradient-to-b dark:from-gray-900 dark:to-black duration-300

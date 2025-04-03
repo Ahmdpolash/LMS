@@ -17,8 +17,8 @@ body::-webkit-scrollbar-track {
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: rgb(75, 75, 211);
-  outline: 1px solid rgb(131, 155, 180);
+  background-color: #237FA5;
+  outline: 1px solid rgb(95, 155, 214);
 }
 
 @theme {
