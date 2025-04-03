@@ -5,6 +5,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
+body {
+  font-family: "Poppins", sans-serif;
+}
 body::-webkit-scrollbar {
   width: 5px;
 }
@@ -252,7 +255,41 @@ body::-webkit-scrollbar-thumb {
   }
 }
 
-
- h2, h3 {
+h2,
+h3 {
   font-family: var(--font-poppins);
+}
+
+/*  banner blob */
+
+.blob {
+  animation: blob-movement 15s infinite alternate;
+  transition: all 0.5s ease;
+}
+
+.blob-1 {
+  animation-delay: 0s;
+}
+
+.blob-3 {
+  animation-delay: 2s;
+}
+
+.blob-4 {
+  animation-delay: 7s;
+}
+
+@keyframes blob-movement {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -20px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(10px, -10px) scale(1);
+  }
 }

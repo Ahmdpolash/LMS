@@ -13,6 +13,12 @@ const FaqSchema = new Schema<IFaq>({
   answer: {
     type: String,
   },
+  badge: {
+    type: String,
+  },
+  icon: {
+    type: String,
+  },
 });
 
 const CategorySchema = new Schema<ICourseCategory>({

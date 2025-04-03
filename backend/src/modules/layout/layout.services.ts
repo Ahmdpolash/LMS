@@ -39,6 +39,8 @@ export const CreateLayout = async (type: string, req: Request) => {
       faq.map(async (item: any) => ({
         question: item.question,
         answer: item.answer,
+        badge: item.badge,
+        icon: item.icon,
       }))
     );
     await Layout.create({ type: "Faq", faq: faqItems });

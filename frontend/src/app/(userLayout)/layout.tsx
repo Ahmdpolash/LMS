@@ -47,7 +47,7 @@ export default function RootLayout({
               <Navbar />
               {children}
               <Footer />
-              <ScrollToTop/>
+              <ScrollToTop />
             </ThemeProvider>
           </Suspense>
         </div>
@@ -55,3 +55,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+//bg-gradient-to-b from-white to-gray-50 dark:from-[#0C111B] dark:to-[#131c36]
