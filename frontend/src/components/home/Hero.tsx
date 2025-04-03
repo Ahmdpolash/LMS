@@ -15,6 +15,9 @@ import { Badge } from "@/components/ui/badge";
 import Container from "../shared/Container";
 import Image from "next/image";
 import "../../app/globals.css"; // Import global styles for the blobs
+import Link from "next/link";
+import { BlurFade } from "../magicui/blur-fade";
+import { TextAnimate } from "../magicui/text-animate";
 
 export default function Hero() {
   return (
@@ -23,14 +26,10 @@ export default function Hero() {
       <div className="absolute inset-0 bg-white dark:bg-gradient-to-br dark:from-[#0C111B] dark:via-[#131c36] dark:to-[#0C111B] z-0"></div>
 
       {/* Interactive Animated Blobs */}
-      {/* <div className="blob blob-1 absolute top-20 left-10 w-64 h-64 bg-[rgb(37,150,190)]/10 dark:bg-[rgb(37,150,190)]/10 rounded-full blur-3xl"></div>
-      <div className="blob blob-2 absolute bottom-10 right-10 w-80 h-80 bg-purple-500/10 dark:bg-purple-500/10 rounded-full blur-3xl"></div>
+      <div className="blob blob-1  absolute top-10 left-10 w-64 h-64 bg-[rgb(37,150,190)]/15 dark:bg-[rgb(37,150,190)]/10 rounded-full blur-3xl"></div>
+
       <div className="blob blob-3 absolute top-40 right-20 w-40 h-40 bg-pink-500/10 dark:bg-pink-500/10 rounded-full blur-3xl"></div>
       <div className="blob blob-4 absolute bottom-40 left-20 w-56 h-56 bg-[rgb(37,150,190)]/15 dark:bg-[rgb(37,150,190)]/15 rounded-full blur-3xl"></div>
-
-     
-      <div className="blob blob-5 absolute top-60 left-40 w-72 h-72 bg-teal-500/10 dark:bg-teal-500/10 rounded-full blur-3xl"></div>
-      <div className="blob blob-6 absolute bottom-80 left-60 w-48 h-48 bg-amber-500/10 dark:bg-amber-500/10 rounded-full blur-3xl"></div> */}
 
       {/* Content */}
 
@@ -39,31 +38,44 @@ export default function Hero() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-2 gap-12 items-start">
             {/* Left Content */}
             <div className="space-y-8  order-2 md:order-1 lg:order-1 2xl:order-1">
-              <Badge className="bg-[rgb(37,150,190)]/20 text-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/30 px-4 py-1 text-sm">
-                Transform Your Learning Journey
+              <Badge className="bg-[rgb(37,150,190)]/20 text-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/30 cursor-grab px-4 py-1 text-sm">
+                "Transform Your Learning Journey"
               </Badge>
 
-              <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold leading-tight text-gray-900 dark:text-white text-balance">
-                Improve Your Online Learning Experience Better Instantly
-              </h1>
+              <TextAnimate
+                className="selection:bg-blue-600 text-3xl md:text-4xl lg:text-6xl font-bold leading-tight text-gray-900 dark:text-white text-balance"
+                animation="fadeIn"
+                by="line"
+                as="p"
+              >
+                {"Improve Your Online Learning Experience Better Instantly"}
+              </TextAnimate>
 
-              <p className="text-lg text-gray-700 dark:text-gray-300 max-w-xl text-balance">
-                Join our community of 500K+ learners and access 20K+ courses
-                taught by industry experts. Start your learning journey today.
-              </p>
-
+              <TextAnimate
+                className="text-lg text-gray-700 dark:text-gray-300 max-w-xl text-balance"
+                animation="fadeIn"
+                by="line"
+                as="p"
+              >
+                {` Join our community of 500K+ learners and access 20K+ courses\n\n taught by industry experts. Start your learning journey today.`}
+              </TextAnimate>
+           
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button className="bg-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/80 text-white px-8 py-6 text-lg rounded-lg group transition-all duration-300 hover:shadow-lg hover:shadow-[rgb(37,150,190)]/20">
-                  Get Started
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-                <Button
-                  variant="outline"
-                  className="border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 px-8 py-6 text-lg rounded-lg transition-all duration-300"
-                >
-                  Explore Courses
-                  <BookMarked className="ml-2 h-5 w-5" />
-                </Button>
+                <Link href={"/sign-in"}>
+                  <Button className="bg-[rgb(37,150,190)] cursor-pointer hover:bg-[rgb(37,150,190)]/80 text-white px-8 py-6 text-[17px] font-medium rounded-lg group transition-all duration-300 hover:shadow-lg hover:shadow-[rgb(37,150,190)]/20">
+                    Get Started
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+                <Link href={"/courses"}>
+                  <Button
+                    variant="outline"
+                    className="border-gray-300 cursor-pointer dark:border-gray-600 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 px-8 py-6 text-[17px] rounded-lg transition-all duration-300"
+                  >
+                    Explore Courses
+                    <BookMarked className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
               </div>
 
               {/* Stats */}
@@ -75,13 +87,15 @@ export default function Hero() {
               <div className=" hero_animation absolute lg:top-[85px] w-[55vh] h-[55vh] lg:h-[540px]  lg:w-[540px] rounded-[50%] " />
 
               <div className="z-50 relative ">
-                <Image
-                  src={"/h1.png"}
-                  alt=""
-                  width={345}
-                  height={345}
-                  className="object-contain w-full z-[50] pt-8 lg:pt-0 mx-auto lg:mx-0 text-center "
-                />
+                <BlurFade key={"/h1.png"} delay={0.25 + 1 * 0.05} inView>
+                  <Image
+                    src={"/h1.png"}
+                    alt=""
+                    width={345}
+                    height={345}
+                    className="object-contain w-full z-[50] pt-8 lg:pt-0 mx-auto lg:mx-0 text-center "
+                  />
+                </BlurFade>
               </div>
             </div>
           </div>

@@ -1,8 +1,10 @@
+'use client'
 import Link from "next/link";
 import React from "react";
 import MobileMenu from "./MobileMenu";
 import { Button } from "../ui/button";
 import { MenuIcon, Moon, Sun } from "lucide-react";
+
 
 const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
   return (
@@ -33,7 +35,7 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
         onClick={toggleMenu}
         variant="ghost"
         size="icon"
-        className="md:hidden text-gray-900 dark:text-white"
+        className="block lg:hidden text-gray-900 dark:text-white"
       >
         <MenuIcon />
       </Button>

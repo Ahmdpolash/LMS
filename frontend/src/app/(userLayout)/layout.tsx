@@ -5,18 +5,19 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/shared/Navbar";
 
 import Footer from "@/components/home/Footer";
-
+import { Suspense } from "react";
+import Loading from "./loading";
 
 const poppins = Poppins({
   variable: "--font-Poppins",
   subsets: ["latin"],
-  weight: ["400","500","600", "700"], // Add appropriate weights as needed
+  weight: ["400", "500", "600", "700"], // Add appropriate weights as needed
 });
 
 const josefin = Josefin_Sans({
   variable: "--font-Josefin",
   subsets: ["latin"],
-  weight: ["400","500","600", "700"], // Add appropriate weights as needed
+  weight: ["400", "500", "600", "700"], // Add appropriate weights as needed
 });
 
 export const metadata: Metadata = {
@@ -35,16 +36,18 @@ export default function RootLayout({
         className={`${poppins.variable} ${josefin.variable} overflow-x-hidden !bg-white bg-no-repeat dark:bg-gradient-to-b dark:from-gray-900 dark:to-black duration-300`}
       >
         <div>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem={false}
-            disableTransitionOnChange
-          >
-            <Navbar />
-            {children}
-            <Footer />
-          </ThemeProvider>
+          <Suspense fallback={<Loading />}>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem={false}
+              disableTransitionOnChange
+            >
+              <Navbar />
+              {children}
+              <Footer />
+            </ThemeProvider>
+          </Suspense>
         </div>
       </body>
     </html>
