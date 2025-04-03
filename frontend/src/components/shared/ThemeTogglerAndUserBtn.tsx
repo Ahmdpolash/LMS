@@ -12,7 +12,7 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null; 
+  if (!mounted) return null;
   return (
     <div className="flex items-center space-x-4">
       <Button

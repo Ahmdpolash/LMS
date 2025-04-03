@@ -1,5 +1,6 @@
 import { Github, Instagram, Mail, MapPin, Phone, Youtube } from "lucide-react";
 
+
 export const NavItem = [
   {
     name: "Home",
@@ -50,3 +51,5 @@ export const footerData = {
   ],
   copyright: "Copyright © 2023 ELearning | All Rights Reserved",
 };
+
+

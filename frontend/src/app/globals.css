@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 @import "tailwindcss";
 
 @plugin "tailwindcss-animate";
@@ -36,17 +37,9 @@ body::-webkit-scrollbar-thumb {
   --color-dark-300: #242633;
 
   --font-mona-sans: "Mona Sans", sans-serif;
-
+  --font-poppins: "Poppins", sans-serif; /* Use the variable to define font */
+  --font-josefin: "Josefin", sans-serif;
   --bg-pattern: url("/pattern.png");
-  /* backgroundimage : {
-    'gradient-radial':'radial-gradient(var(--tw-gradient-stops))'; 
-    'gradient-conic': "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))";
-  };
-
-  fontFamily:{
-    Poppins:['var(--font-Poppins)'],
-    Josefin:['var(--font-Josefin)'] ;
-  }; */
 }
 
 :root {
@@ -257,4 +250,9 @@ body::-webkit-scrollbar-thumb {
   83.33% {
     opacity: 0.4;
   }
+}
+
+
+ h2, h3 {
+  font-family: var(--font-poppins);
 }
