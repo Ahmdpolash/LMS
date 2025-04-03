@@ -33,7 +33,7 @@ export default function Hero() {
       {/* Content */}
 
       <Container>
-      <div className=" mx-auto  py-16 md:py-24 relative z-10">
+      <div className=" mx-auto  py-16 md:py-24 relative ">   
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Left Content */}
           <div className="space-y-8">

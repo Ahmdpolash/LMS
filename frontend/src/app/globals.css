@@ -4,8 +4,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-
-
 @theme {
   --color-success-100: #49de50;
   --color-success-200: #42c748;
@@ -27,6 +25,15 @@
   --font-mona-sans: "Mona Sans", sans-serif;
 
   --bg-pattern: url("/pattern.png");
+  /* backgroundimage : {
+    'gradient-radial':'radial-gradient(var(--tw-gradient-stops))'; 
+    'gradient-conic': "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))";
+  };
+
+  fontFamily:{
+    Poppins:['var(--font-Poppins)'],
+    Josefin:['var(--font-Josefin)'] ;
+  }; */
 }
 
 :root {
@@ -158,13 +165,39 @@
   li {
     @apply text-light-100;
   }
-
- 
 }
 
 @layer components {
-  .btn-disconnect {
-    @apply inline-block px-7 py-3 text-sm font-bold leading-5 text-white transition-colors duration-150 bg-destructive-100 border border-transparent rounded-full shadow-sm focus:outline-none focus:shadow-2xl active:bg-destructive-200 hover:bg-destructive-200 min-w-28;
+  /* .auth-layout {
+    @apply flex items-center justify-center w-full mx-auto max-w-7xl h-[100vh] max-sm:px-4;
+  } */
+
+  .form {
+    @apply w-full;
+
+    .label {
+      @apply !text-light-100 !font-normal;
+    }
+
+    .input {
+      @apply !bg-dark-200 !rounded-full !min-h-12 !px-5 placeholder:!text-light-100;
+    }
+
+    .btn {
+      @apply !w-full !bg-blue-400 !text-dark-100 hover:!bg-blue-300/80 !rounded-full !min-h-10 !font-bold !px-5 cursor-pointer;
+    }
+  }
+
+  .card-border {
+    @apply border-gradient p-0.5 rounded-2xl w-fit;
+  }
+
+  .card-border {
+    @apply border-gradient p-0.5 rounded-2xl;
+  }
+
+  .card {
+    @apply dark-gradient  rounded-2xl min-h-full;
   }
 }
 
@@ -173,5 +206,5 @@
 }
 
 @utility border-gradient {
-  @apply bg-gradient-to-b from-[#4B4D4F] to-[#4B4D4F33];
+  @apply bg-gradient-to-b from-[#396998] to-[#658aaf33];
 }
