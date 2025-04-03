@@ -7,6 +7,7 @@ import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/home/Footer";
 import { Suspense } from "react";
 import Loading from "./loading";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const poppins = Poppins({
   variable: "--font-Poppins",
@@ -46,6 +47,7 @@ export default function RootLayout({
               <Navbar />
               {children}
               <Footer />
+              <ScrollToTop/>
             </ThemeProvider>
           </Suspense>
         </div>

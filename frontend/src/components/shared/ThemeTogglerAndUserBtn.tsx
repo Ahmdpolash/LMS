@@ -1,12 +1,18 @@
-'use client'
+"use client";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MobileMenu from "./MobileMenu";
 import { Button } from "../ui/button";
 import { MenuIcon, Moon, Sun } from "lucide-react";
 
-
 const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null; 
   return (
     <div className="flex items-center space-x-4">
       <Button
@@ -15,7 +21,7 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")} // ✅ Toggle theme
         className="text-gray-900  dark:text-white cursor-pointer"
       >
-        {theme === "dark" ? <Sun /> : <Moon />}
+        {theme === "dark" ? <Sun key="sun" /> : <Moon key="moon" />}
       </Button>
 
       {/* login button */}
@@ -32,10 +38,10 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
       <MobileMenu open={open} />
 
       <Button
-        onClick={toggleMenu}
         variant="ghost"
         size="icon"
-        className="block lg:hidden text-gray-900 dark:text-white"
+        onClick={toggleMenu}
+        className=" lg:hidden text-gray-900 dark:text-white"
       >
         <MenuIcon />
       </Button>
