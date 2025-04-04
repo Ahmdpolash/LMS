@@ -37,10 +37,10 @@ export default function AboutPage() {
                 <Badge className="bg-[rgb(37,150,190)]/20 text-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/30 px-4 py-1 text-sm mb-4">
                   Our Story
                 </Badge>
-                <h1 className="text-3xl md:text-5xl font-bold text-white mb-6">
+                <h1 className="text-3xl md:text-5xl font-bold text-slate-800 dark:text-white mb-6">
                   Transforming Education for the Digital Age
                 </h1>
-                <p className="text-gray-300 text-lg mb-8">
+                <p className="text-slate-700 dark:text-gray-300 text-lg mb-8">
                   We're on a mission to make quality education accessible to
                   everyone, everywhere. Our platform connects learners with
                   expert instructors and cutting-edge courses.
@@ -58,7 +58,7 @@ export default function AboutPage() {
                   <Button
                     asChild
                     variant="outline"
-                    className="border-gray-600 text-white hover:bg-gray-800 px-6 py-6"
+                    className="border-gray-600 text-black dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 px-6 py-6"
                   >
                     <Link href="#team">Meet Our Team</Link>
                   </Button>
@@ -285,7 +285,7 @@ export default function AboutPage() {
           </section>
 
           {/* CTA Section */}
-          <section className="py-12  bg-gradient-to-r from-[#151f38] to-[#1a2342] relative overflow-hidden">
+          <section className="py-12  dark:bg-gradient-to-r from-[#151f38] to-[#1a2342] relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
               <div className="absolute top-10 left-10 w-64 h-64 bg-[rgb(37,150,190)]/10 rounded-full blur-3xl"></div>
               <div className="absolute bottom-10 right-10 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl"></div>
@@ -293,10 +293,10 @@ export default function AboutPage() {
 
             <div className="container mx-auto px-4 relative z-10">
               <div className="max-w-3xl mx-auto text-center">
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                <h2 className="text-3xl md:text-4xl font-boldtext-slate-800 dark:text-white mb-6">
                   Ready to Start Your Learning Journey?
                 </h2>
-                <p className="text-gray-300 text-lg mb-8">
+                <p className="text-slate-800 dark:text-gray-300 text-lg mb-8">
                   Join our community of learners and transform your skills with
                   our expert-led courses.
                 </p>
