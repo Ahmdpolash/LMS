@@ -1,6 +1,9 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Container from "../shared/Container";
+import { AvatarCircles } from "../magicui/avatar-circles";
+import { avatars } from "@/constant";
+import Link from "next/link";
 
 export default function CTASection() {
   return (
@@ -22,7 +25,7 @@ export default function CTASection() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                  Ready to Start Your Learning Journey?
+                  Ready to Start Your Learning Journey ? 
                 </h2>
                 <p className="text-gray-300 text-lg mb-6">
                   Join over 500 learners who have advanced their careers with
@@ -31,25 +34,24 @@ export default function CTASection() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button className="bg-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/80 text-white px-8 py-6 text-lg rounded-lg group transition-all duration-300 hover:shadow-lg hover:shadow-[rgb(37,150,190)]/20">
-                    Get Started Today
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="border-gray-600 text-white hover:bg-gray-800 px-8 py-6 text-lg rounded-lg"
-                  >
-                    View All Courses
-                  </Button>
+                  <Link href={"/sign-in"}>
+                    <Button className="bg-[rgb(37,150,190)] cursor-pointer hover:bg-[rgb(37,150,190)]/80 text-white px-8 py-6 text-lg rounded-lg group transition-all duration-300 hover:shadow-lg hover:shadow-[rgb(37,150,190)]/20">
+                      Get Started Today
+                      <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
+                  <Link href={"/courses"}>
+                    <Button
+                      variant="outline"
+                      className="border-gray-600 cursor-pointer text-white hover:bg-gray-800 px-8 py-6 text-lg rounded-lg"
+                    >
+                      View All Courses
+                    </Button>
+                  </Link>
                 </div>
 
-                <div className="mt-6 flex items-center">
-                  <div className="flex -space-x-2 mr-3">
-                    <div className="w-8 h-8 rounded-full bg-blue-500 border-2 border-[#1a2342]"></div>
-                    <div className="w-8 h-8 rounded-full bg-green-500 border-2 border-[#1a2342]"></div>
-                    <div className="w-8 h-8 rounded-full bg-purple-500 border-2 border-[#1a2342]"></div>
-                    <div className="w-8 h-8 rounded-full bg-amber-500 border-2 border-[#1a2342]"></div>
-                  </div>
+                <div className="mt-6 flex items-center gap-4">
+                  <AvatarCircles avatarUrls={avatars} />
                   <p className="text-gray-300 text-sm">
                     Join 500+ satisfied learners
                   </p>

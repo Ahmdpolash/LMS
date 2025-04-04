@@ -114,7 +114,7 @@ export default function TestimonialsSection() {
                 {testimonials.map((testimonial) => (
                   <div
                     key={testimonial.id}
-                    className="bg-[#131c36] rounded-lg p-6 shadow-lg border border-gray-800 h-full flex flex-col"
+                    className="dark:bg-[#131c36]  rounded-lg p-6 shadow-lg border border-gray-400 dark:border-gray-700 h-full flex flex-col"
                   >
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex items-center">
@@ -128,10 +128,10 @@ export default function TestimonialsSection() {
                           />
                         </div>
                         <div>
-                          <h3 className="text-white font-semibold text-lg">
+                          <h3 className="text-black dark:text-white font-semibold text-lg">
                             {testimonial.name}
                           </h3>
-                          <p className="text-gray-400 text-sm">
+                          <p className="text-gray-600 dark:text-gray-400 text-sm">
                             {testimonial.role}
                           </p>
                         </div>
@@ -139,8 +139,8 @@ export default function TestimonialsSection() {
                       <div className="flex">{renderStars()}</div>
                     </div>
 
-                    <div className="text-gray-300 flex-grow">
-                      <p>{testimonial.text}</p>
+                    <div className="text-slate-600 dark:text-gray-300 flex-grow">
+                      <span>{testimonial.text}</span>
                     </div>
                   </div>
                 ))}

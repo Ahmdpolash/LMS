@@ -6,6 +6,7 @@ import { Star, Users, BookOpen, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Container from "../shared/Container";
+import SectionHeaders from "./SectionHeaders";
 
 interface Course {
   id: number;
@@ -149,23 +150,15 @@ export default function FeaturedCourse() {
     <section className="py-16 border-b border-gray-700 bg-white dark:bg-[#0C111B]">
       <Container>
         <div className="container mx-auto ">
-          <div className="text-center mb-12">
-            <Badge className="bg-[rgb(37,150,190)]/20 text-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/30 px-4 py-1 text-sm mb-4">
-              Learn From The Best
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="bg-gradient-to-r from-[rgb(37,150,190)] to-purple-600 text-transparent bg-clip-text">
-                Popular Courses
-              </span>{" "}
-              <span className="text-gray-900 dark:text-white">
-                to Boost Your Skills
-              </span>
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Explore our top-rated courses designed by industry experts to help
-              you master new skills and advance your career.
-            </p>
-          </div>
+
+        <SectionHeaders
+              badge="Learn From The Best"
+              description=" Explore our top-rated courses designed by industry experts to help
+              you master new skills and advance your career."
+              title1="Popular Courses"
+              title2="to Boost Your Skills"
+            />
+          
 
           {/* Course Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
