@@ -41,7 +41,7 @@ export default function Hero() {
               </Badge>
 
               <TextAnimate
-                className="selection:bg-blue-600 text-3xl md:text-4xl lg:text-6xl font-bold leading-tight text-gray-900 dark:text-white text-balance"
+                className="selection:bg-blue-600 text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-gray-900 dark:text-white "
                 animation="fadeIn"
                 by="line"
                 as="p"
@@ -50,7 +50,7 @@ export default function Hero() {
               </TextAnimate>
 
               <TextAnimate
-                className="text-lg text-gray-700 dark:text-gray-300 max-w-xl text-balance"
+                className="text-lg text-gray-700 dark:text-gray-300 "
                 animation="fadeIn"
                 by="line"
                 as="p"

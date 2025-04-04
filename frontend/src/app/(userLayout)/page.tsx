@@ -1,3 +1,4 @@
+import CTASection from "@/components/home/CtaSection";
 import FaqSection from "@/components/home/FaqSection";
 import FeaturedCourse from "@/components/home/FeaturedCourse";
 import Hero from "@/components/home/Hero";
@@ -9,6 +10,7 @@ export default function Home() {
       <FeaturedCourse />
       <TestimonialsSection />
       <FaqSection />
+      <CTASection />
     </div>
   );
 }
