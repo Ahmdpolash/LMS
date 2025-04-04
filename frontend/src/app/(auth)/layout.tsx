@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Mona_Sans } from "next/font/google";
 import "../globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 const monaSans = Mona_Sans({
   variable: "--font-mona-sans",
@@ -24,14 +26,16 @@ export default function AuthLayout({
         className={`${monaSans.variable}  h-screen flex justify-center  items-center max-w-6xl mx-auto overflow-x-hidden !bg-white bg-no-repeat dark:bg-gradient-to-b dark:from-gray-900 dark:to-black duration-300`}
       >
         <div>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem={false}
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+          <Suspense fallback={<Loading />}>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem={false}
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </Suspense>
         </div>
       </body>
     </html>

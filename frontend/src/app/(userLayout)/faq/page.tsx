@@ -50,7 +50,6 @@ export default function FaqPage() {
   // Get unique categories
   const categories = ["all", ...new Set(faqItems.map((item) => item.category))];
 
-
   const toggleItem = (id: number) => {
     setOpenItem(openItem === id ? null : id);
   };
@@ -186,8 +185,6 @@ export default function FaqPage() {
                 )}
               </div>
             </div>
-
-           
 
             {/* Popular Topics */}
             <div className="mt-16">
