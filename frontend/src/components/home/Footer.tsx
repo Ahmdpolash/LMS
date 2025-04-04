@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Phone, Mail, MapPin, Youtube, Instagram, Github } from "lucide-react";
 import Container from "../shared/Container";
 import { footerData } from "@/constant";
 
@@ -69,13 +68,13 @@ export default function Footer() {
                 {footerData?.contactInfo?.map((item, index) => (
                   <li
                     key={index}
-                    className="flex flex-col lg:flex-row items-center space-x-2"
+                    className="flex flex-col lg:flex-row items-center  space-x-"
                   >
                     <span className="dark:text-gray-300 hover:text-[rgb(37,150,190)] transition-colors text-black">
-                      {item.label} :
+                      {item.label} : 
                     </span>
                     <span className="dark:text-gray-300 hover:text-[rgb(37,150,190)] transition-colors text-black">
-                      {item.value}
+                      {item.value }
                     </span>
                   </li>
                 ))}

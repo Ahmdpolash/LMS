@@ -1,3 +1,4 @@
+import { ICourse } from "@/types";
 import { Github, Instagram, Mail, MapPin, Phone, Youtube } from "lucide-react";
 
 export const NavItem = [
@@ -25,8 +26,8 @@ export const NavItem = [
 
 export const footerData = {
   about: [
-    { name: "Our Story", path: "/our-story" },
-    { name: "Privacy Policy", path: "/privacy-policy" },
+    { name: "Our Story", path: "/about-us" },
+    { name: "Privacy Policy", path: "/policy" },
     { name: "FAQ", path: "/faq" },
   ],
   quickLinks: [
@@ -35,9 +36,17 @@ export const footerData = {
     { name: "Course Dashboard", path: "/course-dashboard" },
   ],
   socialLinks: [
-    { name: "Youtube", path: "https://youtube.com", icon: Youtube },
-    { name: "Instagram", path: "https://instagram.com", icon: Instagram },
-    { name: "Github", path: "https://github.com", icon: Github },
+    {
+      name: "Facebook",
+      path: "https://www.facebook.com/polashahmeddev",
+      icon: Youtube,
+    },
+    {
+      name: "Linkedin",
+      path: "https://www.linkedin.com/in/polashahmed",
+      icon: Instagram,
+    },
+    { name: "Github", path: "https://github.com/Ahmdpolash", icon: Github },
   ],
   contactInfo: [
     { label: "Call Us", value: "+8801756213028", icon: Phone },
@@ -46,7 +55,7 @@ export const footerData = {
       value: "Kurigram,Bangladesh",
       icon: MapPin,
     },
-    { label: "Mail Us", value: "ahmedpolash732@gmail.com", icon: Mail },
+    { label: "Mail", value: "ahmedpolash732@gmail.com", icon: Mail },
   ],
   copyright: "Copyright © 2023 ELearning | All Rights Reserved",
 };
@@ -94,5 +103,96 @@ export const teamMembers = [
     image: "/i3.jpeg",
 
     bio: "Digital marketing strategist who previously led growth at several successful EdTech startups.",
+  },
+];
+
+export const courses: ICourse[] = [
+  {
+    id: 1,
+    title: "Complete Web Development Bootcamp",
+    image: "/c.jpg",
+    rating: 4.8,
+    reviewCount: 2547,
+    originalPrice: 99.99,
+    discountPrice: 84.99,
+    students: 15420,
+    lectures: 142,
+    category: "Web Development",
+    instructor: "Sarah Johnson",
+    level: "All Levels",
+  },
+  {
+    id: 2,
+    title: "Data Science & Machine Learning Fundamentals",
+    image: "/c.jpg",
+    
+    rating: 4.9,
+    reviewCount: 1832,
+    originalPrice: 129.99,
+    discountPrice: 89.99,
+    students: 12350,
+    lectures: 98,
+    category: "Data Science",
+    instructor: "Michael Chen",
+    level: "Intermediate",
+  },
+  {
+    id: 3,
+    title: "UI/UX Design Masterclass",
+    image: "/c.jpg",
+
+    rating: 4.7,
+    reviewCount: 1245,
+    originalPrice: 89.99,
+    discountPrice: 69.99,
+    students: 8750,
+    lectures: 86,
+    category: "Design",
+    instructor: "Emma Rodriguez",
+    level: "Beginner",
+  },
+  {
+    id: 4,
+    title: "Advanced JavaScript: From Fundamentals to Mastery",
+    image: "/c.jpg",
+
+    rating: 4.9,
+    reviewCount: 2103,
+    originalPrice: 109.99,
+    students: 10840,
+    lectures: 124,
+    category: "Programming",
+    instructor: "David Wilson",
+    level: "Advanced",
+  },
+  {
+    id: 5,
+    title: "Digital Marketing Strategy & Social Media",
+    image: "/c.jpg",
+
+    rating: 4.6,
+    reviewCount: 987,
+    originalPrice: 79.99,
+    discountPrice: 59.99,
+    students: 7650,
+    lectures: 78,
+    category: "Marketing",
+    instructor: "Sophia Martinez",
+    level: "All Levels",
+  },
+  {
+    id: 6,
+    title: "Mobile App Development with React Native",
+    image: "/c.jpg",
+
+    rating: 4.8,
+    reviewCount: 1456,
+    originalPrice: 119.99,
+    discountPrice: 94.99,
+    students: 9320,
+    lectures: 112,
+    category: "Mobile Development",
+    instructor: "James Taylor",
+    level: "Intermediate",
   },
 ];

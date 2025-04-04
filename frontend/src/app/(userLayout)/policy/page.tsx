@@ -52,7 +52,7 @@ export default function PolicyPage() {
               onValueChange={setActiveTab}
               className="mb-8"
             >
-              <TabsList className="grid grid-cols-3 mb-8">
+              <TabsList className="grid grid-cols-3 mb-8 ">
                 <TabsTrigger
                   value="privacy"
                   className="data-[state=active]:bg-[rgb(37,150,190)] data-[state=active]:text-white"
