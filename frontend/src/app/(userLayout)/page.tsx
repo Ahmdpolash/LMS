@@ -1,3 +1,4 @@
+import CategorySection from "@/components/home/Category";
 import CTASection from "@/components/home/CtaSection";
 import FaqSection from "@/components/home/FaqSection";
 import FeaturedCourse from "@/components/home/FeaturedCourse";
@@ -7,6 +8,7 @@ export default function Home() {
   return (
     <div>
       <Hero />
+      <CategorySection />
       <FeaturedCourse />
       <TestimonialsSection />
       <FaqSection />

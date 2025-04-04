@@ -147,25 +147,23 @@ export default function FeaturedCourse() {
   };
 
   return (
-    <section className="py-16 border-b border-gray-700 bg-white dark:bg-[#0C111B]">
+    <section className="py-16 border-b border-gray-400 dark:border-gray-700 bg-white dark:bg-[#0C111B]">
       <Container>
         <div className="container mx-auto ">
-
-        <SectionHeaders
-              badge="Learn From The Best"
-              description=" Explore our top-rated courses designed by industry experts to help
+          <SectionHeaders
+            badge="Learn From The Best"
+            description=" Explore our top-rated courses designed by industry experts to help
               you master new skills and advance your career."
-              title1="Popular Courses"
-              title2="to Boost Your Skills"
-            />
-          
+            title1="Popular Courses"
+            title2="to Boost Your Skills"
+          />
 
           {/* Course Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {courses.map((course) => (
               <div
                 key={course.id}
-                className="bg-white dark:bg-[#1a2342] rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-all duration-300 flex flex-col lg:h-[460px]"
+                className="bg-white dark:bg-[#1a2342] rounded-xl overflow-hidden shadow-sm border border-gray-300 dark:border-gray-800 hover:shadow-lg transition-all duration-300 flex flex-col lg:h-[460px]"
                 onMouseEnter={() => setHoveredCard(course.id)}
                 onMouseLeave={() => setHoveredCard(null)}
               >

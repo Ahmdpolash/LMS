@@ -24,7 +24,7 @@ export default function FaqSection() {
   );
 
   return (
-    <div className="border-b border-gray-700">
+    <div className="border-b border-gray-400 dark:border-gray-700">
       <section className="py-16 bg-gradient-to-b from-white to-gray-50 dark:from-[#0C111B] dark:to-[#131c36]">
         <div className="container mx-auto px-4 relative">
           <div className="text-center mb-12">
@@ -58,7 +58,7 @@ export default function FaqSection() {
               filteredFaqs.map((item) => (
                 <div
                   key={item.id}
-                  className=" mb-4 bg-white dark:bg-[#1a2342] rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-all duration-200"
+                  className=" mb-4 bg-white dark:bg-[#1a2342] rounded-xl overflow-hidden shadow-sm border border-gray-400 dark:border-gray-800 hover:shadow-md transition-all duration-200"
                 >
                   <button
                     onClick={() => toggleItem(item.id)}
@@ -75,7 +75,7 @@ export default function FaqSection() {
                         </span>
                         <Badge
                           variant="outline"
-                          className="ml-3 text-xs border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400"
+                          className="ml-3 text-xs border-gray-400 dark:border-gray-700 text-gray-500 dark:text-gray-400"
                         >
                           {item.category}
                         </Badge>

@@ -81,7 +81,7 @@ export default function TestimonialsSection() {
       ));
   };
   return (
-    <div className="border-b border-gray-700">
+    <div className="border-b border-gray-400 dark:border-gray-700">
       <Container>
         <section className="py-16 relative overflow-hidden ">
           {/* Background Elements */}

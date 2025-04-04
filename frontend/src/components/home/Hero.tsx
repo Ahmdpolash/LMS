@@ -19,7 +19,7 @@ import { TextAnimate } from "../magicui/text-animate";
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden py-10 lg:py-0">
+    <section className="relative overflow-hidden py-10 lg:py-0 border-b border-gray-300 dark:border-gray-800">
       {/* Gradient Background */}
       <div className="absolute inset-0 bg-white dark:bg-gradient-to-br dark:from-[#0C111B] dark:via-[#131c36] dark:to-[#0C111B] z-0"></div>
 
@@ -57,7 +57,7 @@ export default function Hero() {
               >
                 {` Join our community of 500K+ learners and access 20K+ courses\n\n taught by industry experts. Start your learning journey today.`}
               </TextAnimate>
-           
+
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href={"/sign-in"}>
                   <Button className="bg-[rgb(37,150,190)] cursor-pointer hover:bg-[rgb(37,150,190)]/80 text-white px-8 py-6 text-[17px] font-medium rounded-lg group transition-all duration-300 hover:shadow-lg hover:shadow-[rgb(37,150,190)]/20">
