@@ -106,7 +106,7 @@ export default function NotFound() {
                   Courses
                 </Link>
                 <Link
-                  href="/about"
+                  href="/about-us"
                   className="px-4 py-2 bg-gray-100 dark:bg-[#1a2342] rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#243050] transition-colors"
                 >
                   About Us
