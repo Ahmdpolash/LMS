@@ -178,9 +178,7 @@ body::-webkit-scrollbar-thumb {
   ul {
     @apply list-disc list-inside;
   }
-  li {
-    @apply text-light-100;
-  }
+
 }
 
 @layer components {

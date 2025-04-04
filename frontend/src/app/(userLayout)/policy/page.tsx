@@ -21,7 +21,7 @@ export default function PolicyPage() {
     <div className="min-h-screen font-poppins">
       <div className="bg-whit transition-colors duration-200">
         {/* Header */}
-        <div className="bg-gradient-to-r from-[#151f38] to-[#1a2342] py-16 relative overflow-hidden">
+        <div className="dark:g-gradient-to-r from-[#151f38] to-[#1a2342] py-16 relative overflow-hidden border-b border-gray-400 dark:border-gray-800">
           {/* Decorative elements */}
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
             <div className="absolute top-10 left-10 w-64 h-64 bg-[rgb(37,150,190)]/10 rounded-full blur-3xl"></div>
@@ -33,10 +33,10 @@ export default function PolicyPage() {
               <Badge className="bg-[rgb(37,150,190)]/20 text-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/30 px-4 py-1 text-sm mb-4">
                 Our Policies
               </Badge>
-              <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
+              <h1 className="text-3xl md:text-5xl font-bold text-slate-800 dark:text-white mb-4">
                 Privacy & Terms
               </h1>
-              <p className="text-gray-300 text-lg">
+              <p className="text-slate-800 dark:text-gray-300 text-lg">
                 We're committed to protecting your data and providing a
                 transparent learning experience.
               </p>
@@ -117,7 +117,7 @@ export default function PolicyPage() {
                   <p className="text-gray-700 dark:text-gray-300 mb-4">
                     We use the information we collect to:
                   </p>
-                  <ul className="list-disc pl-6 mb-4 text-gray-700 dark:text-gray-300">
+                  <ul className="list-disc pl-6 mb-4 text-slate-800 dark:text-gray-300">
                     <li>Provide, maintain, and improve our services</li>
                     <li>Process transactions and send related information</li>
                     <li>
