@@ -315,7 +315,7 @@ export default function CoursesPage() {
     <div className="min-h-screen font-poppins">
       <div className="bg-white dark:bg-[#0C111B] min-h-screen transition-colors duration-200">
         {/* Header */}
-        <div className="bg-gradient-to-r from-[#151f38] to-[#1a2342] py-16 relative overflow-hidden">
+        <div className="dark:bg-gradient-to-r from-[#151f38] to-[#1a2342] py-16 relative overflow-hidden border-b border-gray-400 dark:border-gray-600">
           {/* Decorative elements */}
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
             <div className="absolute top-10 left-10 w-64 h-64 bg-[rgb(37,150,190)]/10 rounded-full blur-3xl"></div>
@@ -327,10 +327,10 @@ export default function CoursesPage() {
               <Badge className="bg-[rgb(37,150,190)]/20 text-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/30 px-4 py-1 text-sm mb-4">
                 Expand Your Skills
               </Badge>
-              <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
+              <h1 className="text-3xl md:text-5xl font-bold text-slate-800 dark:text-white mb-4">
                 Explore Our Courses
               </h1>
-              <p className="text-gray-300 text-lg mb-8">
+              <p className="text-slate-800 dark:text-gray-300 text-lg mb-8">
                 Discover courses taught by industry experts and take your skills
                 to the next level
               </p>
@@ -413,7 +413,7 @@ export default function CoursesPage() {
               <div className="flex items-center">
                 <SlidersHorizontal className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
                 <select
-                  className="bg-transparent border-none text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-0"
+                  className="bg-transparent border-none text-slate-700 dark:text-slate-300 dark:*:text-black focus:outline-none focus:ring-0"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                 >
@@ -572,7 +572,7 @@ export default function CoursesPage() {
                     {/* Course Image */}
                     <div className="relative overflow-hidden">
                       <Image
-                        src={course.image }
+                        src={course.image}
                         alt={course.title}
                         width={350}
                         height={200}

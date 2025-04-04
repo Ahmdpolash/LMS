@@ -125,7 +125,7 @@ export const courses: ICourse[] = [
     id: 2,
     title: "Data Science & Machine Learning Fundamentals",
     image: "/c.jpg",
-    
+
     rating: 4.9,
     reviewCount: 1832,
     originalPrice: 129.99,
