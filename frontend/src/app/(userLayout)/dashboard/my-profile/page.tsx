@@ -1,6 +1,15 @@
-import { Pencil, SquarePen } from "lucide-react";
+"use client";
+
+import { CreditCard, Mail, Smartphone, SquarePen, User } from "lucide-react";
+import { useState } from "react";
 
 export default function ProfilePage() {
+  const [open, setOpen] = useState(false);
+
+  const toggleOpen = () => {
+    setOpen(!open);
+  };
+
   return (
     <div className=" text-white p-4 bg-gray-300/50 dark:bg-[#151d33] shadow-md dark:shadow-xl border border-slate-400 dark:border-slate-700 rounded-lg">
       <div className="space-y-6">
@@ -9,47 +18,108 @@ export default function ProfilePage() {
           <h1 className="text-xl md:text-2xl font-medium bg-gradient-to-r from-[rgb(37,150,190)] to-purple-600 text-transparent bg-clip-text">
             My Profile
           </h1>
-          <button className="cursor-pointer text-black dark:text-white p-2 rounded-md hover:bg-purple-900/30 transition-colors">
+          <button
+            onClick={toggleOpen}
+            className="cursor-pointer text-black dark:text-white p-2 rounded-md hover:bg-purple-900/30 transition-colors"
+          >
             <SquarePen className="w-5 h-5" />
           </button>
         </div>
 
-        {/* <div className="h-px  bg-gray-700/50" /> */}
+        {/* Edit Profile Modal */}
 
         {/* User Information Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <p className="text-slate-800 dark:text-gray-400 text-sm">
-              Full Name
-            </p>
-            <p className="text-slate-800 dark:text-white text-lg">
-              Polash Ahmed
-            </p>
-          </div>
 
-          <div className="space-y-2">
-            <p className="text-slate-800 darak:text-gray-400 text-sm">Email</p>
-            <p className="text-slate-800 dark:text-white text-lg">
-              ahmedpolash732@gmail.com
-            </p>
-          </div>
+        {!open ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <p className="text-slate-800 dark:text-gray-400 text-sm">
+                Full Name
+              </p>
+              <p className="text-slate-800 dark:text-white text-lg">
+                Polash Ahmed
+              </p>
+            </div>
 
-          <div className="space-y-2">
-            <p className="text-slate-800 dark:text-gray-400 text-sm">
-              Student ID
-            </p>
-            <p className="text-slate-800 dark:text-white text-lg">WEB8-1292</p>
-          </div>
+            <div className="space-y-2">
+              <p className="text-slate-800 dark:text-gray-400 text-sm">Email</p>
+              <p className="text-slate-800 dark:text-white text-lg">
+                ahmedpolash732@gmail.com
+              </p>
+            </div>
 
-          <div className="space-y-2">
-            <p className="text-slate-800 dark:text-gray-400 text-sm">
-              Mobile Number
-            </p>
-            <p className="text-slate-800 dark:text-white text-lg">
-              +8801756213028
-            </p>
+            <div className="space-y-2">
+              <p className="text-slate-800 dark:text-gray-400 text-sm">
+                Student ID
+              </p>
+              <p className="text-slate-800 dark:text-white text-lg">
+                WEB8-1292
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-slate-800 dark:text-gray-400 text-sm">
+                Mobile Number
+              </p>
+              <p className="text-slate-800 dark:text-white text-lg">
+                +8801756213028
+              </p>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-gray-400">
+                <User className="w-5 h-5" />
+                <p className="text-black dark:text-white text-s">Full Name</p>
+              </div>
+              <input
+                type="text"
+                className="w-full bg-gray-300 dark:bg-slate-800 rounded-md border border-dashed border-purple-500 p-2 text-black dark:text-white "
+
+              />
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-gray-400">
+                <Mail className="w-5 h-5" />
+                <p className="text-black dark:text-white text-s">Email</p>
+              </div>
+              <input
+                type="email"
+                className="w-full bg-gray-300 dark:bg-slate-800 rounded-md border border-dashed border-purple-500 p-2 text-black dark:text-white placeholder:text-slate-800 placeholder:dark:text-gray-400"
+
+              />
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-gray-400">
+                <CreditCard className="w-5 h-5" />
+                <p className="text-black dark:text-white text-s">Student ID </p>
+              </div>
+              <input
+                type="text"
+                placeholder="N/A"
+                disabled
+                className="w-full bg-gray-300 dark:bg-slate-800 rounded-md border border-dashed border-purple-500 p-2 text-black dark:text-white cursor-no-drop"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-gray-400">
+                <Smartphone className="w-5 h-5" />
+                <p className="text-black dark:text-white text-s">
+                  Mobile Number
+                </p>
+              </div>
+              <input
+                type="text"
+                className="w-full bg-gray-300 dark:bg-slate-800 rounded-md border border-dashed border-purple-500 p-2 text-black dark:text-white "
+
+              />
+            </div>
+          </div>
+        )}
 
         {/* Device Activity Section */}
         <div className="pt-4">
