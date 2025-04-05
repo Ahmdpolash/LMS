@@ -34,7 +34,7 @@ body::-webkit-scrollbar-thumb {
   --color-light-400: #6870a6;
   --color-light-600: #4f557d;
   --color-light-800: #24273a;
-
+  --darkPurple: #0e0a14;
   --color-dark-100: #020408;
   --color-dark-200: #27282f;
   --color-dark-300: #242633;
@@ -78,6 +78,8 @@ body::-webkit-scrollbar-thumb {
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  --darkPurple: #0e0a14;
 }
 
 .dark {
@@ -150,8 +152,6 @@ body::-webkit-scrollbar-thumb {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-
-  
 }
 
 .text-stroke {
@@ -178,7 +178,6 @@ body::-webkit-scrollbar-thumb {
   ul {
     @apply list-disc list-inside;
   }
-
 }
 
 @layer components {

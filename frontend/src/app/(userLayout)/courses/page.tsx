@@ -28,7 +28,7 @@ interface Course {
   rating: number;
   reviewCount: number;
   originalPrice: number;
-  discountPrice?: number; 
+  discountPrice?: number;
   students: number;
   lectures: number;
   category: string;
@@ -578,7 +578,7 @@ export default function CoursesPage() {
                 {courses.map((course) => (
                   <motion.div
                     key={course.id}
-                    className="bg-white dark:bg-[#1a2342] rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-all duration-300 flex flex-col h-[500px]"
+                    className="bg-white dark:bg-[#1a2342] rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-all duration-300 flex flex-col lg:h-[440px]"
                   >
                     {/* Course Image */}
                     <div className="relative overflow-hidden">
@@ -619,9 +619,9 @@ export default function CoursesPage() {
                       </p>
 
                       {/* Description */}
-                      <p className="text-gray-700 dark:text-gray-300 text-sm mb-4 line-clamp-2">
+                      {/* <p className="text-gray-700 dark:text-gray-300 text-sm mb-4 line-clamp-2">
                         {course.lectures}
-                      </p>
+                      </p> */}
 
                       {/* Rating */}
                       <div className="flex items-center mb-4">

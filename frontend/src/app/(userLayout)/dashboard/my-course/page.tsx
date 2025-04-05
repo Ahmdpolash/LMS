@@ -1,11 +1,11 @@
-import React from 'react';
+import MyCourses from "../../_components/dashboard/MyCourse";
 
 const page = () => {
-    return (
-        <div>
-            my course
-        </div>
-    );
+  return (
+    <div>
+      <MyCourses />
+    </div>
+  );
 };
 
 export default page;

@@ -123,7 +123,7 @@ export const courses: ICourse[] = [
   },
   {
     id: 2,
-    title: "Data Science & Machine Learning Fundamentals",
+    title: "Data Science & Machine Learning",
     image: "/c.jpg",
 
     rating: 4.9,
