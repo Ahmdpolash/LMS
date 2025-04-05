@@ -7,7 +7,7 @@ import { Shield, Check } from "lucide-react";
 import Link from "next/link";
 
 export default function Otp() {
-  const [otp, setOtp] = useState(null);
+  // const [otp, setOtp] = useState(null);
 
   const handleVerify = () => {
     // Handle verification logic here

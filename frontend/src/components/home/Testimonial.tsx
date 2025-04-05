@@ -1,30 +1,10 @@
 import Image from "next/image";
-import {
-  Star,
-  ChevronLeft,
-  ChevronRight,
-  Quote,
-  ArrowRight,
-} from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Star, Quote, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
 import Container from "../shared/Container";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import SectionHeaders from "./SectionHeaders";
-import Marquee from "react-fast-marquee";
 
-interface Testimonial {
-  id: number;
-  name: string;
-  role: string;
-  organization: string;
-  company: string;
-  image: string;
-  rating: number;
-  text: string;
-  course: string;
-}
+
 
 export default function TestimonialsSection() {
   const testimonials: any[] = [
@@ -69,8 +49,8 @@ export default function TestimonialsSection() {
     },
   ];
 
-  const firstRow = testimonials.slice(0, testimonials.length / 2);
-  const secondRow = testimonials.slice(testimonials.length / 2);
+  // const firstRow = testimonials.slice(0, testimonials.length / 2);
+  // const secondRow = testimonials.slice(testimonials.length / 2);
 
   // Function to render stars
   const renderStars = (count = 5) => {

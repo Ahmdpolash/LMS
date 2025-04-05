@@ -1,7 +1,6 @@
 import { JSX } from "react";
 import {
-  ChevronDown,
-  Search,
+ 
   HelpCircle,
   MessageCircle,
   BookOpen,

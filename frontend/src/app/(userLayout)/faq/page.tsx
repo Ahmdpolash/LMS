@@ -2,37 +2,24 @@
 
 import type React from "react";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
+import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ChevronDown,
   Search,
   HelpCircle,
-  MessageCircle,
   BookOpen,
-  Award,
-  Clock,
   Users,
-  ArrowRight,
   PlusIcon,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { faqItems } from "@/constant/faqData";
 import Container from "@/components/shared/Container";
 
-interface FaqItem {
-  id: number;
-  question: string;
-  answer: string;
-  icon: React.ReactNode;
-  category: string;
-}
+
 
 export default function FaqPage() {
   const [openItem, setOpenItem] = useState<number | null>(null);

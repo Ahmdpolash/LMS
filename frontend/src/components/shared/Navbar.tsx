@@ -53,7 +53,7 @@ export default function Navbar() {
               href="/"
               className="text-2xl font-bold text-gray-900 dark:text-white"
             >
-              NextAcademy
+              ELearning
             </Link>
 
             {/* Desktop Navigation Links */}

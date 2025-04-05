@@ -6,7 +6,6 @@ import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import Image from "next/image";
 
 import FormField from "./FormField";
 import Link from "next/link";
@@ -51,8 +50,8 @@ const AuthForm = ({ type }: { type: FormType }) => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       if (type === "sign-up") {
-        const { name, email, password } = values;
-
+        // const { name, email, password } = values;
+        
         toast.success("Account created successfully. Please sign in.");
         router.push("/sign-in");
       } else {

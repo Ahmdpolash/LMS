@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
@@ -41,7 +40,7 @@ export default function AboutPage() {
                   Transforming Education for the Digital Age
                 </h1>
                 <p className="text-slate-700 dark:text-gray-300 text-lg mb-8">
-                  We're on a mission to make quality education accessible to
+                  Were on a mission to make quality education accessible to
                   everyone, everywhere. Our platform connects learners with
                   expert instructors and cutting-edge courses.
                 </p>
@@ -149,11 +148,11 @@ export default function AboutPage() {
                 <div className="relative">
                   <div className="absolute -z-10 w-64 h-64 bg-[rgb(37,150,190)]/20 rounded-full blur-3xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
                   <Image
-                    src={"/h1.png"}
+                    src={"/f.png"}
                     alt="Students learning online"
-                    width={600}
+                    width={500}
                     height={500}
-                    className="rounded-lg shadow-lg"
+                    className="rounded-lg w-full shadow-lg"
                   />
                 </div>
               </div>
@@ -185,7 +184,7 @@ export default function AboutPage() {
                     Excellence
                   </h3>
                   <p className="text-gray-700 dark:text-gray-300">
-                    We're committed to delivering the highest quality
+                    Were committed to delivering the highest quality
                     educational content and experiences. Our rigorous standards
                     ensure that every course meets our benchmarks for accuracy,
                     engagement, and effectiveness.

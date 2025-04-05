@@ -1,13 +1,4 @@
-import {
-  Search,
-  BookOpen,
-  Award,
-  Users,
-  ArrowRight,
-  GraduationCap,
-  PlayCircle,
-  BookMarked,
-} from "lucide-react";
+import { ArrowRight, BookMarked } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Container from "../shared/Container";
