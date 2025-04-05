@@ -31,6 +31,8 @@ export default function Navbar() {
     setOpen(!open);
   };
 
+  let user = true
+
   return (
     <header
       className={`sticky pt-4 left-0 w-full h-[70px] z-[80] border-b dark: border-[#ffffff1c] dark:shadow-xl  duration-500 top-0 transition-all duration-300 ${
@@ -65,6 +67,7 @@ export default function Navbar() {
               theme={theme}
               toggleMenu={toggleMenu}
               open={open}
+              user={user}
             />
           </div>
         </Container>

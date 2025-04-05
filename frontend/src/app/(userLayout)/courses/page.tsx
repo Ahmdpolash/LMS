@@ -19,7 +19,8 @@ import {
 } from "lucide-react";
 import Container from "@/components/shared/Container";
 import { courses } from "@/constant";
-
+import { BlurFade } from "@/components/magicui/blur-fade";
+import { motion } from "framer-motion";
 interface Course {
   id: number;
   title: string;
@@ -323,7 +324,12 @@ export default function CoursesPage() {
           </div>
 
           <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-3xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="max-w-3xl mx-auto text-center"
+            >
               <Badge className="bg-[rgb(37,150,190)]/20 text-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/30 px-4 py-1 text-sm mb-4">
                 Expand Your Skills
               </Badge>
@@ -346,7 +352,7 @@ export default function CoursesPage() {
                 />
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
 
@@ -563,21 +569,32 @@ export default function CoursesPage() {
 
             {/* Course Grid */}
             {courses.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <motion.div
+                initial={{ opacity: 0, x: -40 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5 }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              >
                 {courses.map((course) => (
-                  <div
+                  <motion.div
                     key={course.id}
                     className="bg-white dark:bg-[#1a2342] rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-all duration-300 flex flex-col h-[500px]"
                   >
                     {/* Course Image */}
                     <div className="relative overflow-hidden">
-                      <Image
-                        src={course.image}
-                        alt={course.title}
-                        width={350}
-                        height={200}
-                        className="w-full h-48 object-cover transition-transform duration-500 hover:scale-105"
-                      />
+                      <BlurFade
+                        key={course.image}
+                        delay={0.25 + 1 * 0.05}
+                        inView
+                      >
+                        <Image
+                          src={course.image}
+                          alt={course.title}
+                          width={350}
+                          height={200}
+                          className="w-full h-48 object-cover transition-transform duration-500 hover:scale-105"
+                        />
+                      </BlurFade>
                       <div className="absolute top-3 left-3">
                         <Badge className="bg-[rgb(37,150,190)] text-white">
                           {course.category}
@@ -660,9 +677,9 @@ export default function CoursesPage() {
                         </Button>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             ) : (
               <div className="text-center py-16">
                 <div className="bg-gray-100 dark:bg-[#1a2342]/50 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">

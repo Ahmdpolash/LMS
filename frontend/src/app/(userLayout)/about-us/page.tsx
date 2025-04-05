@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import Container from "@/components/shared/Container";
 import { teamMembers } from "@/constant";
+import { motion } from "framer-motion";
 
 export default function AboutPage() {
   // Team members data
@@ -32,7 +33,12 @@ export default function AboutPage() {
             </div>
 
             <div className="container mx-auto px-4 relative z-10">
-              <div className="max-w-3xl mx-auto text-center">
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                className="max-w-3xl mx-auto text-center"
+              >
                 <Badge className="bg-[rgb(37,150,190)]/20 text-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/30 px-4 py-1 text-sm mb-4">
                   Our Story
                 </Badge>
@@ -62,14 +68,14 @@ export default function AboutPage() {
                     <Link href="#team">Meet Our Team</Link>
                   </Button>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </section>
 
           {/* Our Mission Section */}
           <section className="py-9 md:py-12 lg:py-16 relative overflow-hidden border-b border-gray-200 dark:border-gray-700">
             <div className="container mx-auto px-4">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 justify-between items-center">
                 <div>
                   <Badge className="bg-[rgb(37,150,190)]/20 text-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/30 px-4 py-1 text-sm mb-4">
                     Our Mission
@@ -148,11 +154,11 @@ export default function AboutPage() {
                 <div className="relative">
                   <div className="absolute -z-10 w-64 h-64 bg-[rgb(37,150,190)]/20 rounded-full blur-3xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
                   <Image
-                    src={"/f.png"}
+                    src={"/fff.png"}
                     alt="Students learning online"
-                    width={500}
-                    height={500}
-                    className="rounded-lg w-full shadow-lg"
+                    width={700}
+                    height={400}
+                    className="rounded-lg w-[500px] shadow-lg"
                   />
                 </div>
               </div>
@@ -184,10 +190,10 @@ export default function AboutPage() {
                     Excellence
                   </h3>
                   <p className="text-gray-700 dark:text-gray-300">
-                    Were committed to delivering the highest quality
-                    educational content and experiences. Our rigorous standards
-                    ensure that every course meets our benchmarks for accuracy,
-                    engagement, and effectiveness.
+                    Were committed to delivering the highest quality educational
+                    content and experiences. Our rigorous standards ensure that
+                    every course meets our benchmarks for accuracy, engagement,
+                    and effectiveness.
                   </p>
                 </div>
 
@@ -243,10 +249,28 @@ export default function AboutPage() {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <motion.div
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.4 }}
+                variants={{
+                  hidden: {},
+                  show: {
+                    transition: {
+                      staggerChildren: 0.2,
+                    },
+                  },
+                }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+              >
                 {teamMembers.map((member, index) => (
-                  <div
+                  <motion.div
                     key={index}
+                    variants={{
+                      hidden: { opacity: 0, y: 30 },
+                      show: { opacity: 1, y: 0 },
+                    }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
                     className="bg-white dark:bg-[#1a2342] rounded-lg overflow-hidden shadow-sm border border-gray-100 dark:border-gray-800 transition-all duration-300 hover:shadow-md"
                   >
                     <Image
@@ -267,9 +291,9 @@ export default function AboutPage() {
                         {member.bio}
                       </p>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
 
               <div className="text-center mt-12">
                 <Link

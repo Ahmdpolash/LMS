@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import Container from "../shared/Container";
 import SectionHeaders from "./SectionHeaders";
 import { courses } from "@/constant";
-
+import { motion } from "framer-motion";
 export default function FeaturedCourse() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
@@ -59,9 +59,14 @@ export default function FeaturedCourse() {
           />
 
           {/* Course Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
             {courses.map((course) => (
-              <div
+              <motion.div
                 key={course.id}
                 className="bg-white dark:bg-[#1a2342] rounded-xl overflow-hidden shadow-sm border border-gray-300 dark:border-gray-800 hover:shadow-lg transition-all duration-300 flex flex-col lg:h-[460px]"
                 onMouseEnter={() => setHoveredCard(course.id)}
@@ -157,9 +162,9 @@ export default function FeaturedCourse() {
                     </Button>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* View All Button */}
           <div className="mt-12 text-center ">
