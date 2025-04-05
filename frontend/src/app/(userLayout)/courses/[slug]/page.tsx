@@ -1,15 +1,10 @@
-
-
+import CourseDetails from "@/app/_components/pages/CourseDetails";
 import Container from "@/components/shared/Container";
 
 const page = () => {
-
-
   return (
     <Container>
-      <h1>
-        <details></details>
-      </h1>
+      <CourseDetails />
     </Container>
   );
 };

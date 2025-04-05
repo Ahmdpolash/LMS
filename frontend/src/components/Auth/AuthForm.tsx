@@ -72,8 +72,8 @@ const AuthForm = ({ type }: { type: FormType }) => {
   return (
     <div className="grid place-items-center h-full mx-auto w-full lg:max-w-6xl  ">
       <Container>
-        <div className="card-borde  w-full  lg:min-w-[500px] px-5">
-          <div className="flex flex-col gap-6 card py-4 lg:py-7 px-5 lg:px-7">
+        <div className="  w-full  lg:min-w-[500px] px-5">
+          <div className="border border-blue-300/50 flex flex-col gap-6 card py-4 lg:py-7 px-5 lg:px-7">
             <div className="flex flex-row gap- justify-cente">
               {/* <Image src="/logo.svg" alt="logo" height={32} width={38} /> */}
               <h2 className="text-primary-100 text-balance">E-Learning</h2>
