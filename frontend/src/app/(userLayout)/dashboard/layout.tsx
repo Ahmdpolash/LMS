@@ -88,8 +88,8 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
         {/* desktop sidebar */}
 
         <Container>
-          <div className="flex gap-5 lg:my-20 py-4">
-            <div className="hidden bg-gray-300/50 dark:bg-[#151d33] shadow-md dark:shadow-xl border border-slate-300 dark:border-slate-700 rounded-lg lg:block h-[52vh] z-40 w-[270px] ">
+          <div className="flex gap-4 lg:gap-7 lg:my-20 py-4">
+            <div className="hidden bg-gray-300/50 dark:bg-[#151d33] shadow-md dark:shadow-xl border border-slate-300 dark:border-slate-700 rounded-lg lg:block h-[65vh] z-40 w-[270px] ">
               <div className="">
                 <ul className="py-2 text-black dark:text-white  space-y-2">
                   {finalSidebarItems.map((route, idx) => (
