@@ -25,12 +25,12 @@ const sidebarRoutes = {
     },
     {
       title: "Enrolled Courses",
-      path: "/courses",
+      path: "/dashboard/my-course",
       icon: Book,
     },
     {
       title: "Change Password",
-      path: "/change-password",
+      path: "/dashboard/change-password",
       icon: Lock,
     },
   ],

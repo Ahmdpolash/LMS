@@ -13,7 +13,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className=" text-white p-4 bg-gray-300/50 dark:bg-[#151d33] shadow-md dark:shadow-xl border border-slate-400 dark:border-slate-700 rounded-lg">
+    <div className=" text-white p-4 bg-gray-300/50 dark:bg-[#151d33] shadow-md dark:shadow-xl border border-slate-400 dark:border-slate-700 rounded-lg lg:h-[65vh]" >
       <div className="space-y-6">
         {/* Header Section */}
         <div className="flex justify-between items-center border-b border-dashed border-gray-400 dark:border-gray-600 pb-4">

@@ -34,7 +34,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
       <div className="  ">
         <div
           onClick={() => setOpen(!open)}
-          className="ml-5 px-3 mt-2 text-white rounded-md bg-indigo-500 inline-block lg:hidden py-2 "
+          className="ml-5 px-3 mt-2 text-white rounded-md bg-indigo-500 inline-block lg:hidden py-2 cursor-pointer "
         >
           <List className="text-xl mt-" />
         </div>
@@ -44,45 +44,33 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
         <div
           className={`${
             open ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
-          } lg:hidden transition-all duration-500 fixed  z-[99999] border border-gray-200 shadow-lg backdrop-blur-sm transform h-full sm-device w-[320px] md:w-[390px] bg-white text-black top-0  left-0`}
+          } lg:hidden transition-all duration-500 fixed  z-[99999] border-r border-gray-600 shadow-lg backdrop-blur-sm transform h-full sm-device w-[320px] md:w-[390px] bg-white text-black top-0  left-0 dark:bg-[#0F1729]`}
         >
-          <div className="logo border-b py-1 border-slate-300">
-            {/* <Link href="/">
-              <Image
-                className="w-[160px] md:w-[180px] mx-auto "
-                src={logo}
-                alt=""
-              />
-            </Link> */}
-            logo
+          <div className="logo border-b py-4 border-slate-300 text-black dark:text-white pl-3 text-lg">
+            Elearning
           </div>
-          <ul className="py-2 text-slate-600 px-4">
-            <li className="flex justify-start items-center gap-2 py-2">
-              <span className="text-xl">
-                <LayoutDashboard />
-              </span>
-              <Link href="/dashboard/my-dashboard" className="block">
-                Dashboard
-              </Link>
-            </li>
+          <ul className="py-2 text-black dark:text-white  space-y-2">
+            {finalSidebarItems.map((route, idx) => (
+              <li
+                key={idx}
+                className={` cursor-pointer flex justify-start items-center gap-2 py-2 px-4 hover:dark:bg-[#1e2a78] hover:bg-gray-200 rounded-r-sm transition-all duration-300 ${
+                  pathname === route.path
+                    ? "bg-gray-300/50 dark:bg-[#1e2a78]"
+                    : ""
+                }`}
+              >
+                <route.icon className="w-5 h-5" />
+                <Link href={route.path} className="block">
+                  {route.title}
+                </Link>
+              </li>
+            ))}
 
-            <li className="flex justify-start items-center gap-2 py-2">
-              <span className="text-2xl">
-                <Home />
-              </span>
-              <Link href="/dashboard/notifications" className="block">
-                Notification
-              </Link>
+            <li className=" cursor-pointer flex justify-start items-center gap-2 py-2 px-4 hover:dark:bg-[#1e2a78] hover:bg-gray-200 rounded-r-sm transition-all duration-300">
+              <LogOutIcon className="w-5 h-5" />
+              <span className="block">Log Out</span>
             </li>
           </ul>
-          {/* close btn */}
-          <button
-            className="h-[27px] w-[27px] text-[#FE2424] py-1  text-[16px]  shadow-md border border-red-500 rounded-full font-semibold flex absolute top-0 right-2 mt-2"
-            onClick={() => setOpen(false)}
-          >
-            <Cross className="ml-[5px] mt-[1.2px]" />
-          </button>
-          {/* close btn */}
         </div>
 
         {/* desktop sidebar */}
@@ -120,7 +108,6 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
           </div>
         </Container>
       </div>
-      
     </div>
   );
 };

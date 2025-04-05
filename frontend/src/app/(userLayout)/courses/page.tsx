@@ -28,7 +28,7 @@ interface Course {
   rating: number;
   reviewCount: number;
   originalPrice: number;
-  discountPrice?: number;
+  discountPrice?: number; 
   students: number;
   lectures: number;
   category: string;

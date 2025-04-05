@@ -16,12 +16,11 @@ const ThemeTogglerAndUserBtn = ({
 
   const [openDropdown, setOpenDropdown] = useState(false);
   const dropDownRef = useRef(null);
-  const items = ["My Course", "Dashboard", "Log Out"];
 
   const it = [
     {
       name: "My Course ",
-      path: "/my-course ",
+      path: "/dashboard/my-course ",
     },
     {
       name: "Dashboard",
