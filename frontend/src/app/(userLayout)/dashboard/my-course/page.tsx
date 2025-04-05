@@ -1,4 +1,5 @@
-import MyCourses from "../../_components/dashboard/MyCourse";
+import MyCourses from "@/app/_components/dashboard/MyCourse";
+
 
 const page = () => {
   return (

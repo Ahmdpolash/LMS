@@ -23,7 +23,7 @@ export default function AuthLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${monaSans.variable}  h-screen flex justify-center  items-center max-w-6xl mx-auto overflow-x-hidden !bg-white bg-no-repeat dark:bg-gradient-to-b dark:from-gray-900 dark:to-black duration-300`}
+        className={`${monaSans.variable}  !bg-white bg-no-repeat dark:bg-gradient-to-b dark:from-gray-900 dark:to-black duration-300`}
       >
         <div>
           <Suspense fallback={<Loading />}>

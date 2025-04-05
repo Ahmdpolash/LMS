@@ -210,7 +210,7 @@ body::-webkit-scrollbar-thumb {
   }
 
   .card {
-    @apply dark-gradient  rounded-2xl min-h-full;
+    @apply dark-gradient  rounded-2xl;
   }
 }
 

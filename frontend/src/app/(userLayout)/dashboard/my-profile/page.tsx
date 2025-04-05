@@ -2,8 +2,8 @@
 
 import {  SquarePen } from "lucide-react";
 import { useState } from "react";
-import UpdateMyProfileForm from "../../_components/dashboard/UpdateMyProfileForm";
-import MyProfile from "../../_components/dashboard/MyProfile";
+import UpdateMyProfileForm from "../../../_components/dashboard/UpdateMyProfileForm";
+import MyProfile from "../../../_components/dashboard/MyProfile";
 
 export default function ProfilePage() {
   const [open, setOpen] = useState(false);
