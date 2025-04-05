@@ -1,7 +1,9 @@
 "use client";
 
-import { CreditCard, Mail, Smartphone, SquarePen, User } from "lucide-react";
+import {  SquarePen } from "lucide-react";
 import { useState } from "react";
+import UpdateMyProfileForm from "../../_components/dashboard/UpdateMyProfileForm";
+import MyProfile from "../../_components/dashboard/MyProfile";
 
 export default function ProfilePage() {
   const [open, setOpen] = useState(false);
@@ -30,96 +32,7 @@ export default function ProfilePage() {
 
         {/* User Information Section */}
 
-        {!open ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <p className="text-slate-800 dark:text-gray-400 text-sm">
-                Full Name
-              </p>
-              <p className="text-slate-800 dark:text-white text-lg">
-                Polash Ahmed
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-slate-800 dark:text-gray-400 text-sm">Email</p>
-              <p className="text-slate-800 dark:text-white text-lg">
-                ahmedpolash732@gmail.com
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-slate-800 dark:text-gray-400 text-sm">
-                Student ID
-              </p>
-              <p className="text-slate-800 dark:text-white text-lg">
-                WEB8-1292
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-slate-800 dark:text-gray-400 text-sm">
-                Mobile Number
-              </p>
-              <p className="text-slate-800 dark:text-white text-lg">
-                +8801756213028
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-gray-400">
-                <User className="w-5 h-5" />
-                <p className="text-black dark:text-white text-s">Full Name</p>
-              </div>
-              <input
-                type="text"
-                className="w-full bg-gray-300 dark:bg-slate-800 rounded-md border border-dashed border-purple-500 p-2 text-black dark:text-white "
-
-              />
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-gray-400">
-                <Mail className="w-5 h-5" />
-                <p className="text-black dark:text-white text-s">Email</p>
-              </div>
-              <input
-                type="email"
-                className="w-full bg-gray-300 dark:bg-slate-800 rounded-md border border-dashed border-purple-500 p-2 text-black dark:text-white placeholder:text-slate-800 placeholder:dark:text-gray-400"
-
-              />
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-gray-400">
-                <CreditCard className="w-5 h-5" />
-                <p className="text-black dark:text-white text-s">Student ID </p>
-              </div>
-              <input
-                type="text"
-                placeholder="N/A"
-                disabled
-                className="w-full bg-gray-300 dark:bg-slate-800 rounded-md border border-dashed border-purple-500 p-2 text-black dark:text-white cursor-no-drop"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-gray-400">
-                <Smartphone className="w-5 h-5" />
-                <p className="text-black dark:text-white text-s">
-                  Mobile Number
-                </p>
-              </div>
-              <input
-                type="text"
-                className="w-full bg-gray-300 dark:bg-slate-800 rounded-md border border-dashed border-purple-500 p-2 text-black dark:text-white "
-
-              />
-            </div>
-          </div>
-        )}
+        {!open ? <MyProfile /> : <UpdateMyProfileForm />}
 
         {/* Device Activity Section */}
         <div className="pt-4">
