@@ -1,21 +1,17 @@
 "use client";
+
 import React, { ReactNode, useState } from "react";
 
-import {
-  Cross,
-  Home,
-  LayoutDashboard,
-  LayoutDashboardIcon,
-  List,
-  LogOutIcon,
-} from "lucide-react";
+import { Cross, Home, LayoutDashboard, List, LogOutIcon } from "lucide-react";
 import Link from "next/link";
 import Container from "@/components/shared/Container";
 import sidebarRoutes from "@/constant/sidebar-routes";
+import { usePathname } from "next/navigation";
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(false);
   const role: string = "user";
+  const pathname = usePathname();
 
   const finalSidebarItems =
     role === "admin"
@@ -99,7 +95,11 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
                   {finalSidebarItems.map((route, idx) => (
                     <li
                       key={idx}
-                      className=" cursor-pointer flex justify-start items-center gap-2 py-2 px-4 hover:dark:bg-[#1e2a78] hover:bg-gray-200 rounded-r-sm transition-all duration-300"
+                      className={` cursor-pointer flex justify-start items-center gap-2 py-2 px-4 hover:dark:bg-[#1e2a78] hover:bg-gray-200 rounded-r-sm transition-all duration-300 ${
+                        pathname === route.path
+                          ? "bg-gray-300/50 dark:bg-[#1e2a78]"
+                          : ""
+                      }`}
                     >
                       <route.icon className="w-5 h-5" />
                       <Link href={route.path} className="block">
@@ -120,7 +120,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
           </div>
         </Container>
       </div>
-      {/* <Footer /> */}
+      
     </div>
   );
 };

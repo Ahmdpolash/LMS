@@ -1,6 +1,5 @@
 import {
   Home,
-  User,
   Book,
   Settings,
   Shield,
@@ -9,6 +8,7 @@ import {
   LogOut,
   Lock,
   SquareUser,
+  LayoutDashboard,
 } from "lucide-react";
 
 const sidebarRoutes = {
@@ -16,11 +16,11 @@ const sidebarRoutes = {
     {
       title: "Dashboard",
       path: "/dashboard",
-      icon: Home,
+      icon: LayoutDashboard,
     },
     {
       title: "My Profile",
-      path: "/profile",
+      path: "/dashboard/my-profile",
       icon: SquareUser,
     },
     {

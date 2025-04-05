@@ -18,6 +18,17 @@ const ThemeTogglerAndUserBtn = ({
   const dropDownRef = useRef(null);
   const items = ["My Course", "Dashboard", "Log Out"];
 
+  const it = [
+    {
+      name: "My Course ",
+      path: "/my-course ",
+    },
+    {
+      name: "Dashboard",
+      path: "/dashboard ",
+    },
+  ];
+
   useEffect(() => {
     const close = (e: MouseEvent) => {
       if (
@@ -89,23 +100,26 @@ const ThemeTogglerAndUserBtn = ({
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                   Student ID: WEB8-1292
                 </p>
-                <button className="cursor-pointer mt-3 px-4 py-1 text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-blue-500 rounded-full hover:opacity-90 transition">
-                  View Profile
-                </button>
+                <Link href={"/dashboard/my-profile"}>
+                  <button className="cursor-pointer mt-3 px-4 py-1 text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-blue-500 rounded-full hover:opacity-90 transition">
+                    View Profile
+                  </button>
+                </Link>
               </div>
               <div className="flex flex-col py-2">
-                {items.map((item, idx) => (
-                  <button
+                {it.map((item, idx) => (
+                  <Link
                     key={idx}
-                    className={`w-full cursor-pointer text-left px-5 py-3 text-sm hover:dark:bg-[#121A31] duration-500 transition ${
-                      item === "Log Out"
-                        ? "text-red-500 hover:bg-red-100 dark:hover:bg-red-600 dark:text-red-400 dark:hover:text-white"
-                        : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
-                    }`}
+                    className={`w-ful text-black dark:text-white cursor-pointer text-left px-5 py-3 text-sm hover:dark:bg-[#121A31] duration-500 transition `}
+                    href={item.path}
                   >
-                    {item}
-                  </button>
+                    {item.name}
+                  </Link>
                 ))}
+
+                <Button className="cursor-pointer text-white  dark:bg-gradient-to-r from-purple-500 to-blue-500">
+                  Log Out
+                </Button>
               </div>
             </ul>
           </div>
