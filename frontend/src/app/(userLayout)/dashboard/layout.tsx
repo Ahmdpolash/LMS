@@ -15,6 +15,15 @@ import sidebarRoutes from "@/constant/sidebar-routes";
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(false);
+  const role: string = "user";
+
+  const finalSidebarItems =
+    role === "admin"
+      ? [
+          ...sidebarRoutes.user,
+          { title: "Admin Dashboard", path: "/admin", icon: LayoutDashboard },
+        ]
+      : sidebarRoutes.user;
 
   return (
     <div>
@@ -87,7 +96,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
             <div className="hidden bg-gray-300/50 dark:bg-[#151d33] shadow-md dark:shadow-xl border border-slate-300 dark:border-slate-700 rounded-lg lg:block h-[52vh] z-40 w-[270px] ">
               <div className="">
                 <ul className="py-2 text-black dark:text-white  space-y-2">
-                  {sidebarRoutes.user.map((route, idx) => (
+                  {finalSidebarItems.map((route, idx) => (
                     <li
                       key={idx}
                       className=" cursor-pointer flex justify-start items-center gap-2 py-2 px-4 hover:dark:bg-[#1e2a78] hover:bg-gray-200 rounded-r-sm transition-all duration-300"
