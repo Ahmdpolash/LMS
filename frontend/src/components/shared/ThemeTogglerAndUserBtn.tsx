@@ -19,8 +19,11 @@ const ThemeTogglerAndUserBtn = ({
   const items = ["My Course", "Dashboard", "Log Out"];
 
   useEffect(() => {
-    const close = (e) => {
-      if (dropDownRef.current && !dropDownRef.current.contains(e.target)) {
+    const close = (e: MouseEvent) => {
+      if (
+        dropDownRef.current &&
+        !(dropDownRef.current as HTMLElement).contains(e.target as Node)
+      ) {
         setOpenDropdown(false);
       }
     };
