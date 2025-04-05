@@ -1,6 +1,6 @@
 "use client";
 
-import {  SquarePen } from "lucide-react";
+import { SquarePen } from "lucide-react";
 import { useState } from "react";
 import UpdateMyProfileForm from "../../../_components/dashboard/UpdateMyProfileForm";
 import MyProfile from "../../../_components/dashboard/MyProfile";
@@ -13,7 +13,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className=" text-white p-4 bg-gray-300/50 dark:bg-[#151d33] shadow-md dark:shadow-xl border border-slate-400 dark:border-slate-700 rounded-lg lg:h-[65vh]" >
+    <div className=" text-white p-4 bg-gray-300/50 dark:bg-[#151d33] shadow-md dark:shadow-xl border border-slate-400 dark:border-slate-700 rounded-lg lg:h-[65vh]">
       <div className="space-y-6">
         {/* Header Section */}
         <div className="flex justify-between items-center border-b border-dashed border-gray-400 dark:border-gray-600 pb-4">
@@ -42,7 +42,7 @@ export default function ProfilePage() {
           <div className="h-px bg-gray-400 dark:bg-gray-600/50 mt-4 mb-6" />
 
           {/* Device Activity Table */}
-          <div className="overflow-auto">
+          <div className="overflow-x-auto">
             <table className="w-full overflow-x-auto">
               <thead className="bg-gray-300 dark:bg-[#202a46] text-left rounded-lg ">
                 <tr>

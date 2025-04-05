@@ -13,7 +13,6 @@ const ThemeTogglerAndUserBtn = ({
   user,
 }: any) => {
   const [mounted, setMounted] = useState(false);
-
   const [openDropdown, setOpenDropdown] = useState(false);
   const dropDownRef = useRef(null);
 
@@ -48,6 +47,9 @@ const ThemeTogglerAndUserBtn = ({
   }, []);
 
   if (!mounted) return null;
+
+  const role: string = "user";
+
   return (
     <div className="flex items-center space-x-4">
       <Button
@@ -106,15 +108,37 @@ const ThemeTogglerAndUserBtn = ({
                 </Link>
               </div>
               <div className="flex flex-col py-2">
-                {it.map((item, idx) => (
-                  <Link
-                    key={idx}
-                    className={`w-ful text-black dark:text-white cursor-pointer text-left px-5 py-3 text-sm hover:dark:bg-[#121A31] duration-500 transition `}
-                    href={item.path}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
+                {role === "admin" ? (
+                  <>
+                    <Link
+                      className={`w-ful text-black dark:text-white cursor-pointer text-left px-5 py-3 text-sm hover:dark:bg-[#121A31] duration-500 transition `}
+                      href={"/admin"}
+                    >
+                      Admin Dashboard
+                    </Link>
+                    <Link
+                      className={`w-ful text-black dark:text-white cursor-pointer text-left px-5 py-3 text-sm hover:dark:bg-[#121A31] duration-500 transition `}
+                      href={"/dashboard/my-profile"}
+                    >
+                      My Profile
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      className={`w-ful text-black dark:text-white cursor-pointer text-left px-5 py-3 text-sm hover:dark:bg-[#121A31] duration-500 transition `}
+                      href={"/dashboard"}
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
+                      className={`w-ful text-black dark:text-white cursor-pointer text-left px-5 py-3 text-sm hover:dark:bg-[#121A31] duration-500 transition `}
+                      href={"/dashboard/my-course"}
+                    >
+                      My Course
+                    </Link>
+                  </>
+                )}
 
                 <Button className="cursor-pointer text-white  dark:bg-gradient-to-r from-purple-500 to-blue-500">
                   Log Out

@@ -31,7 +31,7 @@ export default function Navbar() {
     setOpen(!open);
   };
 
-  const user = false;
+  const user = true;
 
   return (
     <header

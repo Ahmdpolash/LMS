@@ -2,15 +2,16 @@
 
 import React, { ReactNode, useState } from "react";
 
-import { Cross, Home, LayoutDashboard, List, LogOutIcon } from "lucide-react";
+import { LayoutDashboard, List, LogOutIcon } from "lucide-react";
 import Link from "next/link";
 import Container from "@/components/shared/Container";
 import sidebarRoutes from "@/constant/sidebar-routes";
 import { usePathname } from "next/navigation";
+import DesktopSidebar from "@/app/_components/dashboard/DesktopSidebar";
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(false);
-  const role: string = "user";
+  const role: string = "admin";
   const pathname = usePathname();
 
   const finalSidebarItems =
@@ -22,7 +23,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
       : sidebarRoutes.user;
 
   return (
-    <div>
+    <div className="">
       {/* blur screen */}
       <div
         onClick={() => setOpen(false)}
@@ -76,35 +77,10 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
         {/* desktop sidebar */}
 
         <Container>
-          <div className="flex  gap-4 lg:gap-7 lg:my-20 py-4">
-            <div className="hidden bg-gray-300/50 dark:bg-[#151d33] shadow-md dark:shadow-xl border border-slate-300 dark:border-slate-700 rounded-lg lg:block h-[65vh] z-40 w-[270px] ">
-              <div className="">
-                <ul className="py-2  text-black dark:text-white  space-y-2">
-                  {finalSidebarItems.map((route, idx) => (
-                    <li
-                      key={idx}
-                      className={` cursor-pointer flex justify-start items-center gap-2 py-2 px-4 hover:dark:bg-[#1e2a78] hover:bg-gray-200 rounded-r-sm transition-all duration-300 ${
-                        pathname === route.path
-                          ? "bg-gray-300/50 dark:bg-[#1e2a78]"
-                          : ""
-                      }`}
-                    >
-                      <route.icon className="w-5 h-5" />
-                      <Link href={route.path} className="block">
-                        {route.title}
-                      </Link>
-                    </li>
-                  ))}
+          <div className="flex gap-4 lg:gap-7 lg:my-20 py-4">
+            <DesktopSidebar />
 
-                  <li className=" cursor-pointer flex justify-start items-center gap-2 py-2 px-4 hover:dark:bg-[#1e2a78] hover:bg-gray-200 rounded-r-sm transition-all duration-300">
-                    <LogOutIcon className="w-5 h-5" />
-                    <span className="block">Log Out</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="flex-1">{children}</div>
+            <div className="flex-1/2 overflow-x-auto">{children}</div>
           </div>
         </Container>
       </div>
@@ -113,6 +89,3 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
 };
 
 export default DashboardLayout;
-
-
-

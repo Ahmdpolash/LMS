@@ -2,8 +2,6 @@ import { CreditCard, Mail, Smartphone, User } from "lucide-react";
 import React from "react";
 
 const UpdateMyProfileForm = () => {
-
-    
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div className="space-y-2">
