@@ -7,7 +7,7 @@ import { Shield, Check } from "lucide-react";
 import Link from "next/link";
 import { useActivationMutation } from "@/redux/features/auth/authApi";
 import { useAppSelector } from "@/redux/hooks";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 type verifyNumber = {
@@ -77,17 +77,9 @@ export default function Otp() {
       router.push("/sign-in");
     } catch (error: any) {
       toast.error(error?.data?.message || "Something went wrong");
+      setInvalidError(true);
     }
   };
-
-  // useEffect(() => {
-  //   if (isSuccess && data?.message) {
-  //     toast.success(data.message);
-  //     router.push("/sign-in");
-  //   } else if (data?.error) {
-  //     toast.error(data.error.message || "something went wrong");
-  //   }
-  // }, [isSuccess, data, router]);
 
   console.log(data);
 

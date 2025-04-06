@@ -13,9 +13,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Separator } from "../ui/separator";
 import Container from "../shared/Container";
-import { useRegisterMutation } from "@/redux/features/auth/authApi";
+import {
+  useLoginMutation,
+  useRegisterMutation,
+} from "@/redux/features/auth/authApi";
 import { useEffect } from "react";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 
 type FormType = "sign-up" | "sign-in";
 
@@ -38,13 +41,14 @@ const authFormSchema = (type: FormType) => {
 
 const AuthForm = ({ type }: { type: FormType }) => {
   const [register, { isLoading, data, isSuccess }] = useRegisterMutation();
+  const [login] = useLoginMutation();
   const router = useRouter();
 
   useEffect(() => {
     if (isSuccess && data?.message) {
       toast.success(data.message);
       router.push("/verify-account");
-      console.log(data,'dd')
+      console.log(data, "dd");
     }
   }, [isSuccess, data, router]);
 
@@ -65,6 +69,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
       if (type === "sign-up") {
         await register(values).unwrap();
       } else {
+        await login(values).unwrap();
         toast.success("Signed in successfully.");
         router.push("/");
       }

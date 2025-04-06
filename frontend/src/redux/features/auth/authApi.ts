@@ -1,5 +1,5 @@
 import { baseApi } from "@/redux/api/baseApi";
-import { setUser } from "./authSlice";
+import { loggedUser, setUser } from "./authSlice";
 
 type RegistrationResponse = {
   message: string;
@@ -15,6 +15,7 @@ const authApi = baseApi.injectEndpoints({
         body: data,
         credentials: "include",
       }),
+      // set the token to reduxt state
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -40,7 +41,23 @@ const authApi = baseApi.injectEndpoints({
         url: "/auth/signin",
         method: "POST",
         body,
+        credentials: "include",
       }),
+
+      // set the user and token to reduxt state
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          dispatch(
+            loggedUser({
+              accessToken: result.data.data.accessToken,
+              user: result.data.data.user,
+            })
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      },
     }),
     logout: builder.mutation({
       query: () => ({
