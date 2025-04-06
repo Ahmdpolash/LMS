@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { Separator } from "../ui/separator";
 import Container from "../shared/Container";
 import { useRegisterMutation } from "@/redux/features/auth/authApi";
+import { useEffect } from "react";
 
 type FormType = "sign-up" | "sign-in";
 
@@ -38,10 +39,12 @@ const AuthForm = ({ type }: { type: FormType }) => {
   const [register, { isLoading, data, isSuccess }] = useRegisterMutation();
   const router = useRouter();
 
-  if (isSuccess) {
-    toast.success(data?.message);
-    router.push("/activate-account");
-  }
+  useEffect(() => {
+    if (isSuccess && data?.message) {
+      toast.success(data.message);
+      router.push("/verify-account");
+    }
+  }, [isSuccess, data, router]);
 
   // 1. Define your form.
   const formSchema = authFormSchema(type);
@@ -55,42 +58,26 @@ const AuthForm = ({ type }: { type: FormType }) => {
   });
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       if (type === "sign-up") {
-        const { name, email, password } = values;
-
-        const res = await register({
-          name,
-          email,
-          password,
-        }).unwrap();
-
-        // if (res) {
-        //   toast.success("Please check your email to activate your account.");
-        // }
-
-        // toast.success("Account created successfully. Please sign in.");
-        // router.push("/sign-in");
+        await register(values).unwrap();
       } else {
-        const { email, password } = values;
-
         toast.success("Signed in successfully.");
         router.push("/");
       }
     } catch (error: any) {
-      console.log(error);
-      toast.error(`${error.data.message}`);
+      toast.error(error?.data?.message || "Something went wrong");
     }
-  }
+  };
 
   const isSignIn = type === "sign-in";
 
   return (
-    <div className="grid place-items-center h-full mx-auto w-full lg:max-w-6xl  ">
+    <div className="grid place-items-center h-screen mx-auto w-full lg:max-w-6xl  ">
       <Container>
         <div className="  w-full  lg:min-w-[500px] px-5">
-          <div className="border border-blue-300/50 flex flex-col gap-6 card py-4 lg:py-7 px-5 lg:px-7">
+          <div className="border border-blue-300/50 flex flex-col gap-6 card py-4 lg:py-5 px-5 lg:px-7">
             <div className="flex flex-row gap- justify-cente">
               {/* <Image src="/logo.svg" alt="logo" height={32} width={38} /> */}
               <h2 className="text-primary-100 text-balance">E-Learning</h2>
@@ -134,7 +121,11 @@ const AuthForm = ({ type }: { type: FormType }) => {
                 />
 
                 <Button className="btn" type="submit">
-                  {isSignIn ? "Sign In" : "Create an Account"}
+                  {isLoading
+                    ? "Processing..."
+                    : isSignIn
+                    ? "Sign In"
+                    : "Create an Account"}
                 </Button>
               </form>
             </Form>

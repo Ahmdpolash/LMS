@@ -26,7 +26,7 @@ export default function Otp() {
   };
 
   return (
-    <div className="  bg-[#0f1524] text-white px-10 lg:px-16 py-6 lg:py-10 rounded-2xl">
+    <div className="  bg-[#0f1524] text-white px-10 lg:px-16 py-6 lg:py-10 rounded-2xl border border-blue-500/50">
       <div className=" flex flex-col items-center">
         <h1 className="text-xl lg:text-2xl font-bold mb-4 lg:mb-8">
           Verify Your Account
@@ -64,9 +64,9 @@ export default function Otp() {
         </button>
 
         <div className="text-center">
-          <span className="text-gray-400">Go back to sign in?</span>{" "}
-          <Link href="/sign-in" className="text-[#4169e1]">
-            Sign in
+          <span className="text-gray-400">Go back to sign up?</span>{" "}
+          <Link href="/sign-up" className="text-[#4169e1]">
+            Sign Up
           </Link>
         </div>
       </div>

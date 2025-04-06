@@ -4,11 +4,13 @@ import React, { ReactNode } from "react";
 
 const layout = ({ children }: { children: ReactNode }) => {
   return (
-    <div>
-      {children}
-      <Toaster position="top-center" />
-      <HotToaster />
-    </div>
+    <html lang="en">
+      <body>
+        {children}
+        <Toaster position="top-center" />
+        <HotToaster />
+      </body>
+    </html>
   );
 };
 
