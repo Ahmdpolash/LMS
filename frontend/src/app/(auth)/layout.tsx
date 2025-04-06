@@ -4,6 +4,7 @@ import "../globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Suspense } from "react";
 import Loading from "./loading";
+import Providers from "@/lib/Providers";
 
 const monaSans = Mona_Sans({
   variable: "--font-mona-sans",
@@ -27,14 +28,16 @@ export default function AuthLayout({
       >
         <div>
           <Suspense fallback={<Loading />}>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              enableSystem={false}
-              disableTransitionOnChange
-            >
-              {children}
-            </ThemeProvider>
+            <Providers>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="dark"
+                enableSystem={false}
+                disableTransitionOnChange
+              >
+                {children}
+              </ThemeProvider>
+            </Providers>
           </Suspense>
         </div>
       </body>

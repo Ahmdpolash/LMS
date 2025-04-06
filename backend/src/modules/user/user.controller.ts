@@ -5,7 +5,7 @@ import httpStatus from "http-status";
 // CREATE ACCOUNT
 const CreateUser = catchAsync(async (req, res) => {
   const result = await UserServices.CreateUser(req.body);
-
+  console.log(req.body);
   res.status(httpStatus.OK).json({
     success: true,
     message: "Please check your email to activate your account",

@@ -8,6 +8,7 @@ import Footer from "@/components/home/Footer";
 import { Suspense } from "react";
 import Loading from "./loading";
 import ScrollToTop from "@/components/ScrollToTop";
+import Providers from "@/lib/Providers";
 
 const poppins = Poppins({
   variable: "--font-Poppins",
@@ -32,27 +33,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${poppins.variable} ${josefin.variable} overflow-x-hidden bg-gray-50 dark:bg-[#0C111B]    dark:bg-gradient-to-r from-[#0C111B] to-[#131c36] `}
-      >
-        <div>
-          <Suspense fallback={<Loading />}>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              enableSystem={false}
-              disableTransitionOnChange
-            >
-              <Navbar />
-              {children}
-              <Footer />
-              <ScrollToTop />
-            </ThemeProvider>
-          </Suspense>
-        </div>
-      </body>
-    </html>
+    <Providers>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={`${poppins.variable} ${josefin.variable} overflow-x-hidden bg-gray-50 dark:bg-[#0C111B]    dark:bg-gradient-to-r from-[#0C111B] to-[#131c36] `}
+        >
+          <div>
+            <Suspense fallback={<Loading />}>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="dark"
+                enableSystem={false}
+                disableTransitionOnChange
+              >
+                <Navbar />
+                {children}
+                <Footer />
+                <ScrollToTop />
+              </ThemeProvider>
+            </Suspense>
+          </div>
+        </body>
+      </html>
+    </Providers>
   );
 }
 

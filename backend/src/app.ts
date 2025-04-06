@@ -2,7 +2,7 @@ import express, { Application, Request, Response, urlencoded } from "express";
 import cors from "cors";
 
 import cookieParser from "cookie-parser";
-import config from "./config";
+
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
 import { notFound } from "./middleware/notFound";
 import router from "./routes";
@@ -11,9 +11,11 @@ const app: Application = express();
 
 app.use(
   cors({
-    origin: config.origin,
+    origin: process.env.ORIGIN?.split(","),
+    credentials: true,
   })
 );
+
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
 app.use(cookieParser());

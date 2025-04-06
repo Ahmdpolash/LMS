@@ -9,10 +9,11 @@ import { Form } from "@/components/ui/form";
 
 import FormField from "./FormField";
 import Link from "next/link";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Separator } from "../ui/separator";
 import Container from "../shared/Container";
+import { useRegisterMutation } from "@/redux/features/auth/authApi";
 
 type FormType = "sign-up" | "sign-in";
 
@@ -34,7 +35,13 @@ const authFormSchema = (type: FormType) => {
 };
 
 const AuthForm = ({ type }: { type: FormType }) => {
+  const [register, { isLoading, data, isSuccess }] = useRegisterMutation();
   const router = useRouter();
+
+  if (isSuccess) {
+    toast.success(data?.message);
+    router.push("/activate-account");
+  }
 
   // 1. Define your form.
   const formSchema = authFormSchema(type);
@@ -51,19 +58,29 @@ const AuthForm = ({ type }: { type: FormType }) => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       if (type === "sign-up") {
-        // const { name, email, password } = values;
+        const { name, email, password } = values;
 
-        toast.success("Account created successfully. Please sign in.");
-        router.push("/sign-in");
+        const res = await register({
+          name,
+          email,
+          password,
+        }).unwrap();
+
+        // if (res) {
+        //   toast.success("Please check your email to activate your account.");
+        // }
+
+        // toast.success("Account created successfully. Please sign in.");
+        // router.push("/sign-in");
       } else {
         const { email, password } = values;
 
         toast.success("Signed in successfully.");
         router.push("/");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      toast.error(`There was an error ${error}`);
+      toast.error(`${error.data.message}`);
     }
   }
 
