@@ -33,12 +33,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <Providers>
-      <html lang="en" suppressHydrationWarning>
-        <body
-          className={`${poppins.variable} ${josefin.variable} overflow-x-hidden bg-gray-50 dark:bg-[#0C111B]    dark:bg-gradient-to-r from-[#0C111B] to-[#131c36] `}
-        >
-          <div>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${poppins.variable} ${josefin.variable} overflow-x-hidden bg-gray-50 dark:bg-[#0C111B]    dark:bg-gradient-to-r from-[#0C111B] to-[#131c36] `}
+      >
+        <div>
+          <Providers>
             <Suspense fallback={<Loading />}>
               <ThemeProvider
                 attribute="class"
@@ -52,10 +52,10 @@ export default function RootLayout({
                 <ScrollToTop />
               </ThemeProvider>
             </Suspense>
-          </div>
-        </body>
-      </html>
-    </Providers>
+          </Providers>
+        </div>
+      </body>
+    </html>
   );
 }
 

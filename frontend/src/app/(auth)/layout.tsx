@@ -5,6 +5,9 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Suspense } from "react";
 import Loading from "./loading";
 import Providers from "@/lib/Providers";
+import { Toaster } from "@/components/ui/sonner";
+import { Toaster as HotToaster } from "react-hot-toast";
+
 
 const monaSans = Mona_Sans({
   variable: "--font-mona-sans",
@@ -34,6 +37,8 @@ export default function AuthLayout({
                 disableTransitionOnChange
               >
                 {children}
+                <Toaster position="top-center" />
+                <HotToaster reverseOrder={false} />
               </ThemeProvider>
             </Providers>
           </Suspense>

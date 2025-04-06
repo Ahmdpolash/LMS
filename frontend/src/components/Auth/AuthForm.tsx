@@ -40,17 +40,9 @@ const authFormSchema = (type: FormType) => {
 };
 
 const AuthForm = ({ type }: { type: FormType }) => {
-  const [register, { isLoading, data, isSuccess }] = useRegisterMutation();
-  const [login] = useLoginMutation();
+  const [register, { isLoading }] = useRegisterMutation();
+  const [login, { data }] = useLoginMutation();
   const router = useRouter();
-
-  useEffect(() => {
-    if (isSuccess && data?.message) {
-      toast.success(data.message);
-      router.push("/verify-account");
-      console.log(data, "dd");
-    }
-  }, [isSuccess, data, router]);
 
   // 1. Define your form.
   const formSchema = authFormSchema(type);
@@ -68,10 +60,13 @@ const AuthForm = ({ type }: { type: FormType }) => {
     try {
       if (type === "sign-up") {
         await register(values).unwrap();
+        toast.success("Account verified successfully !! Please login Now.");
+        router.push("/verify-account");
       } else {
         await login(values).unwrap();
         toast.success("Signed in successfully.");
         router.push("/");
+        console.log(data, "dd");
       }
     } catch (error: any) {
       toast.error(error?.data?.message || "Something went wrong");

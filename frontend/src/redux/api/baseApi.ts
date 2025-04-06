@@ -8,7 +8,15 @@ export const baseApi = createApi({
     // credentials: "include",
   }),
 
-  endpoints: () => ({}),
+  endpoints: (builder) => ({
+    refreshToken: builder.query({
+      query: () => ({
+        url: "/auth/refresh-token",
+        method: "POST",
+        credentials: "include",
+      }),
+    }),
+  }),
 });
 
 // Export hooks for usage in functional components, which are
