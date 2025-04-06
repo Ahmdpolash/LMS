@@ -20,7 +20,7 @@ const authApi = baseApi.injectEndpoints({
           const result = await queryFulfilled;
           dispatch(
             setUser({
-              token: result.data.activationToken,
+              token: result.data.data.activationToken,
             })
           );
         } catch (error) {

@@ -9,12 +9,13 @@ import { Form } from "@/components/ui/form";
 
 import FormField from "./FormField";
 import Link from "next/link";
-import { toast } from "react-hot-toast";
+
 import { useRouter } from "next/navigation";
 import { Separator } from "../ui/separator";
 import Container from "../shared/Container";
 import { useRegisterMutation } from "@/redux/features/auth/authApi";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 type FormType = "sign-up" | "sign-in";
 
@@ -29,8 +30,8 @@ const authFormSchema = (type: FormType) => {
     email: z
       .string()
       .email({ message: "Please enter your valid email address" }),
-    password: z.string().min(3, {
-      message: "password must be at least 4 digits",
+    password: z.string().min(6, {
+      message: "password must be at least 6 digits",
     }),
   });
 };
@@ -43,6 +44,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
     if (isSuccess && data?.message) {
       toast.success(data.message);
       router.push("/verify-account");
+      console.log(data,'dd')
     }
   }, [isSuccess, data, router]);
 
@@ -121,11 +123,13 @@ const AuthForm = ({ type }: { type: FormType }) => {
                 />
 
                 <Button className="btn" type="submit">
-                  {isLoading
-                    ? "Processing..."
-                    : isSignIn
-                    ? "Sign In"
-                    : "Create an Account"}
+                  {isLoading ? (
+                    <div className="w-6 h-6 animate-[spin_1s_linear_infinite] rounded-full border-4 border-r-[#fff] border-[#111]"></div>
+                  ) : isSignIn ? (
+                    "Sign In"
+                  ) : (
+                    "Create an Account"
+                  )}
                 </Button>
               </form>
             </Form>

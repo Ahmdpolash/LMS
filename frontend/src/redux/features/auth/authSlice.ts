@@ -11,12 +11,12 @@ const authSlice = createSlice({
   reducers: {
     setUser(state, action) {
       const { token } = action.payload;
-      //   state.user = user;
+      console.log(token)
+      // state.user = user;
       state.token = token;
     },
     loggedUser(state, action) {
       const { user, accessToken } = action.payload;
-
       state.token = accessToken;
       state.user = user;
     },

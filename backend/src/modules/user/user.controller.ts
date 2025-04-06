@@ -19,7 +19,7 @@ const ActivateUser = catchAsync(async (req, res) => {
 
   res.status(httpStatus.OK).json({
     success: true,
-    message: "Account activated successfully",
+    message: "Account activated successfully !! Please login Now.. ",
     data: result,
   });
 });

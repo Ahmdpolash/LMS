@@ -23,7 +23,7 @@ export default function AuthLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${monaSans.variable}  `}>
+      <body className={`${monaSans.variable} `}>
         <div>
           <Suspense fallback={<Loading />}>
             <Providers>

@@ -2,9 +2,13 @@
 
 import type React from "react";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Shield, Check } from "lucide-react";
 import Link from "next/link";
+import { useActivationMutation } from "@/redux/features/auth/authApi";
+import { useAppSelector } from "@/redux/hooks";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type verifyNumber = {
   "0": string;
@@ -14,7 +18,11 @@ type verifyNumber = {
 };
 
 export default function Otp() {
-  // const [otp, setOtp] = useState(null);
+  const { token } = useAppSelector((state) => state.auth);
+  console.log("Redux token:", token);
+
+  const [activation, { data, isSuccess }] = useActivationMutation();
+  const router = useRouter();
   const [invalidError, setInvalidError] = useState(false);
   const [verifyNumber, setVerifyNumber] = useState<verifyNumber>({
     "0": "",
@@ -29,11 +37,6 @@ export default function Otp() {
     useRef<HTMLInputElement>(null),
     useRef<HTMLInputElement>(null),
   ];
-
-  const handleVerify = () => {
-    // Handle verification logic here
-    setInvalidError(true);
-  };
 
   const handleInputChange = (index: number, value: string) => {
     setInvalidError(false);
@@ -55,6 +58,38 @@ export default function Otp() {
     index: number,
     e: React.KeyboardEvent<HTMLInputElement>
   ) => {};
+
+  const handleVerify = async () => {
+    const verificationNumber = Object.values(verifyNumber).join("");
+
+    if (verificationNumber.length !== 4) {
+      setInvalidError(true);
+      return;
+    }
+
+    try {
+      const response = await activation({
+        activation_token: token,
+        activation_code: verificationNumber,
+      }).unwrap(); // this throws if error happens
+
+      toast.success("Account verified successfully! Please login Now");
+      router.push("/sign-in");
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Something went wrong");
+    }
+  };
+
+  // useEffect(() => {
+  //   if (isSuccess && data?.message) {
+  //     toast.success(data.message);
+  //     router.push("/sign-in");
+  //   } else if (data?.error) {
+  //     toast.error(data.error.message || "something went wrong");
+  //   }
+  // }, [isSuccess, data, router]);
+
+  console.log(data);
 
   return (
     <div className="  bg-[#0f1524] text-white px-10 lg:px-16 py-6 lg:py-10 rounded-2xl border border-blue-500/50">
@@ -82,14 +117,12 @@ export default function Otp() {
                 ref={inputRefs[index]}
                 onChange={(e) => handleInputChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
-                className={`w-full h-full bg-transparent text-center text-xl font-bold border-3 border-white/30 rounded-[10px] dark:text-white text-black focus:border-[#4169e1] focus:outline-none 
-                  
-                  ${
-                    invalidError
-                      ? "shake border border-red-500"
-                      : "dark:border-white border-[#0000004a]"
-                  }
-
+                className={`w-full h-full bg-transparent text-center text-xl font-bold rounded-[10px] dark:text-white text-black focus:border-[#4169e1] focus:outline-none 
+                    ${
+                      invalidError
+                        ? "shake border-3 border-red-500"
+                        : "border-3 dark:border-white border-[#0000004a]"
+                    }
                   `}
               />
             </div>

@@ -29,7 +29,7 @@ const CreateUser = async (payload: IUser) => {
 
   await sendEmail({
     to: payload.email,
-    subject: "Activate Your LMS Account",
+    subject: "Activate Your ELearning Account",
     templateName: "activation",
     replacements: {
       name: payload.name,
