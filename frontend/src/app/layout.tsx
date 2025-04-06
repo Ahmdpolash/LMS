@@ -8,7 +8,7 @@ const layout = ({ children }: { children: ReactNode }) => {
       <body>
         {children}
         <Toaster position="top-center" />
-        <HotToaster />
+        <HotToaster reverseOrder={false}/>
       </body>
     </html>
   );

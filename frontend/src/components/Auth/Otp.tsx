@@ -2,18 +2,51 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Shield, Check } from "lucide-react";
 import Link from "next/link";
 
+type verifyNumber = {
+  "0": string;
+  "1": string;
+  "2": string;
+  "3": string;
+};
+
 export default function Otp() {
   // const [otp, setOtp] = useState(null);
+  const [invalidError, setInvalidError] = useState(false);
+  const [verifyNumber, setVerifyNumber] = useState<verifyNumber>({
+    "0": "",
+    "1": "",
+    "2": "",
+    "3": "",
+  });
+
+  const inputRefs = [
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+  ];
 
   const handleVerify = () => {
     // Handle verification logic here
+    setInvalidError(true);
   };
 
   const handleInputChange = (index: number, value: string) => {
+    setInvalidError(false);
+
+    const newVerifyNumber = { ...verifyNumber, [index]: value };
+    setVerifyNumber(newVerifyNumber);
+
+    if (value === "" && index > 0) {
+      inputRefs[index - 1].current?.focus();
+    } else if (value.length === 1 && index < 3) {
+      inputRefs[index + 1].current?.focus();
+    }
+
     if (value.length <= 1 && /^[0-9]*$/.test(value)) {
     }
   };
@@ -21,9 +54,7 @@ export default function Otp() {
   const handleKeyDown = (
     index: number,
     e: React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    // Handle backspace to go to previous input
-  };
+  ) => {};
 
   return (
     <div className="  bg-[#0f1524] text-white px-10 lg:px-16 py-6 lg:py-10 rounded-2xl border border-blue-500/50">
@@ -40,17 +71,26 @@ export default function Otp() {
         </div>
 
         <div className="flex gap-4 mb-8 w-full justify-center">
-          {[1, 2, 3, 4].map((digit, index) => (
+          {Object.keys(verifyNumber).map((digit, index) => (
             <div key={index} className="w-16 h-16 relative">
               <input
                 id={`otp-${index}`}
-                type="text"
+                type="number"
                 inputMode="numeric"
                 maxLength={1}
-                value={digit}
+                value={verifyNumber[digit as keyof verifyNumber]}
+                ref={inputRefs[index]}
                 onChange={(e) => handleInputChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
-                className="w-full h-full bg-transparent text-center text-xl font-bold border-2 border-white/30 rounded-md focus:border-[#4169e1] focus:outline-none"
+                className={`w-full h-full bg-transparent text-center text-xl font-bold border-3 border-white/30 rounded-[10px] dark:text-white text-black focus:border-[#4169e1] focus:outline-none 
+                  
+                  ${
+                    invalidError
+                      ? "shake border border-red-500"
+                      : "dark:border-white border-[#0000004a]"
+                  }
+
+                  `}
               />
             </div>
           ))}
@@ -64,12 +104,28 @@ export default function Otp() {
         </button>
 
         <div className="text-center">
-          <span className="text-gray-400">Go back to sign up?</span>{" "}
-          <Link href="/sign-up" className="text-[#4169e1]">
-            Sign Up
+          <span className="text-gray-400">Go back to sign in?</span>{" "}
+          <Link href="/sign-in" className="text-[#4169e1]">
+            Sign In
           </Link>
         </div>
       </div>
     </div>
   );
 }
+
+/*
+
+    Handle backspace to go to previous input
+    if (e.key === "Backspace") {
+      setVerifyNumber((prev) => ({ ...prev, [index]: "" }));
+      if (index > 0) {
+        inputRefs[index - 1].current?.focus();
+      }
+    } else if (/^[0-9]*$/.test(e.key)) {
+      setVerifyNumber((prev) => ({ ...prev, [index]: e.key }));
+      if (index < 3) {
+        inputRefs[index + 1].current?.focus();
+      }
+    }
+*/
