@@ -2,25 +2,29 @@
 
 import React, { ReactNode, useState } from "react";
 
-import { LayoutDashboard, List, LogOutIcon } from "lucide-react";
+import {
+  Book,
+  LayoutDashboard,
+  List,
+  Lock,
+  LogOutIcon,
+  SquareUser,
+} from "lucide-react";
 import Link from "next/link";
 import Container from "@/components/shared/Container";
 import sidebarRoutes from "@/constant/sidebar-routes";
 import { usePathname } from "next/navigation";
 import DesktopSidebar from "@/app/_components/dashboard/DesktopSidebar";
+import { useAppSelector } from "@/redux/hooks";
+import { TUser } from "@/types";
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
+  const { user } = useAppSelector((state) => state.auth) as {
+    user: TUser | null;
+  };
   const [open, setOpen] = useState(false);
-  const role: string = "admin";
-  const pathname = usePathname();
 
-  const finalSidebarItems =
-    role === "admin"
-      ? [
-          ...sidebarRoutes.user,
-          { title: "Admin Dashboard", path: "/admin", icon: LayoutDashboard },
-        ]
-      : sidebarRoutes.user;
+  const pathname = usePathname();
 
   return (
     <div className="">
@@ -51,21 +55,97 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
             Elearning
           </div>
           <ul className="py-2 text-black dark:text-white  space-y-2">
-            {finalSidebarItems.map((route, idx) => (
-              <li
-                key={idx}
-                className={` cursor-pointer flex justify-start items-center gap-2 py-2 px-4 hover:dark:bg-[#1e2a78] hover:bg-gray-200 rounded-r-sm transition-all duration-300 ${
-                  pathname === route.path
-                    ? "bg-gray-300/50 dark:bg-[#1e2a78]"
-                    : ""
-                }`}
-              >
-                <route.icon className="w-5 h-5" />
-                <Link href={route.path} className="block">
-                  {route.title}
-                </Link>
-              </li>
-            ))}
+            {user?.role === "admin" ? (
+              <>
+                <li
+                  className={` cursor-pointer flex justify-start items-center gap-2 py-2 px-4 hover:dark:bg-[#1e2a78] hover:bg-gray-200 rounded-r-sm transition-all duration-300 ${
+                    pathname === "/dashboard/my-profile"
+                      ? "bg-gray-300/50 dark:bg-[#1e2a78]"
+                      : ""
+                  }`}
+                >
+                  <SquareUser className="w-5 h-5" />
+                  <Link href={"/dashboard/my-profile"} className="block">
+                    My Profile
+                  </Link>
+                </li>
+
+                <li
+                  className={` cursor-pointer flex justify-start items-center gap-2 py-2 px-4 hover:dark:bg-[#1e2a78] hover:bg-gray-200 rounded-r-sm transition-all duration-300 ${
+                    pathname === "/dashboard/change-password"
+                      ? "bg-gray-300/50 dark:bg-[#1e2a78]"
+                      : ""
+                  }`}
+                >
+                  <Lock className="w-5 h-5" />
+                  <Link href={"/dashboard/change-password"} className="block">
+                    Change Password
+                  </Link>
+                </li>
+                <li
+                  className={` cursor-pointer flex justify-start items-center gap-2 py-2 px-4 hover:dark:bg-[#1e2a78] hover:bg-gray-200 rounded-r-sm transition-all duration-300 `}
+                >
+                  <LayoutDashboard className="w-5 h-5" />
+                  <Link href={"/admin"} className="block">
+                    Admin Dashboard
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li
+                  className={` cursor-pointer flex justify-start items-center gap-2 py-2 px-4 hover:dark:bg-[#1e2a78] hover:bg-gray-200 rounded-r-sm transition-all duration-300 ${
+                    pathname === "/dashboard"
+                      ? "bg-gray-300/50 dark:bg-[#1e2a78]"
+                      : ""
+                  }`}
+                >
+                  <LayoutDashboard className="w-5 h-5" />
+                  <Link href={"/dashboard"} className="block">
+                    Dashboard
+                  </Link>
+                </li>
+
+                <li
+                  className={` cursor-pointer flex justify-start items-center gap-2 py-2 px-4 hover:dark:bg-[#1e2a78] hover:bg-gray-200 rounded-r-sm transition-all duration-300 ${
+                    pathname === "/dashboard/my-profile"
+                      ? "bg-gray-300/50 dark:bg-[#1e2a78]"
+                      : ""
+                  }`}
+                >
+                  <SquareUser className="w-5 h-5" />
+                  <Link href={"/dashboard/my-profile"} className="block">
+                    My Profile
+                  </Link>
+                </li>
+
+                <li
+                  className={` cursor-pointer flex justify-start items-center gap-2 py-2 px-4 hover:dark:bg-[#1e2a78] hover:bg-gray-200 rounded-r-sm transition-all duration-300 ${
+                    pathname === "/dashboard/my-course"
+                      ? "bg-gray-300/50 dark:bg-[#1e2a78]"
+                      : ""
+                  }`}
+                >
+                  <Book className="w-5 h-5" />
+                  <Link href={"/dashboard/my-course"} className="block">
+                    Enrolled Course
+                  </Link>
+                </li>
+
+                <li
+                  className={` cursor-pointer flex justify-start items-center gap-2 py-2 px-4 hover:dark:bg-[#1e2a78] hover:bg-gray-200 rounded-r-sm transition-all duration-300 ${
+                    pathname === "/dashboard/change-password"
+                      ? "bg-gray-300/50 dark:bg-[#1e2a78]"
+                      : ""
+                  }`}
+                >
+                  <Lock className="w-5 h-5" />
+                  <Link href={"/dashboard/change-password"} className="block">
+                    Change Password
+                  </Link>
+                </li>
+              </>
+            )}
 
             <li className=" cursor-pointer flex justify-start items-center gap-2 py-2 px-4 hover:dark:bg-[#1e2a78] hover:bg-gray-200 rounded-r-sm transition-all duration-300">
               <LogOutIcon className="w-5 h-5" />
@@ -78,7 +158,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
 
         <Container>
           <div className="flex gap-4 lg:gap-7 lg:my-20 py-4">
-            <DesktopSidebar />
+            <DesktopSidebar user={user as TUser} />
 
             <div className="flex-1/2 overflow-x-auto">{children}</div>
           </div>

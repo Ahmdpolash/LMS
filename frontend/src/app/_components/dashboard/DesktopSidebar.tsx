@@ -10,15 +10,20 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const DesktopSidebar = () => {
+import { TUser } from "@/types";
+
+type DesktopSidebarProps = {
+  user: TUser | null;
+};
+
+const DesktopSidebar = ({ user }: DesktopSidebarProps) => {
   const pathname = usePathname();
-  const role: string = "user";
 
   return (
     <div className="hidden bg-gray-300/50 dark:bg-[#151d33] shadow-md dark:shadow-xl border border-slate-300 dark:border-slate-700 rounded-lg lg:block h-[65vh] z-40 w-[290px] ">
       <div className="">
         <ul className="py-2  text-black dark:text-white  space-y-2">
-          {role === "admin" ? (
+          {user?.role === "admin" ? (
             <>
               <li
                 className={` cursor-pointer flex justify-start items-center gap-2 py-2 px-4 hover:dark:bg-[#1e2a78] hover:bg-gray-200 rounded-r-sm transition-all duration-300 ${
