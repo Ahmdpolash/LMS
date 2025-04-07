@@ -25,21 +25,22 @@ export default function AuthLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" >
       <body className={`${monaSans.variable} `}>
         <div>
           <Suspense fallback={<Loading />}>
             <Providers>
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="dark"
-                enableSystem={false}
-                disableTransitionOnChange
-              >
-                {children}
-                <Toaster position="top-center" />
-                <HotToaster reverseOrder={false} />
-              </ThemeProvider>
+                <ThemeProvider
+                  attribute="class"
+                  defaultTheme="dark"
+                  enableSystem={false}
+                  disableTransitionOnChange
+                >
+                  {children}
+                  <Toaster position="top-center" />
+                  <HotToaster reverseOrder={false} />
+                </ThemeProvider>
+              
             </Providers>
           </Suspense>
         </div>

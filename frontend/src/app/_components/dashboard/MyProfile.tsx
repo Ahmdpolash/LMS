@@ -4,9 +4,13 @@ import { TUser } from "@/types";
 import React from "react";
 
 const MyProfile = () => {
+
   const { user } = useAppSelector((state) => state.auth) as {
     user: TUser | null;
   };
+
+  
+
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

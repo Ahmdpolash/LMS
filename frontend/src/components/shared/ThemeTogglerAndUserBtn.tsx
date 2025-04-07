@@ -4,20 +4,33 @@ import React, { useEffect, useRef, useState } from "react";
 import MobileMenu from "./MobileMenu";
 import { Button } from "../ui/button";
 import { MenuIcon, Moon, Sun } from "lucide-react";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import Image from "next/image";
 import { TUser } from "@/types";
+import { useLogoutMutation } from "@/redux/features/auth/authApi";
+import { logout } from "@/redux/features/auth/authSlice";
+import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
+import { persistor } from "@/redux/store";
 
 const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
   const { user } = useAppSelector((state) => state.auth) as {
     user: TUser | null;
   };
- 
+  const { data } = useSession();
+
+  console.log(data);
+  const [logOut] = useLogoutMutation();
+
+  const handleLogOut = async () => {
+    await logOut({});
+    persistor.purge();
+    toast.success("Logged out");
+  };
+
   const [mounted, setMounted] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
   const dropDownRef = useRef(null);
-
- 
 
   useEffect(() => {
     const close = (e: MouseEvent) => {
@@ -134,7 +147,10 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
                   </>
                 )}
 
-                <Button className="cursor-pointer text-white  dark:bg-gradient-to-r from-purple-500 to-blue-500">
+                <Button
+                  onClick={handleLogOut}
+                  className="cursor-pointer text-white  dark:bg-gradient-to-r from-purple-500 to-blue-500"
+                >
                   Log Out
                 </Button>
               </div>

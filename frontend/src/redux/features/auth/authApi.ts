@@ -1,5 +1,5 @@
 import { baseApi } from "@/redux/api/baseApi";
-import { loggedUser, setUser } from "./authSlice";
+import { loggedUser, logout, setUser } from "./authSlice";
 
 type RegistrationResponse = {
   message: string;
@@ -59,11 +59,36 @@ const authApi = baseApi.injectEndpoints({
         }
       },
     }),
+    socialLogin: builder.mutation({
+      query: (body) => ({
+        url: "/user/social-auth",
+        method: "POST",
+        body,
+      }),
+
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        const result = await queryFulfilled;
+        dispatch(
+          loggedUser({
+            accessToken: result.data.data.accessToken,
+            user: result.data.data.user,
+          })
+        );
+      },
+    }),
     logout: builder.mutation({
       query: () => ({
         url: "/auth/logout",
         method: "POST",
       }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          dispatch(logout());
+        } catch (error) {
+          console.log(error);
+        }
+      },
     }),
     currentUser: builder.query({
       query: () => ({

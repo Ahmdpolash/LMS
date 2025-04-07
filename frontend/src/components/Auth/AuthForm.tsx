@@ -17,9 +17,8 @@ import {
   useLoginMutation,
   useRegisterMutation,
 } from "@/redux/features/auth/authApi";
-import { useEffect } from "react";
 import { toast } from "react-hot-toast";
-
+import { signIn } from "next-auth/react";
 type FormType = "sign-up" | "sign-in";
 
 const authFormSchema = (type: FormType) => {
@@ -66,7 +65,6 @@ const AuthForm = ({ type }: { type: FormType }) => {
         await login(values).unwrap();
         toast.success("Signed in successfully.");
         router.push("/");
-        console.log(data, "dd");
       }
     } catch (error: any) {
       toast.error(error?.data?.message || "Something went wrong");
@@ -142,6 +140,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
 
             {/* Google Sign-In Button */}
             <Button
+              onClick={() => signIn("google")}
               variant="outline"
               className="cursor-pointer w-full flex items-center justify-center gap-2"
             >

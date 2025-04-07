@@ -14,16 +14,17 @@ import httpStatus from "http-status";
 const LoginUser = catchAsync(async (req, res) => {
   const result = await AuthServices.LoginUser(req.body);
   const { refreshToken, accessToken, user } = result;
+  const isProduction = process.env.NODE_ENV === "production";
 
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: true, // set to true if using HTTPS
     sameSite: "none",
+    secure: isProduction,
   });
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
-    secure: true, // set to true if using HTTPS
     sameSite: "none",
+    secure: isProduction,
   });
 
   res.status(200).json({
@@ -40,16 +41,17 @@ const LoginUser = catchAsync(async (req, res) => {
 
 const LogOut = catchAsync(async (req, res) => {
   const userId = req.user?._id;
-  console.log(userId);
+
   const result = await AuthServices.LogOut(userId);
+  const isProduction = process.env.NODE_ENV === "production";
 
   res.clearCookie("refreshToken", {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: isProduction,
   });
   res.clearCookie("accessToken", {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: isProduction,
   });
 
   res.status(200).json({
