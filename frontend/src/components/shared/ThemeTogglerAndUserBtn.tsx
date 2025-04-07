@@ -12,21 +12,12 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
   const { user } = useAppSelector((state) => state.auth) as {
     user: TUser | null;
   };
-  console.log(user);
+ 
   const [mounted, setMounted] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
   const dropDownRef = useRef(null);
 
-  const it = [
-    {
-      name: "My Course ",
-      path: "/dashboard/my-course ",
-    },
-    {
-      name: "Dashboard",
-      path: "/dashboard ",
-    },
-  ];
+ 
 
   useEffect(() => {
     const close = (e: MouseEvent) => {

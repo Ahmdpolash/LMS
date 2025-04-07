@@ -19,12 +19,14 @@ type Avatar = {
 };
 
 export type TUser = {
+  userId: string;
   avatar: Avatar;
   courses: string[];
   createdAt: string;
   email: string;
   isDeleted: boolean;
   isVerified: boolean;
+  number: string;
   name: string;
   password: string;
   role: "admin" | "user" | "instructor"; // You can adjust roles as necessary
