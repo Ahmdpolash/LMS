@@ -2,9 +2,16 @@ import { model, Schema } from "mongoose";
 import { IUser, UserModel } from "./user.interface";
 
 import bcrypt from "bcryptjs";
+import { generateRandomId } from "../../utils/generateRandomId";
 
 const UserSchema = new Schema<IUser, UserModel>(
   {
+    userId: {
+      type: String,
+      required: true,
+      unique: true,
+      default: generateRandomId,
+    },
     name: {
       type: String,
       required: [true, "Please Enter your Name"],

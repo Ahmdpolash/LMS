@@ -17,13 +17,13 @@ const LoginUser = catchAsync(async (req, res) => {
 
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: config.node_env === "production", // set to true if using HTTPS
-    sameSite: "lax",
+    secure: true, // set to true if using HTTPS
+    sameSite: "none",
   });
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
-    secure: config.node_env === "production", // set to true if using HTTPS
-    sameSite: "lax",
+    secure: true, // set to true if using HTTPS
+    sameSite: "none",
   });
 
   res.status(200).json({
@@ -74,11 +74,11 @@ const UpdateAccessToken = catchAsync(async (req, res) => {
   // set the cookie again
   res.cookie("accessToken", accessToken, accessTokenOptions);
   res.cookie("refreshToken", refToken, refreshTokenOptions);
-  await redis.set(user._id, JSON.stringify(user), "EX", 604800);  // 7d
+  await redis.set(user._id, JSON.stringify(user), "EX", 604800); // 7d
 
   res.status(200).json({
     success: true,
-    message: "Access token generated successfully", 
+    message: "Access token generated successfully",
     data: {
       accessToken,
     },

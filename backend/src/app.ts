@@ -9,9 +9,19 @@ import router from "./routes";
 
 const app: Application = express();
 
+// app.use(
+//   cors({
+//     origin: process.env.ORIGIN?.split(","),
+//     credentials: true,
+//   })
+// );
+
 app.use(
   cors({
-    origin: process.env.ORIGIN?.split(","),
+    origin: [
+      "http://localhost:3000",
+      "https://elearning-seven-kappa.vercel.app",
+    ],
     credentials: true,
   })
 );

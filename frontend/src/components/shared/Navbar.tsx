@@ -31,7 +31,7 @@ export default function Navbar() {
     setOpen(!open);
   };
 
-  const user = false;
+
 
   return (
     <header
@@ -67,7 +67,7 @@ export default function Navbar() {
               theme={theme}
               toggleMenu={toggleMenu}
               open={open}
-              user={user}
+             
             />
           </div>
         </Container>

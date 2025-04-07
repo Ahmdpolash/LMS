@@ -2,6 +2,7 @@ import { Model } from "mongoose";
 import { USER_ROLE } from "./user.constant";
 
 export type IUser = {
+  userId: string;
   _id: string;
   name: string;
   email: string;
@@ -11,7 +12,6 @@ export type IUser = {
     url: string;
   };
   role: "admin" | "user" | "admin";
-
   isVerified: boolean;
   isDeleted: boolean;
   status: "active" | "blocked";

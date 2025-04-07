@@ -4,14 +4,15 @@ import React, { useEffect, useRef, useState } from "react";
 import MobileMenu from "./MobileMenu";
 import { Button } from "../ui/button";
 import { MenuIcon, Moon, Sun } from "lucide-react";
+import { useAppSelector } from "@/redux/hooks";
+import Image from "next/image";
+import { TUser } from "@/types";
 
-const ThemeTogglerAndUserBtn = ({
-  setTheme,
-  theme,
-  toggleMenu,
-  open,
-  user,
-}: any) => {
+const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
+  const { user } = useAppSelector((state) => state.auth) as {
+    user: TUser | null;
+  };
+  console.log(user);
   const [mounted, setMounted] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
   const dropDownRef = useRef(null);
@@ -48,8 +49,6 @@ const ThemeTogglerAndUserBtn = ({
 
   if (!mounted) return null;
 
-  const role: string = "user";
-
   return (
     <div className="flex items-center space-x-4">
       <Button
@@ -74,12 +73,12 @@ const ThemeTogglerAndUserBtn = ({
         <>
           <div ref={dropDownRef} className="relative mx-auto w-fit text-black">
             <button onClick={() => setOpenDropdown((prev) => !prev)}>
-              <img
+              <Image
                 width={40}
                 height={40}
                 className="cursor-pointer size-10 rounded-full bg-slate-500 object-cover duration-500 hover:scale-x-[98%] hover:opacity-80"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIn-gE6j6sjvg0ekFgFBIzVP5VdN3aBu9dLg&s"
-                alt="avatar drop down navigate ui"
+                src={user.avatar ? user.avatar?.url : "/user.png"}
+                alt={user.name}
               />
             </button>
             <ul
@@ -90,17 +89,21 @@ const ThemeTogglerAndUserBtn = ({
               } absolute right-0 top-12 z-50 w-64 rounded-xl bg-white dark:bg-[#1f2937] shadow-lg transition-all`}
             >
               <div className="flex flex-col items-center p-4 border-b dark:border-gray-700">
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIn-gE6j6sjvg0ekFgFBIzVP5VdN3aBu9dLg&s"
-                  alt="User avatar"
-                  className="size-16 rounded-full object-cover"
+                <Image
+                  width={60}
+                  height={60}
+                  className="cursor-pointer size-16 rounded-full bg-slate-500 object-cover duration-500 hover:scale-x-[98%] hover:opacity-80"
+                  src={user.avatar ? user.avatar?.url : "/user.png"}
+                  alt={user.name}
                 />
                 <p className="mt-2 text-sm font-semibold text-gray-900 dark:text-white">
-                  Polash Ahmed
+                  {user?.name}
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                  Student ID: WEB8-1292
-                </p>
+                {user?.role !== "admin" && (
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Student ID: WEB8-1292
+                  </p>
+                )}
                 <Link href={"/dashboard/my-profile"}>
                   <button className="cursor-pointer mt-3 px-4 py-1 text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-blue-500 rounded-full hover:opacity-90 transition">
                     View Profile
@@ -108,7 +111,7 @@ const ThemeTogglerAndUserBtn = ({
                 </Link>
               </div>
               <div className="flex flex-col py-2">
-                {role === "admin" ? (
+                {user?.role === "admin" ? (
                   <>
                     <Link
                       className={`w-ful text-black dark:text-white cursor-pointer text-left px-5 py-3 text-sm hover:dark:bg-[#121A31] duration-500 transition `}

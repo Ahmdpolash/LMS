@@ -1,14 +1,9 @@
-
 import React, { ReactNode } from "react";
-
-
 
 const layout = ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`overflow-x-hidden`}>
-        {children}
-      </body>
+      <body className={`overflow-x-hidden`}>{children}</body>
     </html>
   );
 };
