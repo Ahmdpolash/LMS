@@ -9,16 +9,20 @@ import { Form } from "@/components/ui/form";
 
 import FormField from "./FormField";
 import Link from "next/link";
-
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Separator } from "../ui/separator";
 import Container from "../shared/Container";
 import {
   useLoginMutation,
   useRegisterMutation,
+  useSocialLoginMutation,
 } from "@/redux/features/auth/authApi";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { signIn } from "next-auth/react";
+import { useAppSelector } from "@/redux/hooks";
+import { TUser } from "@/types";
+import { useEffect } from "react";
 type FormType = "sign-up" | "sign-in";
 
 const authFormSchema = (type: FormType) => {
@@ -39,9 +43,32 @@ const authFormSchema = (type: FormType) => {
 };
 
 const AuthForm = ({ type }: { type: FormType }) => {
-  const [register, { isLoading }] = useRegisterMutation();
-  const [login] = useLoginMutation();
   const router = useRouter();
+  const [register, { isLoading }] = useRegisterMutation();
+  const [socialAuth, { isSuccess, isLoading: loading }] =
+    useSocialLoginMutation();
+  const [login] = useLoginMutation();
+  const { user } = useAppSelector((state) => state.auth) as {
+    user: TUser | null;
+  };
+  const { data } = useSession();
+
+  // social auth
+  useEffect(() => {
+    if (user) {
+      if (data) {
+        socialAuth({
+          email: data?.user?.email,
+          name: data?.user?.name,
+          avatar: data?.user?.image,
+        });
+        if (isSuccess) {
+          router.push("/");
+          toast.success("Login Successfull");
+        }
+      }
+    }
+  }, []);
 
   // 1. Define your form.
   const formSchema = authFormSchema(type);
@@ -59,7 +86,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
     try {
       if (type === "sign-up") {
         await register(values).unwrap();
-        toast.success("Account verified successfully !! Please login Now.");
+        toast.success("Please Check your email to activate your account");
         router.push("/verify-account");
       } else {
         await login(values).unwrap();
@@ -140,7 +167,11 @@ const AuthForm = ({ type }: { type: FormType }) => {
 
             {/* Google Sign-In Button */}
             <Button
-              onClick={() => signIn("google")}
+              onClick={() =>
+                signIn("google", {
+                  callbackUrl: "/", // or any route after login
+                })
+              }
               variant="outline"
               className="cursor-pointer w-full flex items-center justify-center gap-2"
             >
@@ -167,7 +198,14 @@ const AuthForm = ({ type }: { type: FormType }) => {
                   d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
                 />
               </svg>
-              {isSignIn ? "Sign in with Google" : "Sign up with Google"}
+
+              {loading ? (
+                <div className="w-6 h-6 animate-[spin_1s_linear_infinite] rounded-full border-4 border-r-[#fff] border-[#111]"></div>
+              ) : isSignIn ? (
+                "Sign in with Google"
+              ) : (
+                "Sign up with Google"
+              )}
             </Button>
 
             <p className="text-center">

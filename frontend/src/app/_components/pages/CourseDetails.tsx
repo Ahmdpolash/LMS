@@ -32,7 +32,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function CourseDetails() {
   const params = useParams();
-  const courseId = params.courseId;
 
   const [activeTab, setActiveTab] = useState("overview");
   const [expandedSections, setExpandedSections] = useState<number[]>([0]); // First section expanded by default
@@ -49,7 +48,7 @@ export default function CourseDetails() {
 
   // Mock course data - in a real app, this would be fetched from an API
   const courseData = {
-    id: courseId,
+    id: 1,
     title: "Complete Web Development Bootcamp: From Zero to Hero",
     subtitle:
       "Learn HTML, CSS, JavaScript, React, Node.js, MongoDB and more! Build real-world projects and become a full-stack developer.",

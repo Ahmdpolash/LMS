@@ -14,17 +14,22 @@ import httpStatus from "http-status";
 const LoginUser = catchAsync(async (req, res) => {
   const result = await AuthServices.LoginUser(req.body);
   const { refreshToken, accessToken, user } = result;
-  const isProduction = process.env.NODE_ENV === "production";
+  // const isProduction = process.env.NODE_ENV === "production";
+  const isLocalhost = req.headers.origin?.includes("localhost");
 
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    sameSite: "none",
-    secure: isProduction,
+    sameSite: "lax",
+    // secure: isProduction,
+    secure: false,
+    path: "/",
   });
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
-    sameSite: "none",
-    secure: isProduction,
+    sameSite: "lax",
+    // secure: isProduction,
+    secure: false,
+    path: "/",
   });
 
   res.status(200).json({

@@ -11,6 +11,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { TUser } from "@/types";
+import { useLogoutMutation } from "@/redux/features/auth/authApi";
+import { persistor } from "@/redux/store";
+import toast from "react-hot-toast";
 
 type DesktopSidebarProps = {
   user: TUser | null;
@@ -18,6 +21,13 @@ type DesktopSidebarProps = {
 
 const DesktopSidebar = ({ user }: DesktopSidebarProps) => {
   const pathname = usePathname();
+  const [logOut] = useLogoutMutation();
+
+  const handleLogOut = async () => {
+    await logOut({});
+    persistor.purge();
+    toast.success("Logged out");
+  };
 
   return (
     <div className="hidden bg-gray-300/50 dark:bg-[#151d33] shadow-md dark:shadow-xl border border-slate-300 dark:border-slate-700 rounded-lg lg:block h-[65vh] z-40 w-[290px] ">
@@ -115,7 +125,10 @@ const DesktopSidebar = ({ user }: DesktopSidebarProps) => {
             </>
           )}
 
-          <li className=" cursor-pointer flex justify-start items-center gap-2 py-2 px-4 hover:dark:bg-[#1e2a78] hover:bg-gray-200 rounded-r-sm transition-all duration-300">
+          <li
+            onClick={handleLogOut}
+            className=" cursor-pointer flex justify-start items-center gap-2 py-2 px-4 hover:dark:bg-[#1e2a78] hover:bg-gray-200 rounded-r-sm transition-all duration-300"
+          >
             <LogOutIcon className="w-5 h-5" />
             <span className="block">Log Out</span>
           </li>

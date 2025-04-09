@@ -42,10 +42,9 @@ export const persistor = persistStore(store);
 
 // call refresh token every page load
 
-// const initializeApp = async () => {
-//   await store.dispatch(
-//     baseApi.endpoints.refreshToken.initiate({}, { forceRefetch: true })
-//   );
-// };
+const initializeApp = async () => {
+  await store.dispatch(baseApi.endpoints.refreshToken.initiate({}));
+  await store.dispatch(baseApi.endpoints.currentUser.initiate({}));
+};
 
-// initializeApp();
+initializeApp();

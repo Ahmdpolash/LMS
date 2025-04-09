@@ -17,6 +17,7 @@ import { usePathname } from "next/navigation";
 import DesktopSidebar from "@/app/_components/dashboard/DesktopSidebar";
 import { useAppSelector } from "@/redux/hooks";
 import { TUser } from "@/types";
+import ProtectedRoute from "@/hooks/userProtected";
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   const { user } = useAppSelector((state) => state.auth) as {
@@ -160,7 +161,9 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
           <div className="flex gap-4 lg:gap-7 lg:my-20 py-4">
             <DesktopSidebar user={user as TUser} />
 
-            <div className="flex-1/2 overflow-x-auto">{children}</div>
+            <div className="flex-1/2 overflow-x-auto">
+              <ProtectedRoute>{children}</ProtectedRoute>
+            </div>
           </div>
         </Container>
       </div>

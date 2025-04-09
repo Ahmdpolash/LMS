@@ -83,7 +83,7 @@ const authApi = baseApi.injectEndpoints({
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
-          const result = await queryFulfilled;
+          await queryFulfilled;
           dispatch(logout());
         } catch (error) {
           console.log(error);
@@ -106,4 +106,5 @@ export const {
   useLogoutMutation,
   useActivationMutation,
   useCurrentUserQuery,
+  useSocialLoginMutation,
 } = authApi;

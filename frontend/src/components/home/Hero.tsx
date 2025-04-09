@@ -49,7 +49,7 @@ export default function Hero() {
                 {` Join our community of 500K+ learners and access 20K+ courses\n\n taught by industry experts. Start your learning journey today.`}
               </TextAnimate>
 
-              <div className="flex flex-row gap-4">
+              <div className="flex gap-4">
                 <Link href={"/sign-in"}>
                   <Button className="bg-[rgb(37,150,190)] cursor-pointer hover:bg-[rgb(37,150,190)]/80 text-white px-8 py-6 text-[17px] font-medium rounded-lg group transition-all duration-300 hover:shadow-lg hover:shadow-[rgb(37,150,190)]/20">
                     Get Started

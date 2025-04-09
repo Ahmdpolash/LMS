@@ -9,21 +9,24 @@ import Image from "next/image";
 import { TUser } from "@/types";
 import { useLogoutMutation } from "@/redux/features/auth/authApi";
 import toast from "react-hot-toast";
-import { useSession } from "next-auth/react";
+
+// import { persistor } from "@/redux/store";
+import { useRouter } from "next/navigation";
 import { persistor } from "@/redux/store";
 
 const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
   const { user } = useAppSelector((state) => state.auth) as {
     user: TUser | null;
   };
-  const { data } = useSession();
 
-  console.log(data);
+  console.log(user, "aa");
+  const router = useRouter();
   const [logOut] = useLogoutMutation();
 
   const handleLogOut = async () => {
-    await logOut({});
     persistor.purge();
+    await logOut({});
+    router.push("/");
     toast.success("Logged out");
   };
 
@@ -104,7 +107,7 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
                 </p>
                 {user?.role !== "admin" && (
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Student ID: WEB8-1292
+                    Student ID: {user?.userId}
                   </p>
                 )}
                 <Link href={"/dashboard/my-profile"}>

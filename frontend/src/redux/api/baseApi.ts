@@ -5,15 +5,23 @@ export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
     // baseUrl: process.env.NEXT_PUBLIC_API_URL,
+    // baseUrl: 'https://lms-backend-seven-ruddy.vercel.app/api/v1',
     baseUrl: "http://localhost:8000/api/v1",
     credentials: "include",
   }),
 
   endpoints: (builder) => ({
-    refreshToken: builder.query({
-      query: () => ({
+    refreshToken: builder.mutation({
+      query: (data) => ({
         url: "/auth/refresh-token",
         method: "POST",
+        credentials: "include",
+      }),
+    }),
+    currentUser: builder.query({
+      query: (data) => ({
+        url: "/user/me",
+        method: "GET",
         credentials: "include",
       }),
     }),
@@ -22,4 +30,4 @@ export const baseApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const {} = baseApi;
+export const { useCurrentUserQuery, useRefreshTokenMutation } = baseApi;
