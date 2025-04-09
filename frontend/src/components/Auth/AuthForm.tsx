@@ -64,6 +64,10 @@ const AuthForm = ({ type }: { type: FormType }) => {
           avatar: data?.user?.image,
         });
       }
+      // delay redirect so Redux and cookies set
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
     }
 
     if (isSuccess) {

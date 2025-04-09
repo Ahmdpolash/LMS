@@ -2,7 +2,6 @@ import { model, Schema } from "mongoose";
 import { IUser, UserModel } from "./user.interface";
 
 import bcrypt from "bcryptjs";
-import { generateRandomId } from "../../utils/generateRandomId";
 
 const UserSchema = new Schema<IUser, UserModel>(
   {
@@ -10,7 +9,6 @@ const UserSchema = new Schema<IUser, UserModel>(
       type: String,
       required: true,
       unique: true,
-      default: generateRandomId,
     },
     name: {
       type: String,
@@ -49,6 +47,7 @@ const UserSchema = new Schema<IUser, UserModel>(
       enum: ["active", "blocked"],
       default: "active",
     },
+
     courses: [
       {
         courseId: {
@@ -56,6 +55,24 @@ const UserSchema = new Schema<IUser, UserModel>(
         },
       },
     ],
+
+    // additional
+    number: {
+      type: Number,
+    },
+    age_range: {
+      type: String,
+    },
+    internet_type: {
+      type: String,
+    },
+    gender: {
+      type: String,
+      enum: ["male", "female"],
+    },
+    area_type: {
+      type: String,
+    },
   },
 
   {

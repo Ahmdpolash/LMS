@@ -51,7 +51,6 @@ const GetMe = catchAsync(async (req, res) => {
 //SOCIAL AUTH
 
 const SocialAuth = catchAsync(async (req, res) => {
-  console.log(req.body);
   await UserServices.SocialAuth(req.body, res);
 });
 

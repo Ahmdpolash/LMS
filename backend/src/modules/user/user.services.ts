@@ -9,6 +9,7 @@ import { jwtHelper } from "../../helper/JwtHelper";
 import { sendToken } from "../../utils/sentToken";
 import { Response } from "express";
 import { redis } from "../../redis";
+import { generateStudentId } from "../../utils/generateRandomId";
 
 // CREATE USER
 const CreateUser = async (payload: IUser) => {
@@ -63,11 +64,15 @@ const ActivateUser = async (payload: IActivteUser) => {
     throw new AppError("This user already exists", httpStatus.CONFLICT);
   }
 
+  // 6 digit random id generator
+  const userId = generateStudentId();
+
   // create a new user
   await User.create({
     name,
     email,
     password,
+    userId,
   });
 };
 

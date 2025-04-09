@@ -15,6 +15,11 @@ export type IUser = {
   isVerified: boolean;
   isDeleted: boolean;
   status: "active" | "blocked";
+  number?: number;
+  gender?: "male" | "female";
+  age_range: string;
+  internet_type?: string;
+  area_type?: string;
   courses: Array<{ courseId: string }>;
   comparePassword: (password: string) => Promise<boolean>;
 };
