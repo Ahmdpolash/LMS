@@ -65,9 +65,9 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         body,
       }),
-
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         const result = await queryFulfilled;
+        console.log(result.data);
         dispatch(
           loggedUser({
             accessToken: result.data.data.accessToken,
@@ -89,13 +89,6 @@ const authApi = baseApi.injectEndpoints({
           console.log(error);
         }
       },
-    }),
-    currentUser: builder.query({
-      query: () => ({
-        url: "/user/me",
-        method: "GET",
-        credentials: "include",
-      }),
     }),
   }),
 });

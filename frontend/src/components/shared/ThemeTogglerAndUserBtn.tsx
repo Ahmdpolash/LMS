@@ -10,24 +10,29 @@ import { TUser } from "@/types";
 import { useLogoutMutation } from "@/redux/features/auth/authApi";
 import toast from "react-hot-toast";
 
-// import { persistor } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import { persistor } from "@/redux/store";
+import { signOut, useSession } from "next-auth/react";
 
 const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
-  const { user } = useAppSelector((state) => state.auth) as {
-    user: TUser | null;
+  const { user: customUser } = useAppSelector((state) => state.auth) as {
+    user: any | null;
   };
+  const { data: session } = useSession();
+  const user = customUser || session?.user || null;
 
-  console.log(user, "aa");
   const router = useRouter();
   const [logOut] = useLogoutMutation();
 
   const handleLogOut = async () => {
-    persistor.purge();
-    await logOut({});
-    router.push("/");
-    toast.success("Logged out");
+    if (session) {
+      signOut({ callbackUrl: "/" });
+    } else {
+      await logOut({});
+      await persistor.purge();
+      router.push("/");
+      toast.success("Logged out");
+    }
   };
 
   const [mounted, setMounted] = useState(false);
@@ -83,8 +88,12 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
                 width={40}
                 height={40}
                 className="cursor-pointer size-10 rounded-full bg-slate-500 object-cover duration-500 hover:scale-x-[98%] hover:opacity-80"
-                src={user.avatar ? user.avatar?.url : "/user.png"}
-                alt={user.name}
+                src={
+                  customUser
+                    ? customUser.avatar?.url
+                    : session?.user?.image || "/user.png"
+                }
+                alt={user?.name || "User"}
               />
             </button>
             <ul
@@ -99,11 +108,16 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
                   width={60}
                   height={60}
                   className="cursor-pointer size-16 rounded-full bg-slate-500 object-cover duration-500 hover:scale-x-[98%] hover:opacity-80"
-                  src={user.avatar ? user.avatar?.url : "/user.png"}
-                  alt={user.name}
+                  src={
+                    customUser
+                      ? customUser.avatar?.url
+                      : session?.user?.image || "/user.png"
+                  }
+                  alt={user?.name || "User"}
                 />
+
                 <p className="mt-2 text-sm font-semibold text-gray-900 dark:text-white">
-                  {user?.name}
+                  {customUser?.name || session?.user?.name}
                 </p>
                 {user?.role !== "admin" && (
                   <p className="text-xs text-gray-500 dark:text-gray-400">

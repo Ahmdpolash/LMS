@@ -4,13 +4,9 @@ import { TUser } from "@/types";
 import React from "react";
 
 const MyProfile = () => {
-
   const { user } = useAppSelector((state) => state.auth) as {
     user: TUser | null;
   };
-
-  
-
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -21,21 +17,23 @@ const MyProfile = () => {
 
       <div className="space-y-2">
         <p className="text-slate-800 dark:text-gray-400 text-sm">Email</p>
-        <p className="text-slate-800 dark:text-white text-lg">
-          {user?.email}
-        </p>
+        <p className="text-slate-800 dark:text-white text-lg">{user?.email}</p>
       </div>
 
       <div className="space-y-2">
         <p className="text-slate-800 dark:text-gray-400 text-sm">Student ID</p>
-        <p className="text-slate-800 dark:text-white text-lg">{ user?.userId || 'N/A'}</p>
+        <p className="text-slate-800 dark:text-white text-lg">
+          {user?.userId || "N/A"}
+        </p>
       </div>
 
       <div className="space-y-2">
         <p className="text-slate-800 dark:text-gray-400 text-sm">
           Mobile Number
         </p>
-        <p className="text-slate-800 dark:text-white text-lg">{ user?.number || "N/A"}</p>
+        <p className="text-slate-800 dark:text-white text-lg">
+          {user?.number || "N/A"}
+        </p>
       </div>
     </div>
   );

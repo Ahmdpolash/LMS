@@ -22,7 +22,7 @@ import { toast } from "sonner";
 import { signIn } from "next-auth/react";
 import { useAppSelector } from "@/redux/hooks";
 import { TUser } from "@/types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 type FormType = "sign-up" | "sign-in";
 
 const authFormSchema = (type: FormType) => {
@@ -51,24 +51,25 @@ const AuthForm = ({ type }: { type: FormType }) => {
   const { user } = useAppSelector((state) => state.auth) as {
     user: TUser | null;
   };
+
   const { data } = useSession();
 
   // social auth
   useEffect(() => {
-    if (user) {
-      if (data) {
+    if (!user) {
+      if (data && data?.user?.email) {
         socialAuth({
-          email: data?.user?.email,
           name: data?.user?.name,
+          email: data?.user?.email,
           avatar: data?.user?.image,
         });
-        if (isSuccess) {
-          router.push("/");
-          toast.success("Login Successfull");
-        }
       }
     }
-  }, []);
+
+    if (isSuccess) {
+      toast.success("Logged In Successfull");
+    }
+  }, [data, user]);
 
   // 1. Define your form.
   const formSchema = authFormSchema(type);
@@ -167,11 +168,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
 
             {/* Google Sign-In Button */}
             <Button
-              onClick={() =>
-                signIn("google", {
-                  callbackUrl: "/", // or any route after login
-                })
-              }
+              onClick={() => signIn("google")}
               variant="outline"
               className="cursor-pointer w-full flex items-center justify-center gap-2"
             >

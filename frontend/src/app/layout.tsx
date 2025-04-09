@@ -38,6 +38,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
               enableSystem={false}
               disableTransitionOnChange
             >
+              {/*todo: custom loader */}
               {children}
               <Toaster position="top-center" />
               <HotToaster reverseOrder={false} />
