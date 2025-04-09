@@ -11,13 +11,13 @@ export type IUser = {
     public_id: string;
     url: string;
   };
-  role: "admin" | "user" | "admin";
+  role: "admin" | "user" | "instructor";
   isVerified: boolean;
   isDeleted: boolean;
   status: "active" | "blocked";
   number?: number;
   gender?: "male" | "female";
-  age_range: string;
+  age_range?: string;
   internet_type?: string;
   area_type?: string;
   courses: Array<{ courseId: string }>;

@@ -55,23 +55,44 @@ const AuthForm = ({ type }: { type: FormType }) => {
   const { data } = useSession();
 
   // social auth
+  // useEffect(() => {
+  //   if (!user) {
+  //     if (data && data?.user?.email) {
+  //       socialAuth({
+  //         name: data?.user?.name,
+  //         email: data?.user?.email,
+  //         avatar: data?.user?.image,
+  //       });
+  //     }
+  //     // delay redirect so Redux and cookies set
+  //     setTimeout(() => {
+  //       router.push("/");
+  //     }, 700);
+  //   }
+
+  //   if (isSuccess) {
+  //     toast.success("Logged In Successfull");
+  //   }
+  // }, [data, user]);
+
   useEffect(() => {
-    if (!user) {
-      if (data && data?.user?.email) {
-        socialAuth({
-          name: data?.user?.name,
-          email: data?.user?.email,
-          avatar: data?.user?.image,
-        });
-      }
-      // delay redirect so Redux and cookies set
+    const isGoogleLogin = data?.user?.email && !user; // only Google login case
+
+    if (isGoogleLogin) {
+      socialAuth({
+        name: data?.user?.name,
+        email: data?.user?.email,
+        avatar: data?.user?.image,
+      });
+
+      // delay only for Google login
       setTimeout(() => {
         router.push("/");
-      }, 1000);
+      }, 700);
     }
 
     if (isSuccess) {
-      toast.success("Logged In Successfull");
+      toast.success("Logged In Successfully");
     }
   }, [data, user]);
 

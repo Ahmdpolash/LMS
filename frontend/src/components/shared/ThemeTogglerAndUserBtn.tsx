@@ -90,10 +90,10 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
                 className="cursor-pointer size-10 rounded-full bg-slate-500 object-cover duration-500 hover:scale-x-[98%] hover:opacity-80"
                 src={
                   customUser
-                    ? customUser.avatar?.url
+                    ? customUser.avatar?.url || "/user.png"
                     : session?.user?.image || "/user.png"
                 }
-                alt={user?.name || "User"}
+                alt="user-profile-image"
               />
             </button>
             <ul
@@ -110,10 +110,10 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
                   className="cursor-pointer size-16 rounded-full bg-slate-500 object-cover duration-500 hover:scale-x-[98%] hover:opacity-80"
                   src={
                     customUser
-                      ? customUser.avatar?.url
+                      ? customUser.avatar?.url || "/user.png"
                       : session?.user?.image || "/user.png"
                   }
-                  alt={user?.name || "User"}
+                  alt="user-profile"
                 />
 
                 <p className="mt-2 text-sm font-semibold text-gray-900 dark:text-white">
