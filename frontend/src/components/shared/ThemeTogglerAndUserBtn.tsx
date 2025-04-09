@@ -26,7 +26,7 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
 
   const handleLogOut = async () => {
     if (session) {
-      signOut({ callbackUrl: "/" });
+      signOut();
     } else {
       await logOut({});
       await persistor.purge();

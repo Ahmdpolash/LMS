@@ -64,37 +64,35 @@ const AuthForm = ({ type }: { type: FormType }) => {
   //         avatar: data?.user?.image,
   //       });
   //     }
-  //     // delay redirect so Redux and cookies set
-  //     setTimeout(() => {
-  //       router.push("/");
-  //     }, 700);
   //   }
 
   //   if (isSuccess) {
+  //     router.push("/");
   //     toast.success("Logged In Successfull");
   //   }
   // }, [data, user]);
 
-  useEffect(() => {
-    const isGoogleLogin = data?.user?.email && !user; // only Google login case
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
-    if (isGoogleLogin) {
+  // social auth
+  useEffect(() => {
+    if (!user && data?.user?.email) {
       socialAuth({
         name: data?.user?.name,
         email: data?.user?.email,
         avatar: data?.user?.image,
       });
-
-      // delay only for Google login
-      setTimeout(() => {
-        router.push("/");
-      }, 700);
+      setIsRedirecting(true); // Show loader
     }
+  }, [data]);
 
+  useEffect(() => {
     if (isSuccess) {
       toast.success("Logged In Successfully");
+      router.push("/");
+      setIsRedirecting(false); // Stop loader
     }
-  }, [data, user]);
+  }, [isSuccess]);
 
   // 1. Define your form.
   const formSchema = authFormSchema(type);
@@ -125,6 +123,15 @@ const AuthForm = ({ type }: { type: FormType }) => {
   };
 
   const isSignIn = type === "sign-in";
+
+  if (isRedirecting) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="w-10 h-10 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+        <p className="ml-4 text-lg">Signing you in...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="grid place-items-center h-screen mx-auto w-full lg:max-w-6xl ">

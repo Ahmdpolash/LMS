@@ -95,8 +95,10 @@ const getMe = async (id: string) => {
 const SocialAuth = async (payload: ISocialAuth, res: Response) => {
   try {
     const user = await User.findOne({ email: payload.email });
+    const userId = generateStudentId();
+
     if (!user) {
-      const newUser = await User.create(payload);
+      const newUser = await User.create({ ...payload, userId });
       return sendToken(newUser, res);
     } else {
       return sendToken(user, res);
