@@ -47,7 +47,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
   const [register, { isLoading }] = useRegisterMutation();
   const [socialAuth, { isSuccess, isLoading: loading }] =
     useSocialLoginMutation();
-  const [login] = useLoginMutation();
+  const [login, { isLoading: loginLoading }] = useLoginMutation();
   const { user } = useAppSelector((state) => state.auth) as {
     user: TUser | null;
   };
@@ -181,7 +181,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
                 />
 
                 <Button className="btn" type="submit">
-                  {isLoading ? (
+                  {isLoading || loginLoading ? ( // Combine the loading states
                     <div className="w-6 h-6 animate-[spin_1s_linear_infinite] rounded-full border-4 border-r-[#fff] border-[#111]"></div>
                   ) : isSignIn ? (
                     "Sign In"
@@ -203,6 +203,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
               onClick={() => signIn("google")}
               variant="outline"
               className="cursor-pointer w-full flex items-center justify-center gap-2"
+              disabled={loading} // Disable the button while loading
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -228,8 +229,9 @@ const AuthForm = ({ type }: { type: FormType }) => {
                 />
               </svg>
 
+              {/* Spinner when loading */}
               {loading ? (
-                <div className="w-6 h-6 animate-[spin_1s_linear_infinite] rounded-full border-4 border-r-[#fff] border-[#111]"></div>
+                <div className="w-6 h-6 border-4 border-t-4 border-transparent border-t-gray-500 rounded-full animate-spin"></div>
               ) : isSignIn ? (
                 "Sign in with Google"
               ) : (

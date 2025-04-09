@@ -24,14 +24,18 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
   const router = useRouter();
   const [logOut] = useLogoutMutation();
 
+  // make a normal funcion
+
   const handleLogOut = async () => {
     if (session) {
-      signOut();
+      // signOut({ callbackUrl: "/" });
+      // router.push("/");
+      await signOut({ redirect: false });
     } else {
       await logOut({});
       await persistor.purge();
       router.push("/");
-      toast.success("Logged out");
+      toast.success("Logged out successfully");
     }
   };
 

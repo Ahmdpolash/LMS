@@ -49,9 +49,9 @@ export default function Hero() {
                 {` Join our community of 500K+ learners and access 20K+ courses\n\n taught by industry experts. Start your learning journey today.`}
               </TextAnimate>
 
-              <div className="flex gap-4">
+              <div className="flex sm:flex-col md:flex-row gap-3 lg:gap-4">
                 <Link href={"/sign-in"}>
-                  <Button className="bg-[rgb(37,150,190)] cursor-pointer hover:bg-[rgb(37,150,190)]/80 text-white px-8 py-6 text-[17px] font-medium rounded-lg group transition-all duration-300 hover:shadow-lg hover:shadow-[rgb(37,150,190)]/20">
+                  <Button className="bg-[rgb(37,150,190)] cursor-pointer hover:bg-[rgb(37,150,190)]/80 text-white px-8 py-6 text-sm md:text-[17px] font-medium rounded-lg group transition-all duration-300 hover:shadow-lg hover:shadow-[rgb(37,150,190)]/20">
                     Get Started
                     <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
@@ -59,7 +59,7 @@ export default function Hero() {
                 <Link href={"/courses"}>
                   <Button
                     variant="outline"
-                    className="border-gray-300 cursor-pointer dark:border-gray-600 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 px-8 py-6 text-[17px] rounded-lg transition-all duration-300"
+                    className="border-gray-300 cursor-pointer dark:border-gray-600 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 px-8 py-6 text-sm  md:text-[17px] rounded-lg transition-all duration-300"
                   >
                     Explore Courses
                     <BookMarked className="ml-2 h-5 w-5" />
