@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { IUser, UserModel } from "./user.interface";
+import { IDeviceActivity, IUser, UserModel } from "./user.interface";
 
 import bcrypt from "bcryptjs";
 
@@ -77,6 +77,43 @@ const UserSchema = new Schema<IUser, UserModel>(
   {
     timestamps: true,
   }
+);
+
+const DeviceActivitySchema = new Schema<IDeviceActivity>(
+  {
+    userId: {
+      type: String,
+      required: true,
+    },
+    platform: {
+      type: String,
+      required: true,
+    },
+    browser: {
+      type: String,
+      required: true,
+    },
+    ipAddress: {
+      type: String,
+      required: false,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    lastActiveAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  {
+    timestamps: false,
+  }
+);
+
+export const DeviceActivity = model<IDeviceActivity>(
+  "DeviceActivity",
+  DeviceActivitySchema
 );
 
 // HASH PASSWORD BEFORE SAVING

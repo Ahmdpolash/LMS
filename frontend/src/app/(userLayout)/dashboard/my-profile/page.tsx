@@ -13,12 +13,12 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className=" text-white p-4 bg-gray-300/50 dark:bg-[#151d33] shadow-md dark:shadow-xl border border-slate-400 dark:border-slate-700 rounded-lg lg:h-[65vh]">
+    <div className=" text-white p-4 bg-gray-300/50 dark:bg-[#151d33] shadow-md dark:shadow-xl border border-slate-400 dark:border-slate-700 rounded-lg ">
       <div className="space-y-6">
         {/* Header Section */}
         <div className="flex justify-between items-center border-b border-dashed border-gray-400 dark:border-gray-600 pb-4">
           <h1 className="text-xl md:text-2xl font-medium bg-gradient-to-r from-[rgb(37,150,190)] to-purple-600 text-transparent bg-clip-text">
-            My Profile
+            {!open ? "My Profile" : "Update Profile Info"}
           </h1>
           <button
             onClick={toggleOpen}

@@ -23,9 +23,19 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
   const { user } = useAppSelector((state) => state.auth) as {
     user: TUser | null;
   };
-  const [open, setOpen] = useState(false);
-
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+  // const [scroll, setScroll] = useState(false);
+
+  // if (typeof window !== "undefined") {
+  //   window.addEventListener("scroll", () => {
+  //     if (window.scrollY > 10) {
+  //       setScroll(true);
+  //     } else {
+  //       setScroll(false);
+  //     }
+  //   });
+  // }
 
   return (
     <div className="">
@@ -159,7 +169,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
 
         <Container>
           <div className="flex gap-4 lg:gap-7 lg:my-20 py-4">
-            <DesktopSidebar user={user as TUser} />
+            <DesktopSidebar  user={user as TUser} />
 
             <div className="flex-1/2 overflow-x-auto">
               <ProtectedRoute>{children}</ProtectedRoute>

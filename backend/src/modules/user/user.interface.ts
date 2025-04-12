@@ -45,3 +45,15 @@ export interface UserModel extends Model<IUser> {
   isUserExistsByEmail(email: string): Promise<IUser>;
 }
 export type TUserRole = keyof typeof USER_ROLE;
+
+// device activity model
+import { Document } from "mongoose";
+
+export interface IDeviceActivity {
+  userId: string;
+  platform: string;
+  browser: string;
+  ipAddress: string;
+  createdAt: Date;
+  lastActiveAt: Date;
+}

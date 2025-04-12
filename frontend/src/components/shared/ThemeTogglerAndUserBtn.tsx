@@ -26,17 +26,26 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
 
   // make a normal funcion
 
+  // const handleLogOut = async () => {
+  //   if (session) {
+  //     // signOut({ callbackUrl: "/" });
+  //     // router.push("/");
+  //     await signOut();
+  //     router.push("/");
+  //   } else {
+  //     await logOut({});
+  //     await persistor.purge();
+  //     router.push("/");
+  //     toast.success("Logged out successfully");
+  //   }
+  // };
+
   const handleLogOut = async () => {
-    if (session) {
-      // signOut({ callbackUrl: "/" });
-      // router.push("/");
-      await signOut({ redirect: false });
-    } else {
-      await logOut({});
-      await persistor.purge();
-      router.push("/");
-      toast.success("Logged out successfully");
-    }
+    await logOut({}); // Your backend logout
+    await persistor.purge(); // Clear Redux persisted store
+    await signOut({ redirect: false }); // Sign out from NextAuth
+    router.push("/"); // Redirect after logout
+    toast.success("Logged out successfully");
   };
 
   const [mounted, setMounted] = useState(false);
@@ -66,15 +75,6 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
 
   return (
     <div className="flex items-center space-x-4">
-      {/* <Button
-        variant="ghost"
-        size="icon"
-        onClick={() => setTheme(theme === "dark" ? "light" : "dark")} // ✅ Toggle theme
-        className="text-gray-900  dark:text-white cursor-pointer"
-      >
-        {theme === "dark" ? <Sun className="h-[30px] w-[30px]" key="sun" /> : <Moon className="h-[30px] w-[30px]" key="moon" />}
-      </Button> */}
-
       <button
         className="cursor-pointer pr-0 lg:pr-2"
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}

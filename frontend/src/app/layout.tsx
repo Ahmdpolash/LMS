@@ -6,6 +6,7 @@ import { Toaster as HotToaster } from "react-hot-toast";
 import Loading from "./(auth)/loading";
 import { Metadata } from "next";
 import { Josefin_Sans, Poppins } from "next/font/google";
+import Custom from "./_components/Custom";
 
 const poppins = Poppins({
   variable: "--font-Poppins",
@@ -39,7 +40,8 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
               disableTransitionOnChange
             >
               {/*todo: custom loader */}
-              {children}
+
+              <Custom>{children}</Custom>
               <Toaster position="top-center" />
               <HotToaster reverseOrder={false} />
             </ThemeProvider>

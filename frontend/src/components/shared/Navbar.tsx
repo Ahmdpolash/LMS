@@ -6,6 +6,14 @@ import { useTheme } from "next-themes";
 import Container from "./Container";
 import DesktopMenu from "./DesktopMenu";
 import ThemeTogglerAndUserBtn from "./ThemeTogglerAndUserBtn";
+import { useAppSelector } from "@/redux/hooks";
+import { TUser } from "@/types";
+import { useSession } from "next-auth/react";
+import {
+  useLogoutMutation,
+  useSocialLoginMutation,
+} from "@/redux/features/auth/authApi";
+import { toast } from "sonner";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -30,6 +38,35 @@ export default function Navbar() {
   const toggleMenu = () => {
     setOpen(!open);
   };
+
+  // social login functionality
+
+  const { user } = useAppSelector((state) => state.auth) as {
+    user: TUser | null;
+  };
+  const [socialAuth, { isSuccess }] = useSocialLoginMutation();
+  const [logOut] = useLogoutMutation();
+  const { data } = useSession();
+
+  useEffect(() => {
+    if (!user) {
+      if (data) {
+        socialAuth({
+          name: data?.user?.name,
+          email: data?.user?.email,
+          avatar: data?.user?.image,
+        });
+      }
+    }
+
+    if (isSuccess) {
+      toast.success("Login Successfully");
+    }
+
+    // if (data === null) {
+    //   logOut({});
+    // }
+  }, []);
 
   return (
     <header
