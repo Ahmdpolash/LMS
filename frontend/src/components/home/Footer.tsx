@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8 cursor-pointer *:text-black dark:*:text-white">
             {/* About Column */}
-            <div >
+            <div>
               <h3 className="text-xl font-semibold mb-6">About</h3>
               <ul className="space-y-2 lg:space-y-4 list-none ">
                 {footerData?.about?.map((item, index) => (
@@ -34,7 +34,6 @@ export default function Footer() {
                     <Link
                       href={item.path}
                       className="dark:text-gray-300 hover:text-[rgb(37,150,190)] transition-colors text-black"
-
                     >
                       {item.name}
                     </Link>
@@ -52,7 +51,6 @@ export default function Footer() {
                     <Link
                       href={item.path}
                       className="dark:text-gray-300 hover:text-[rgb(37,150,190)] transition-colors text-black"
-
                     >
                       {item.name}
                     </Link>
@@ -62,7 +60,7 @@ export default function Footer() {
             </div>
 
             {/* Contact Info Column */}
-            <div>
+            <div className="hidden lg:block">
               <h3 className="text-xl font-semibold mb-6">Contact Info</h3>
               <ul className="space-y-2 lg:space-y-4 list-none">
                 {footerData?.contactInfo?.map((item, index) => (
@@ -71,10 +69,10 @@ export default function Footer() {
                     className="flex flex-col lg:flex-row items-center  space-x-"
                   >
                     <span className="dark:text-gray-300 hover:text-[rgb(37,150,190)] transition-colors text-black">
-                      {item.label} : 
+                      {item.label} :
                     </span>
                     <span className="dark:text-gray-300 hover:text-[rgb(37,150,190)] transition-colors text-black">
-                      {item.value }
+                      {item.value}
                     </span>
                   </li>
                 ))}

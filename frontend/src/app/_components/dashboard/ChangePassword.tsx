@@ -137,11 +137,10 @@ const ChangePassword = () => {
             className="cursor-pointer w-full bg-transparent  border border-teal-800 hover:bg-gray-800 transition-colors rounded p-3 text-white"
           >
             {isLoading ? (
-              <div className="w-6 h-6 border-4 border-t-4 border-transparent border-t-gray-500 rounded-full animate-spin"></div>
+              <div className="flex justify-center items-center mx-auto w-6 h-6 border-4 border-t-4 border-transparent border-t-gray-500 rounded-full animate-spin"></div>
             ) : (
               "Update"
             )}
-            
           </button>
         </form>
       </div>

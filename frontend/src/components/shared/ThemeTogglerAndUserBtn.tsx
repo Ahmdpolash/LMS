@@ -66,19 +66,30 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
 
   return (
     <div className="flex items-center space-x-4">
-      <Button
+      {/* <Button
         variant="ghost"
         size="icon"
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")} // ✅ Toggle theme
         className="text-gray-900  dark:text-white cursor-pointer"
       >
-        {theme === "dark" ? <Sun key="sun" /> : <Moon key="moon" />}
-      </Button>
+        {theme === "dark" ? <Sun className="h-[30px] w-[30px]" key="sun" /> : <Moon className="h-[30px] w-[30px]" key="moon" />}
+      </Button> */}
+
+      <button
+        className="cursor-pointer pr-0 lg:pr-2"
+        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      >
+        {theme === "dark" ? (
+          <Sun className="h-[24px] w-[24px]" key="sun" />
+        ) : (
+          <Moon className="h-[24px] w-[24px]" key="moon" />
+        )}
+      </button>
 
       {/* login button */}
       {!user ? (
         <Link href={"/sign-in"}>
-          <button className="text-[16px] cursor-pointer w-20 h-10 rounded-md bg-sky-500 text-white relative overflow-hidden group z-10 hover:text-white duration-1000">
+          <button className="text-[16px] cursor-pointer w-16 lg:w-20 h-8 lg:h-10 rounded-md bg-sky-500 text-white relative overflow-hidden group z-10 hover:text-white duration-1000">
             <span className="absolute bg-sky-600 size-36 rounded-full group-hover:scale-100 scale-0 -z-10 -left-2 -top-10 group-hover:duration-500 duration-700 origin-center transform transition-all"></span>
             <span className="absolute bg-sky-800 size-36 -left-2 -top-10 rounded-full group-hover:scale-100 scale-0 -z-10 group-hover:duration-700 duration-500 origin-center transform transition-all"></span>
             Login
@@ -183,14 +194,12 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
 
       <MobileMenu open={open} />
 
-      <Button
-        variant="ghost"
-        size="icon"
+      <button
         onClick={toggleMenu}
-        className=" lg:hidden text-gray-900 dark:text-white"
+        className=" lg:hidden size-9 cursor-pointer text-gray-900 dark:text-white"
       >
         <MenuIcon />
-      </Button>
+      </button>
     </div>
   );
 };
