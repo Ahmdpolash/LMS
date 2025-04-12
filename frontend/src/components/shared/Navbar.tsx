@@ -9,10 +9,7 @@ import ThemeTogglerAndUserBtn from "./ThemeTogglerAndUserBtn";
 import { useAppSelector } from "@/redux/hooks";
 import { TUser } from "@/types";
 import { useSession } from "next-auth/react";
-import {
-  useLogoutMutation,
-  useSocialLoginMutation,
-} from "@/redux/features/auth/authApi";
+import { useSocialLoginMutation } from "@/redux/features/auth/authApi";
 import { toast } from "sonner";
 
 export default function Navbar() {
@@ -45,7 +42,7 @@ export default function Navbar() {
     user: TUser | null;
   };
   const [socialAuth, { isSuccess }] = useSocialLoginMutation();
-  const [logOut] = useLogoutMutation();
+
   const { data } = useSession();
 
   useEffect(() => {

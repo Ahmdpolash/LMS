@@ -18,9 +18,7 @@ import { toast } from "sonner";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 
-
 type FormType = "sign-up" | "sign-in";
-
 
 const authFormSchema = (type: FormType) => {
   return z.object({
@@ -38,7 +36,6 @@ const authFormSchema = (type: FormType) => {
     }),
   });
 };
-
 
 const AuthForm = ({ type }: { type: FormType }) => {
   const router = useRouter();

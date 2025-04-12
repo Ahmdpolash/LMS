@@ -1,12 +1,9 @@
 "use client";
-import { useAppSelector } from "@/redux/hooks";
 import { TUser } from "@/types";
 import React from "react";
 
-const MyProfile = () => {
-  const { user } = useAppSelector((state) => state.auth) as {
-    user: TUser | null;
-  };
+const MyProfile = ({user}:{user:TUser}) => {
+  
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

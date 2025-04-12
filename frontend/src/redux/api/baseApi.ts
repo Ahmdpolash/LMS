@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { loggedUser } from "../features/auth/authSlice";
 
 // Define a service using a base URL and expected endpoints
 export const baseApi = createApi({

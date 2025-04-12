@@ -105,8 +105,8 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
                 className="cursor-pointer size-10 rounded-full bg-slate-500 object-cover duration-500 hover:scale-x-[98%] hover:opacity-80"
                 src={
                   customUser
-                    ? customUser.avatar?.url || "/user.png"
-                    : session?.user?.image || "/user.png"
+                    ? customUser.avatar?.url || "/avatar.jpeg"
+                    : session?.user?.image || "/avatar.jpeg"
                 }
                 alt="user-profile-image"
               />
@@ -125,8 +125,8 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
                   className="cursor-pointer size-16 rounded-full bg-slate-500 object-cover duration-500 hover:scale-x-[98%] hover:opacity-80"
                   src={
                     customUser
-                      ? customUser.avatar?.url || "/user.png"
-                      : session?.user?.image || "/user.png"
+                      ? customUser.avatar?.url || "/avatar.jpeg"
+                      : session?.user?.image || "/avatar.jpeg"
                   }
                   alt="user-profile"
                 />

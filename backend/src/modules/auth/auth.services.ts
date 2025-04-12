@@ -221,7 +221,7 @@ const updatedProfilePhoto = async (id: string, payload: { avatar: string }) => {
 
       const myCloud = await cloudinary.v2.uploader.upload(avatar, {
         folder: "avatars",
-        width: 150,
+     
       });
       user.avatar = {
         public_id: myCloud.public_id,
@@ -230,7 +230,7 @@ const updatedProfilePhoto = async (id: string, payload: { avatar: string }) => {
     } else {
       const myCloud = await cloudinary.v2.uploader.upload(avatar, {
         folder: "avatars",
-        width: 150,
+       
       });
       user.avatar = {
         public_id: myCloud.public_id,
