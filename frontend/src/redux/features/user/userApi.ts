@@ -14,7 +14,32 @@ export const UserApi = baseApi.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch, getState }) {
         try {
           const result = await queryFulfilled;
-          console.log(result.data.data.user, "dd");
+          const token = (getState() as RootState).auth.token;
+
+          if (token) {
+            dispatch(
+              loggedUser({
+                accessToken: token,
+                user: result.data.data,
+              })
+            );
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      },
+    }),
+    updateProfileInfo: builder.mutation({
+      query: (body) => ({
+        url: "/user/update",
+        method: "PATCH",
+        body,
+        credentials: "include",
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch, getState }) {
+        try {
+          const result = await queryFulfilled;
+        
           const token = (getState() as RootState).auth.token;
 
           if (token) {
@@ -33,4 +58,4 @@ export const UserApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useUpdateAvatarMutation } = UserApi;
+export const { useUpdateAvatarMutation,useUpdateProfileInfoMutation } = UserApi;

@@ -1,6 +1,9 @@
 "use client";
 import { useCurrentUserQuery } from "@/redux/api/baseApi";
-import { useUpdateAvatarMutation } from "@/redux/features/user/userApi";
+import {
+  useUpdateAvatarMutation,
+  useUpdateProfileInfoMutation,
+} from "@/redux/features/user/userApi";
 import { TUser } from "@/types";
 import { CreditCard, Mail, Smartphone, User } from "lucide-react";
 import Image from "next/image";
@@ -10,6 +13,8 @@ import { FiLoader } from "react-icons/fi";
 const UpdateMyProfileForm = ({ user }: { user: TUser }) => {
   const [udpateAvatar, { isSuccess, error, isLoading }] =
     useUpdateAvatarMutation();
+  const [updateUserInfo, { isLoading: loading }] =
+    useUpdateProfileInfoMutation();
   const [currentUser, setCurrentUser] = useState(false);
   const {} = useCurrentUserQuery(undefined, {
     skip: currentUser ? false : true,
@@ -18,7 +23,7 @@ const UpdateMyProfileForm = ({ user }: { user: TUser }) => {
     name: user && user?.name,
     userId: (user && user?.userId) || "N/A",
     email: user && user?.email,
-    number: (user && user?.number) || "N/A",
+    number: user && user?.number,
   });
 
   const imageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +49,13 @@ const UpdateMyProfileForm = ({ user }: { user: TUser }) => {
     }
   }, [isSuccess, error]);
 
-  const handleSubmit = (e: any) => {};
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    updateUserInfo({
+      name: formData.name,
+      number: formData.number,
+    });
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -93,7 +104,7 @@ const UpdateMyProfileForm = ({ user }: { user: TUser }) => {
       </div>
 
       <div className="mt-4">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="flex flex-col lg:flex-row gap-4 space-y-3 lg:space-y-6">
             <div className="space-y-2 w-full">
               <div className="flex items-center gap-2 text-gray-400">
@@ -105,6 +116,7 @@ const UpdateMyProfileForm = ({ user }: { user: TUser }) => {
                 name="name"
                 className="w-full bg-gray-300 dark:bg-slate-800 rounded-md border border-dashed border-purple-500 p-2 text-black dark:text-white "
                 value={formData?.name}
+                onChange={handleChange}
               />
             </div>
 
@@ -120,6 +132,7 @@ const UpdateMyProfileForm = ({ user }: { user: TUser }) => {
                 disabled
                 className="w-full bg-gray-300 dark:bg-slate-800 rounded-md border border-dashed border-purple-500 p-2 text-black dark:text-white placeholder:text-slate-800 placeholder:dark:text-gray-400 cursor-no-drop"
                 value={formData?.email}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -151,6 +164,7 @@ const UpdateMyProfileForm = ({ user }: { user: TUser }) => {
                 name="number"
                 className="w-full bg-gray-300 dark:bg-slate-800 rounded-md border border-dashed border-purple-500 p-2 text-black dark:text-white"
                 value={formData?.number}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -159,7 +173,11 @@ const UpdateMyProfileForm = ({ user }: { user: TUser }) => {
             type="submit"
             className="cursor-pointer w-full lg:w-[250px]  bg-transparent  border border-black dark:border-white  mt-5  hover:bg-gray-800 transition-colors rounded p-3 text-black dark:text-white"
           >
-            Update
+            {loading ? (
+              <div className="flex justify-center items-center mx-auto w-6 h-6 border-4 border-t-4 border-transparent border-t-[#3B9DF8] rounded-full animate-spin"></div>
+            ) : (
+              "Update"
+            )}
           </button>
         </form>
       </div>
