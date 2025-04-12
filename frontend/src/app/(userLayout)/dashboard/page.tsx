@@ -5,7 +5,6 @@ const page = () => {
   return (
     <div className="overflow-x-auto lg:overflow-x-hidden">
       <StudentDashboard />
-      
     </div>
   );
 };

@@ -10,10 +10,11 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { AiOutlineCamera } from "react-icons/ai";
 import { FiLoader } from "react-icons/fi";
+import { toast } from "sonner";
 const UpdateMyProfileForm = ({ user }: { user: TUser }) => {
   const [udpateAvatar, { isSuccess, error, isLoading }] =
     useUpdateAvatarMutation();
-  const [updateUserInfo, { isLoading: loading }] =
+  const [updateUserInfo, { isLoading: loading, isSuccess: success }] =
     useUpdateProfileInfoMutation();
   const [currentUser, setCurrentUser] = useState(false);
   const {} = useCurrentUserQuery(undefined, {
@@ -43,6 +44,7 @@ const UpdateMyProfileForm = ({ user }: { user: TUser }) => {
   useEffect(() => {
     if (isSuccess) {
       setCurrentUser(true);
+      toast.success("Image Updated");
     }
     if (error) {
       console.log(error);
@@ -55,6 +57,10 @@ const UpdateMyProfileForm = ({ user }: { user: TUser }) => {
       name: formData.name,
       number: formData.number,
     });
+
+    if (success) {
+      toast.success("Profile information updated");
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
