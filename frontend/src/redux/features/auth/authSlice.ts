@@ -16,7 +16,6 @@ const authSlice = createSlice({
       state.token = token;
     },
     loggedUser(state, action) {
-      console.log("🚀 Redux loggedUser payload:", action.payload);
       const { user, accessToken } = action.payload;
       state.token = accessToken;
       state.user = user;
