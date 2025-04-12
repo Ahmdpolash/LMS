@@ -67,7 +67,7 @@ const UpdateMyProfileForm = ({ user }: { user: TUser }) => {
               alt="Profile"
               width={128}
               height={128}
-              className="w-28 h-28 object-cover rounded-full overflow-hidden border-4 border-muted cursor-pointer"
+              className="w-28 h-28 object-cover rounded-full overflow-hidden border-3 border-[#37a39a] cursor-pointer"
             />
           )}
 

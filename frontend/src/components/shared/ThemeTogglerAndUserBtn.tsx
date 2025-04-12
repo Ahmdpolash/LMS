@@ -10,11 +10,12 @@ import { TUser } from "@/types";
 import { useLogoutMutation } from "@/redux/features/auth/authApi";
 import toast from "react-hot-toast";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { persistor } from "@/redux/store";
 import { signOut, useSession } from "next-auth/react";
 
 const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
+  const pathname = usePathname();
   const { user: customUser } = useAppSelector((state) => state.auth) as {
     user: any | null;
   };
@@ -102,7 +103,13 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
               <Image
                 width={40}
                 height={40}
-                className="cursor-pointer size-10 rounded-full bg-slate-500 object-cover duration-500 hover:scale-x-[98%] hover:opacity-80"
+                className={`cursor-pointer size-10 rounded-full bg-slate-500 object-cover duration-500 hover:scale-x-[98%] hover:opacity-80  ${
+                  pathname === "/dashboard/my-profile" ||
+                  pathname === "/dashboard/my-course" ||
+                  pathname === "/dashboard/change-password"
+                    ? "border-3 border-[#37a39a]"
+                    : ""
+                }`}
                 src={
                   customUser
                     ? customUser.avatar?.url || "/avatar.jpeg"
