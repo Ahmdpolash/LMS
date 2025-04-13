@@ -175,9 +175,6 @@ body::-webkit-scrollbar-thumb {
   h3 {
     @apply text-2xl font-semibold;
   }
-  ul {
-    @apply list-disc list-inside;
-  }
 }
 
 @layer components {
