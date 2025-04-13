@@ -1,10 +1,17 @@
 "use client";
 
 import * as React from "react";
-import { Frame, Map, PieChart, SquareTerminal } from "lucide-react";
+import {
+  ChartLine,
+  Cog,
+  LayoutDashboard,
+  SquarePlay,
+  UserCog,
+  Users,
+} from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
+
 import { NavUser } from "@/components/nav-user";
 
 import {
@@ -15,7 +22,6 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import Image from "next/image";
-import { TeamSwitcher } from "./team-switcher";
 
 // This is sample data.
 const data = {
@@ -24,50 +30,96 @@ const data = {
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  teams: [
-    {
-      name: "Acme Inc",
-      plan: "Enterprise",
-    },
-  ],
 
   navMain: [
     {
-      title: "Playground",
+      title: "Dashboard",
+      url: "/admin",
+      icon: LayoutDashboard,
+    },
+
+    {
+      title: "Data",
       url: "#",
-      icon: SquareTerminal,
+      icon: Users,
       isActive: true,
       items: [
         {
-          title: "History",
+          title: "Users",
           url: "#",
         },
+
         {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
+          title: "Invoices",
           url: "#",
         },
       ],
     },
-  ],
-  projects: [
     {
-      name: "Design Engineering",
+      title: "Content",
       url: "#",
-      icon: Frame,
+      icon: SquarePlay,
+      isActive: true,
+      items: [
+        {
+          title: "Create Course",
+          url: "#",
+        },
+
+        {
+          title: "Live Courses",
+          url: "#",
+        },
+      ],
     },
     {
-      name: "Sales & Marketing",
+      title: "Customization",
       url: "#",
-      icon: PieChart,
+      icon: Cog,
+      isActive: true,
+      items: [
+        {
+          title: "Create Course",
+          url: "#",
+        },
+
+        {
+          title: "Live Courses",
+          url: "#",
+        },
+      ],
     },
     {
-      name: "Travel",
+      title: "Controllers",
       url: "#",
-      icon: Map,
+      icon: UserCog,
+      isActive: true,
+      items: [
+        {
+          title: "Manage Team",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Analytics",
+      url: "#",
+      icon: ChartLine,
+      isActive: false,
+      items: [
+        {
+          title: "Users Analytics",
+          url: "#",
+        },
+        {
+          title: "Course Analytics",
+          url: "#",
+        },
+        {
+          title: "Orders Analytics",
+          url: "#",
+        },
+      ],
     },
   ],
 };
@@ -85,14 +137,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             className="w-[50px]"
           />
 
-          <h3 className="text-lg font-bold transition-all duration-300 group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden">
+          <h3 className="pt-1 font-bold transition-all duration-300 group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden">
             ELearning
           </h3>
         </div>
       </SidebarHeader>
       <SidebarContent>
+        {/* <NavProjects projects={data.projects} /> */}
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
