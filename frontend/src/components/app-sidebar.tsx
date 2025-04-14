@@ -22,6 +22,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import Image from "next/image";
+import Link from "next/link";
 
 // This is sample data.
 const data = {
@@ -128,19 +129,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <div className="flex items-center gap-2 border-b border-slate-700 pb-2">
-          <Image
-            src={"/logo2.png"}
-            height={80}
-            width={80}
-            alt="logo"
-            className="w-[50px]"
-          />
+        <Link href={"/"} className="cursor-pointer">
+          <div className="flex items-center gap-2 border-b border-slate-700 pb-2">
+            <Image
+              src={"/logo2.png"}
+              height={80}
+              width={80}
+              alt="logo"
+              className="w-[50px]"
+            />
 
-          <h3 className="pt-1 font-bold transition-all duration-300 group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden">
-            ELearning
-          </h3>
-        </div>
+            <h3 className="pt-1 font-bold transition-all duration-300 group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden">
+              ELearning
+            </h3>
+          </div>
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         {/* <NavProjects projects={data.projects} /> */}

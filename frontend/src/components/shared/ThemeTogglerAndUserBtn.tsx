@@ -25,21 +25,7 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
   const router = useRouter();
   const [logOut] = useLogoutMutation();
 
-  // make a normal funcion
 
-  // const handleLogOut = async () => {
-  //   if (session) {
-  //     // signOut({ callbackUrl: "/" });
-  //     // router.push("/");
-  //     await signOut();
-  //     router.push("/");
-  //   } else {
-  //     await logOut({});
-  //     await persistor.purge();
-  //     router.push("/");
-  //     toast.success("Logged out successfully");
-  //   }
-  // };
 
   const handleLogOut = async () => {
     await logOut({}); // Your backend logout
@@ -103,7 +89,7 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
               <Image
                 width={40}
                 height={40}
-                className={`cursor-pointer size-10 rounded-full bg-slate-500 object-cover duration-500 hover:scale-x-[98%] hover:opacity-80  ${
+                className={`cursor-pointer size-8 lg:size-10  rounded-full bg-slate-500 object-cover duration-500 hover:scale-x-[98%] hover:opacity-80  ${
                   pathname === "/dashboard/my-profile" ||
                   pathname === "/dashboard/my-course" ||
                   pathname === "/dashboard/change-password"
