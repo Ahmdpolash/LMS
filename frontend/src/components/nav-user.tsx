@@ -19,9 +19,25 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { TUser } from "@/types";
+import { useLogoutMutation } from "@/redux/features/auth/authApi";
+import { persistor } from "@/redux/store";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export function NavUser({ user }: { user: TUser | null }) {
   const { isMobile } = useSidebar();
+
+  const [logOut] = useLogoutMutation();
+  const router = useRouter();
+
+  const handleLogOut = async () => {
+    await logOut({}); // Your backend logout
+    await persistor.purge(); // Clear Redux persisted store
+    await signOut({ redirect: false }); // Sign out from NextAuth
+    router.push("/"); // Redirect after logout
+    toast.success("Logged out successfully");
+  };
 
   return (
     <SidebarMenu>
@@ -70,7 +86,7 @@ export function NavUser({ user }: { user: TUser | null }) {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer">
+            <DropdownMenuItem onClick={handleLogOut} className="cursor-pointer">
               <LogOut />
               Log out
             </DropdownMenuItem>

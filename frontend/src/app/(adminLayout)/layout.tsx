@@ -4,6 +4,8 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import Header from "../_components/admin/Header";
 
+import AdminProtectedRoute from "@/hooks/adminProtected";
+
 export default function AdminDashboardLayout({
   children,
 }: {
@@ -16,7 +18,9 @@ export default function AdminDashboardLayout({
         <SidebarInset>
           {/*side header and children */}
           <Header />
-          <div className="px-2 lg:px-5 z-10 pt-5">{children}</div>
+          <div className="px-2 lg:px-5 z-10 pt-5">
+            <AdminProtectedRoute>{children}</AdminProtectedRoute>
+          </div>
         </SidebarInset>
       </SidebarProvider>
     </div>
