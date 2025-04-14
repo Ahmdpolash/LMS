@@ -3,7 +3,6 @@
 import * as React from "react";
 
 import { NavMain } from "@/components/nav-main";
-import { useAppSelector } from "@/redux/hooks";
 
 import { NavUser } from "@/components/nav-user";
 
@@ -16,8 +15,10 @@ import {
 } from "@/components/ui/sidebar";
 import Image from "next/image";
 import Link from "next/link";
-import { TUser } from "@/types";
+
 import { AdminSidebarItem } from "@/constant";
+
+import { useAppSelector } from "@/redux/hooks";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAppSelector((state) => state.auth);
