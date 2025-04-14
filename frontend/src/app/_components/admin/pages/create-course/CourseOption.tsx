@@ -16,7 +16,7 @@ interface CourseOptionProps {
 const CourseOption: React.FC<CourseOptionProps> = ({ step }) => {
   return (
     <>
-      <div className="w-full sm:flex-row flex-col flex items-center gap-[20px] sm:gap-[10px]">
+      <div className="w-full flex-col lg:flex-row  flex items-center gap-[10px] lg:gap-[20px ">
         {stepsData?.map((stepItem, index) => (
           <p key={index} className="flex items-center w-full gap-[10px]">
             {step <= stepItem.id && (
@@ -35,7 +35,9 @@ const CourseOption: React.FC<CourseOptionProps> = ({ step }) => {
 
             <p
               className={`${
-                step > stepItem.id ? "!text-blue-500" : "text-gray-600"
+                step > stepItem.id
+                  ? "!text-blue-500"
+                  : "text-black dark:text-white"
               } capitalize text-[0.9rem] font-[400] sm:w-[75%] min-w-fit`}
             >
               {stepItem?.name}
@@ -44,7 +46,7 @@ const CourseOption: React.FC<CourseOptionProps> = ({ step }) => {
             {index < stepsData?.length - 1 && (
               <div
                 className={`${
-                  step >= stepItem.id + 1 ? "bg-blue-500" : "bg-gray-300"
+                  step >= stepItem.id + 1 ? "bg-blue-500" : "bg-[#384766]"
                 } w-full h-[5px] rounded-full`}
               ></div>
             )}

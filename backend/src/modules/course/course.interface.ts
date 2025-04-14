@@ -34,6 +34,7 @@ export interface ICourseData {
 export interface ICourse {
   name: string;
   description: string;
+  category?: string;
   price: number;
   estimatedPrice?: number;
   thumbnail?: { public_id: string; url: string };
