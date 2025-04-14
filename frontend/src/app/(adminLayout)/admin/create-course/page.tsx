@@ -5,6 +5,7 @@ import { useState } from "react";
 import CourseOption from "@/app/_components/admin/pages/create-course/CourseOption";
 import CourseInformation from "@/app/_components/admin/pages/create-course/CourseInformation";
 import { FormProvider, useForm } from "react-hook-form";
+import CoursePB from "@/app/_components/admin/pages/create-course/CoursePB";
 
 const page = () => {
   const [courseInfo, setCourseInfo] = useState({
@@ -97,7 +98,7 @@ const page = () => {
         <form className="mt-10 w-full ">
           {step === 1 && <CourseInformation />}
 
-          {step === 2 && <div>option</div>}
+          {step === 2 && <CoursePB />}
           {step === 3 && <div>contet</div>}
 
           {step === 4 && <div>preview</div>}
@@ -118,14 +119,14 @@ const page = () => {
             </div>
           )}
 
-          <div className="w-full flex items-end justify-end mt-12">
+          <div className="w-full flex items-end justify-between mt-8">
             <button
               disabled={step <= 1}
               type="button"
               onClick={prevStep}
               className={`${
-                step <= 1 && "cursor-not-allowed"
-              } text-[1rem] text-gray-500 px-6 py-2.5`}
+                step <= 1 && "cursor-not-allowed hidden"
+              } text-[1rem]  bg-blue-500 py-2.5 px-6 rounded-md text-white cursor-pointer`}
             >
               Previous
             </button>
@@ -135,7 +136,7 @@ const page = () => {
               onClick={nextStep}
               className={`${
                 step > 4 && "!bg-blue-300 cursor-not-allowed"
-              } bg-blue-500 py-2.5 px-6 rounded-md text-white`}
+              } bg-blue-500 py-2.5 px-6 rounded-md text-white cursor-pointer`}
             >
               {step > 3 ? "Submit" : "Next"}
             </button>

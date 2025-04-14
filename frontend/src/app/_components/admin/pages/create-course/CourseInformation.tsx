@@ -30,7 +30,7 @@ const CourseInformation = () => {
   const { control } = useFormContext();
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <FormField
         control={control}
         name="name"
@@ -77,7 +77,7 @@ const CourseInformation = () => {
         <div className="w-full">
           <FormField
             control={control}
-            name="price"
+            name="tags"
             label="Course Tags"
             placeholder="MERN , FRONTEND , BACKEND etc.."
             type="text"
@@ -88,7 +88,7 @@ const CourseInformation = () => {
         <div className="w-full">
           <FormField
             control={control}
-            name="categories"
+            name="category"
             label="Course Categories"
             as="select"
             placeholder="Select Categories"
@@ -131,6 +131,8 @@ const CourseInformation = () => {
           />
         </div>
       </div>
+
+      {/* drag file */}
     </div>
   );
 };
