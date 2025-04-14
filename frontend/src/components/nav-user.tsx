@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/sidebar";
 import { TUser } from "@/types";
 
-export function NavUser({ user }: { user: TUser }) {
+export function NavUser({ user }: { user: TUser | null }) {
   const { isMobile } = useSidebar();
 
   return (

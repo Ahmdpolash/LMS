@@ -25,8 +25,6 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
   const router = useRouter();
   const [logOut] = useLogoutMutation();
 
-
-
   const handleLogOut = async () => {
     await logOut({}); // Your backend logout
     await persistor.purge(); // Clear Redux persisted store

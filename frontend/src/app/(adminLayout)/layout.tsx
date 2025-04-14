@@ -20,17 +20,18 @@ import { ReactNode } from "react";
 import ThemeToggle from "../_components/ThemeToggle";
 import Notification from "../_components/admin/Notification";
 import { usePathname } from "next/navigation";
+import { AdminSidebarItem } from "@/constant";
+import { generateBreadcrumbs } from "@/app/_components/GenerateBreadCrumbs";
 
 export default function AdminDashboardLayout({
   children,
 }: {
   children: ReactNode;
-  }) {
-  
-  
-  const pathname = usePathname()
-    
-  
+}) {
+  const pathname = usePathname();
+
+  const breadcrumbs = generateBreadcrumbs(pathname);
+
   return (
     <div className=" font-poppins bg-white dark:bg-[#0C111B]">
       <SidebarProvider>
@@ -42,13 +43,24 @@ export default function AdminDashboardLayout({
               <Separator orientation="vertical" className="mr-2 h-4" />
               <Breadcrumb>
                 <BreadcrumbList>
-                  <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href="#">Admin</BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator className="hidden md:block" />
-                  <BreadcrumbItem>
-                    <BreadcrumbPage>{pathname.slice(1)}</BreadcrumbPage>
-                  </BreadcrumbItem>
+                  {breadcrumbs.map((crumb, index) => (
+                    <div key={index} className="flex items-center">
+                      {index < breadcrumbs.length - 1 ? (
+                        <>
+                          <BreadcrumbItem>
+                            <BreadcrumbLink href={crumb.url || "#"}>
+                              {crumb.title}
+                            </BreadcrumbLink>
+                          </BreadcrumbItem>
+                          <BreadcrumbSeparator />
+                        </>
+                      ) : (
+                        <BreadcrumbItem>
+                          <BreadcrumbPage>{crumb.title}</BreadcrumbPage>
+                        </BreadcrumbItem>
+                      )}
+                    </div>
+                  ))}
                 </BreadcrumbList>
               </Breadcrumb>
             </div>

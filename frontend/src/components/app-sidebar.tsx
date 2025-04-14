@@ -26,7 +26,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <Link href={"/"} className="cursor-pointer">
-          <div className="flex items-center gap-2 border-b border-slate-700 pb-2">
+          <div className="flex items-center gap-2 border-b border-slate-400 dark:border-slate-600 pb-1.5">
             <Image
               src={"/logo2.png"}
               height={80}
