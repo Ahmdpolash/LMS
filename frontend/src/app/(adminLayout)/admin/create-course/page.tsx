@@ -6,6 +6,8 @@ import CourseOption from "@/app/_components/admin/pages/create-course/CourseOpti
 import CourseInformation from "@/app/_components/admin/pages/create-course/CourseInformation";
 import { FormProvider, useForm } from "react-hook-form";
 import CoursePB from "@/app/_components/admin/pages/create-course/CoursePB";
+import { courseFormSchema } from "@/types/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const page = () => {
   const [courseInfo, setCourseInfo] = useState({
@@ -43,6 +45,7 @@ const page = () => {
   const [step, setStep] = useState<number>(1);
 
   const methods = useForm({
+    resolver: zodResolver(courseFormSchema),
     defaultValues: {
       name: "",
       description: "",
@@ -78,16 +81,46 @@ const page = () => {
   //     }
   //   };
 
-  const nextStep = () => {
+  //   const nextStep = () => {
+  //     if (step === 4) {
+  //       methods.handleSubmit((data) => {
+  //         console.log("✅ Final Submit:", data);
+  //         setStep(step + 1);
+  //       })();
+  //     } else {
+  //       setStep(step + 1);
+  //     }
+  //     };
+
+  const nextStep = async () => {
+    let isStepValid = false;
+
+    if (step === 1)
+      isStepValid = await methods.trigger([
+        "name",
+        "description",
+        "price",
+        "category",
+        "level",
+        "demoUrl",
+      ]);
+    if (step === 2)
+      isStepValid = await methods.trigger(["benefits", "prerequisites"]);
+    if (step === 3) isStepValid = await methods.trigger(["courseContentData"]);
+
     if (step === 4) {
       methods.handleSubmit((data) => {
         console.log("✅ Final Submit:", data);
         setStep(step + 1);
       })();
-    } else {
+      return;
+    }
+
+    if (isStepValid) {
       setStep(step + 1);
     }
   };
+
   const prevStep = () => setStep(step - 1);
 
   return (
@@ -95,7 +128,12 @@ const page = () => {
       <CourseOption step={step} />
 
       <FormProvider {...methods}>
-        <form className="mt-10 w-full ">
+        <form
+          onSubmit={methods.handleSubmit(() => {
+            nextStep();
+          })}
+          className="mt-10 w-full "
+        >
           {step === 1 && <CourseInformation />}
 
           {step === 2 && <CoursePB />}

@@ -77,6 +77,7 @@ interface FormFieldProps<T extends FieldValues> {
   as?: "input" | "textarea" | "select"; // ✅ Add select
   className?: string;
   options?: { label: string; value: string }[];
+  required?: boolean;
 }
 
 const FormField = <T extends FieldValues>({
@@ -88,6 +89,7 @@ const FormField = <T extends FieldValues>({
   as = "input",
   className,
   options,
+  required,
 }: FormFieldProps<T>) => {
   return (
     <Controller

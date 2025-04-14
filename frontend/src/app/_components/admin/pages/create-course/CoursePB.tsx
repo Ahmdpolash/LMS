@@ -42,7 +42,7 @@ const CoursePB = () => {
               name={`benefits.${index}.title`}
               label={`Benefit ${index + 1}`}
               placeholder="Write a benefit"
-              className="placeholder:text-slate-500 w-full"
+              className="placeholder:text-slate-500 w-full border-slate-600"
             />
           </div>
         ))}
@@ -70,8 +70,7 @@ const CoursePB = () => {
               name={`prerequisites.${index}.title`}
               label={`Prerequisite ${index + 1}`}
               placeholder="Write a prerequisite"
-              className="placeholder:text-slate-500 w-full"
-
+              className="placeholder:text-slate-500 w-ful border-slate-600"
             />
           </div>
         ))}

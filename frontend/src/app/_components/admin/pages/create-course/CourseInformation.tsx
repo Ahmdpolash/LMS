@@ -64,9 +64,11 @@ const CourseInformation = () => {
           <FormField
             control={control}
             name="estimatedPrice"
-            label="Estimated Price"
+            label="Estimated Price (optional)"
             placeholder="Enter estimated price"
             type="text"
+            required
+            
             className="placeholder:text-slate-500"
           />
         </div>
