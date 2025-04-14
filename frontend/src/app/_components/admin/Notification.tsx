@@ -52,7 +52,7 @@ const Notification = () => {
       {/* Notifications */}
       <Popover>
         <PopoverTrigger asChild>
-          <button className="cursor-pointer hover:text-dark-900 relative flex h-11 w-11 items-center justify-center rounded-full border border-gray-400 bg-white text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white">
+          <button className="cursor-pointer hover:text-dark-900 relative flex h-9 lg:h-10  w-9 lg:w-10  items-center justify-center rounded-full border border-gray-400 bg-white text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white">
             <Bell className="h-5 w-5" />
             {unreadCount > 0 && (
               <span className="absolute top-0 right-0 h-4 w-4 bg-red-500 rounded-full text-[10px] flex items-center justify-center text-white">

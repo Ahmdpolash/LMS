@@ -1,6 +1,13 @@
 import { ICourse } from "@/types";
 import { Github, Instagram, Mail, MapPin, Phone, Youtube } from "lucide-react";
-
+import {
+  ChartLine,
+  Cog,
+  LayoutDashboard,
+  SquarePlay,
+  UserCog,
+  Users,
+} from "lucide-react";
 export const NavItem = [
   {
     name: "Home",
@@ -23,6 +30,104 @@ export const NavItem = [
     path: "/faq",
   },
 ];
+
+export const AdminSidebarItem = {
+  navMain: [
+    {
+      title: "Dashboard",
+      url: "/admin",
+      icon: LayoutDashboard,
+    },
+
+    {
+      title: "Data",
+      url: "#",
+      icon: Users,
+      isActive: true,
+      items: [
+        {
+          title: "Users",
+          url: "/admin/users",
+        },
+
+        {
+          title: "Invoices",
+          url: "/admin/invoices",
+        },
+      ],
+    },
+    {
+      title: "Content",
+      url: "#",
+      icon: SquarePlay,
+      isActive: true,
+      items: [
+        {
+          title: "Create Course",
+          url: "/admin/create-course",
+        },
+
+        {
+          title: "Live Courses",
+          url: "/admin/live-course",
+        },
+      ],
+    },
+    {
+      title: "Customization",
+      url: "#",
+      icon: Cog,
+      isActive: true,
+      items: [
+        {
+          title: "Add Banner",
+          url: "/admin/add-banner",
+        },
+
+        {
+          title: "Add Category",
+          url: "/admin/add-category",
+        },
+        {
+          title: "Add FAQ",
+          url: "/admin/add-faq",
+        },
+      ],
+    },
+    {
+      title: "Controllers",
+      url: "#",
+      icon: UserCog,
+      isActive: true,
+      items: [
+        {
+          title: "Manage Team",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Analytics",
+      url: "#",
+      icon: ChartLine,
+      isActive: false,
+      items: [
+        {
+          title: "Users Analytics",
+          url: "/admin/user-analytics",
+        },
+        {
+          title: "Course Analytics",
+          url: "/admin/course-analytics",
+        },
+        {
+          title: "Orders Analytics",
+          url: "/admin/course-analytics",
+        },
+      ],
+    },
+  ],
+};
 
 export const footerData = {
   about: [
@@ -196,5 +301,3 @@ export const courses: ICourse[] = [
     level: "Intermediate",
   },
 ];
-
-

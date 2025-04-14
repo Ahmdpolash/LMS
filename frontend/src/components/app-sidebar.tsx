@@ -1,16 +1,9 @@
 "use client";
 
 import * as React from "react";
-import {
-  ChartLine,
-  Cog,
-  LayoutDashboard,
-  SquarePlay,
-  UserCog,
-  Users,
-} from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
+import { useAppSelector } from "@/redux/hooks";
 
 import { NavUser } from "@/components/nav-user";
 
@@ -23,109 +16,12 @@ import {
 } from "@/components/ui/sidebar";
 import Image from "next/image";
 import Link from "next/link";
-
-// This is sample data.
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/admin",
-      icon: LayoutDashboard,
-    },
-
-    {
-      title: "Data",
-      url: "#",
-      icon: Users,
-      isActive: true,
-      items: [
-        {
-          title: "Users",
-          url: "#",
-        },
-
-        {
-          title: "Invoices",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Content",
-      url: "#",
-      icon: SquarePlay,
-      isActive: true,
-      items: [
-        {
-          title: "Create Course",
-          url: "#",
-        },
-
-        {
-          title: "Live Courses",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Customization",
-      url: "#",
-      icon: Cog,
-      isActive: true,
-      items: [
-        {
-          title: "Create Course",
-          url: "#",
-        },
-
-        {
-          title: "Live Courses",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Controllers",
-      url: "#",
-      icon: UserCog,
-      isActive: true,
-      items: [
-        {
-          title: "Manage Team",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Analytics",
-      url: "#",
-      icon: ChartLine,
-      isActive: false,
-      items: [
-        {
-          title: "Users Analytics",
-          url: "#",
-        },
-        {
-          title: "Course Analytics",
-          url: "#",
-        },
-        {
-          title: "Orders Analytics",
-          url: "#",
-        },
-      ],
-    },
-  ],
-};
+import { TUser } from "@/types";
+import { AdminSidebarItem } from "@/constant";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { user } = useAppSelector((state) => state.auth);
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -147,10 +43,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         {/* <NavProjects projects={data.projects} /> */}
-        <NavMain items={data.navMain} />
+        <NavMain items={AdminSidebarItem.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
