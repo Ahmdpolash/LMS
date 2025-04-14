@@ -11,7 +11,7 @@ export default function UserLayout({
   return (
     <>
       <div
-        className={` overflow-x bg-gray-50 dark:bg-[#0C111B]  dark:bg-gradient-to-r from-[#0C111B] to-[#131c36] `}
+        className={`  bg-gray-50 dark:bg-[#0C111B]  dark:bg-gradient-to-r from-[#0C111B] to-[#131c36] `}
       >
         <Navbar />
         {children}
