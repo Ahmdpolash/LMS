@@ -18,13 +18,13 @@ const CourseOption: React.FC<CourseOptionProps> = ({ step }) => {
     <>
       <div className="w-full flex-col lg:flex-row  flex items-center gap-[10px] lg:gap-[20px ">
         {stepsData?.map((stepItem, index) => (
-          <p key={index} className="flex items-center w-full gap-[10px]">
+          <div key={index} className="flex items-center w-full gap-[10px]">
             {step <= stepItem.id && (
-              <p
+              <span
                 className={`w-[30px] h-[30px] p-[20px] text-gray-500 flex items-center justify-center text-[1.2rem] rounded-full bg-gray-50`}
               >
                 {stepItem?.id}
-              </p>
+              </span>
             )}
 
             {step >= stepItem.id + 1 && (
@@ -33,7 +33,7 @@ const CourseOption: React.FC<CourseOptionProps> = ({ step }) => {
               </div>
             )}
 
-            <p
+            <span
               className={`${
                 step > stepItem.id
                   ? "!text-blue-500"
@@ -41,7 +41,7 @@ const CourseOption: React.FC<CourseOptionProps> = ({ step }) => {
               } capitalize text-[0.9rem] font-[400] sm:w-[75%] min-w-fit`}
             >
               {stepItem?.name}
-            </p>
+            </span>
 
             {index < stepsData?.length - 1 && (
               <div
@@ -50,7 +50,7 @@ const CourseOption: React.FC<CourseOptionProps> = ({ step }) => {
                 } w-full h-[5px] rounded-full`}
               ></div>
             )}
-          </p>
+          </div>
         ))}
       </div>
     </>

@@ -73,7 +73,7 @@ interface FormFieldProps<T extends FieldValues> {
   name: Path<T>;
   label: string;
   placeholder?: string;
-  type?: "text" | "email" | "password";
+  type?: "text" | "email" | "password" | "file";
   as?: "input" | "textarea" | "select"; // ✅ Add select
   className?: string;
   options?: { label: string; value: string }[];
@@ -119,6 +119,14 @@ const FormField = <T extends FieldValues>({
                 className={cn("input space-y-1 mb-1", className)}
                 placeholder={placeholder}
                 {...field}
+              />
+            ) : type === "file" ? (
+              <Input
+                type="file"
+                className={cn("input space-y-1 mb-1", className)}
+                onChange={(e) => {
+                  field.onChange(e.target.files?.[0]); // Register the file
+                }}
               />
             ) : (
               <Input

@@ -24,7 +24,8 @@
 "use client";
 
 import FormField from "@/components/Auth/FormField";
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
+import FileInput from "./FileInput";
 
 const CourseInformation = () => {
   const { control } = useFormContext();
@@ -68,7 +69,6 @@ const CourseInformation = () => {
             placeholder="Enter estimated price"
             type="text"
             required
-            
             className="placeholder:text-slate-500"
           />
         </div>
@@ -135,6 +135,13 @@ const CourseInformation = () => {
       </div>
 
       {/* drag file */}
+      <div className="w-full">
+      <Controller
+        control={control}
+        name="thumbnail"
+        render={({ field }) => <FileInput value={field.value} onChange={field.onChange} />}
+      />
+      </div>
     </div>
   );
 };

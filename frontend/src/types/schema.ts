@@ -2,14 +2,20 @@ import * as z from "zod";
 
 export const courseFormSchema = z.object({
   name: z.string().min(3, "Course name is required"),
-  description: z.string().min(10, "Description is required"),
-  category: z.string().min(10, "Category is required"),
+  description: z.string().min(2, "Description is required"),
+  category: z.string().min(1, "Category is required"),
   price: z.string().min(1, "Price is required"),
   estimatedPrice: z.string().optional(),
   tags: z.string(),
   level: z.string(),
   demoUrl: z.string().url("Demo URL must be valid"),
-  thumbnail: z.string().url("Thumbnail must be a valid URL"),
+  // thumbnail: z.string().url("Thumbnail must be a valid URL"),
+  thumbnail: z
+    .any()
+    .refine(
+      (file) => file instanceof File && file.size > 0,
+      "Thumbnail is required"
+    ),
 
   courseContentData: z.array(
     z.object({
@@ -26,6 +32,13 @@ export const courseFormSchema = z.object({
       ),
     })
   ),
+
+  benefits: z
+    .array(z.object({ title: z.string().min(1, "Benefit is required") }))
+    .min(1),
+  prerequisites: z
+    .array(z.object({ title: z.string().min(1, "Prerequisite is required") }))
+    .min(1),
 });
 
 // schema/courseStepSchemas.ts

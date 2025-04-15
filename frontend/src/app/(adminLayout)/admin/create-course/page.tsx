@@ -72,6 +72,12 @@ const page = () => {
           suggestion: "",
         },
       ],
+
+      //   prerequisites: [
+      //     {
+      //       title: "",
+      //     },
+      //   ],
     },
   });
 
@@ -106,7 +112,7 @@ const page = () => {
       ]);
     if (step === 2)
       isStepValid = await methods.trigger(["benefits", "prerequisites"]);
-    if (step === 3) isStepValid = await methods.trigger(["courseContentData"]);
+    // if (step === 3) isStepValid = await methods.trigger(["courseContentData"]);
 
     if (step === 4) {
       methods.handleSubmit((data) => {
