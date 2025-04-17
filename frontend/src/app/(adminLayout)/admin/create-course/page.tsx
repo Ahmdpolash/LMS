@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import CourseOption from "@/app/_components/admin/pages/create-course/CourseOption";
 import CourseInformation from "@/app/_components/admin/pages/create-course/CourseInformation";
@@ -8,6 +8,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import CoursePB from "@/app/_components/admin/pages/create-course/CoursePB";
 import { courseFormSchema } from "@/types/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CourseContent } from "@/app/_components/admin/pages/create-course/CourseContent";
 
 const page = () => {
   const [courseInfo, setCourseInfo] = useState({
@@ -42,7 +43,7 @@ const page = () => {
   ]);
   const [courseData, setCourseData] = useState({});
 
-  const [step, setStep] = useState<number>(1);
+  const [step, setStep] = useState<number>(3);
 
   const methods = useForm({
     resolver: zodResolver(courseFormSchema),
@@ -57,46 +58,29 @@ const page = () => {
       demoUrl: "",
       thumbnail: "",
 
-      courseContentData: [
-        {
-          videoUrl: "",
-          title: "",
-          description: "",
-          videoSection: "Untitled Section",
-          links: [
-            {
-              title: "",
-              url: "",
-            },
-          ],
-          suggestion: "",
-        },
-      ],
-
-      //   prerequisites: [
-      //     {
-      //       title: "",
-      //     },
-      //   ],
+      // courseContentData: [
+      //   {
+      //     videoUrl: "",
+      //     title: "",
+      //     description: "",
+      //     videoSection: "Untitled Section",
+      //     links: [
+      //       {
+      //         title: "",
+      //         url: "",
+      //       },
+      //     ],
+      //     suggestion: "",
+      //   },
+      // ],
+      courseContentData,
+      prerequisites,
     },
   });
 
-  //   const nextStep = () => {
-  //     if (step < 5) {
-  //       setStep(step + 1);
-  //     }
-  //   };
-
-  //   const nextStep = () => {
-  //     if (step === 4) {
-  //       methods.handleSubmit((data) => {
-  //         console.log("✅ Final Submit:", data);
-  //         setStep(step + 1);
-  //       })();
-  //     } else {
-  //       setStep(step + 1);
-  //     }
-  //     };
+  useEffect(() => {
+    console.log(`📋 Entered Step ${step}:`, methods.getValues());
+  }, [step]);
 
   const nextStep = async () => {
     let isStepValid = false;
@@ -109,6 +93,7 @@ const page = () => {
         "category",
         "level",
         "demoUrl",
+        "thumbnail",
       ]);
     if (step === 2)
       isStepValid = await methods.trigger(["benefits", "prerequisites"]);
@@ -143,9 +128,16 @@ const page = () => {
           {step === 1 && <CourseInformation />}
 
           {step === 2 && <CoursePB />}
-          {step === 3 && <div>contet</div>}
+          {step === 3 && (
+            <CourseContent
+              setCourseContentData={setCourseContentData}
+              courseContentData={courseContentData}
+            />
+          )}
 
           {step === 4 && <div>preview</div>}
+
+
           {step === 5 && (
             <div className="flex items-center justify-center w-full flex-col">
               <img

@@ -39,7 +39,7 @@ export const UserApi = baseApi.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch, getState }) {
         try {
           const result = await queryFulfilled;
-        
+
           const token = (getState() as RootState).auth.token;
 
           if (token) {
@@ -58,4 +58,5 @@ export const UserApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useUpdateAvatarMutation,useUpdateProfileInfoMutation } = UserApi;
+export const { useUpdateAvatarMutation, useUpdateProfileInfoMutation } =
+  UserApi;
