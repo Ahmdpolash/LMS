@@ -1,45 +1,18 @@
-"use client";
-
-// import { useState } from "react";
-// import { useFieldArray, useFormContext } from "react-hook-form";
-
-// const CourseContent = ({ methods }: any) => {
-//   const { control, watch ,getValues} = useFormContext();
-//   const data =  getValues("courseContentData");
-//   const [isCollapsed, setIsCollapsed] = useState(
-//     Array(data.length).fill(false)
-//   );
-// const [activeSection, setActiveSection] = useState(1);
-//   console.log(data.courseContentData);
-//   return (
-//     <div>
-//       <p> Hello, This is CourseContent Page </p>
-//     </div>
-//   );
-// };
-// export default CourseContent;
-
 import { useState } from "react";
-import { useFieldArray, useFormContext } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Trash,
-  Pencil,
-  ChevronDown,
-  ChevronUp,
-  PencilIcon,
-} from "lucide-react";
+import { Link, PencilIcon } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
-import { AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineDelete, AiOutlinePlusCircle } from "react-icons/ai";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+
+type TCourseProps = {
+  courseContentData: any;
+  setCourseContentData: (courseContentData: any) => void;
+};
 
 export const CourseContent = ({
   setCourseContentData,
   courseContentData,
-}: any) => {
-  const { control, getValues, setValue, register } = useFormContext();
-  // const courseContentData = getValues("courseContentData");
+}: TCourseProps) => {
   console.log(courseContentData);
 
   const [isCollapsed, setIsCollapsed] = useState(
@@ -104,12 +77,10 @@ export const CourseContent = ({
   const addNewSection = () => {
     if (
       courseContentData[courseContentData.length - 1].title === "" ||
-      courseContentData[courseContentData.length - 1].items.description ===
-        "" ||
-      courseContentData[courseContentData.length - 1].items.videoUrl === "" ||
-      courseContentData[courseContentData.length - 1].items.links[0].title ===
-        "" ||
-      courseContentData[courseContentData.length - 1].items.links[0].url === ""
+      courseContentData[courseContentData.length - 1].description === "" ||
+      courseContentData[courseContentData.length - 1].videoUrl === "" ||
+      courseContentData[courseContentData.length - 1].links[0].title === "" ||
+      courseContentData[courseContentData.length - 1].links[0].url === ""
     ) {
       toast.error("Please fill all the fields first!");
     } else {
@@ -125,21 +96,21 @@ export const CourseContent = ({
     }
   };
 
-  const handleOptions = () => {
-    if (
-      courseContentData[courseContentData.length - 1].title === "" ||
-      courseContentData[courseContentData.length - 1].items.description ===
-        "" ||
-      courseContentData[courseContentData.length - 1].items.videoUrl === "" ||
-      courseContentData[courseContentData.length - 1].items.links[0].title ===
-        "" ||
-      courseContentData[courseContentData.length - 1].items.links[0].url === ""
-    ) {
-      toast.error("Please fill all the fields first!");
-    } else {
-      // handlesubmit
-    }
-  };
+  // const handleOptions = () => {
+  //   if (
+  //     courseContentData[courseContentData.length - 1].title === "" ||
+  //     courseContentData[courseContentData.length - 1].description === "" ||
+  //     courseContentData[courseContentData.length - 1].videoUrl === "" ||
+  //     courseContentData[courseContentData.length - 1].links[0].title === "" ||
+  //     courseContentData[courseContentData.length - 1].links[0].url === ""
+  //   ) {
+  //     toast.error("Please fill all the fields first!");
+  //   } else {
+  //     // handlesubmit
+
+  //     setStep(step + 1);
+  //   }
+  // };
 
   return (
     <>
@@ -153,7 +124,7 @@ export const CourseContent = ({
             return (
               <>
                 <div
-                  className={`w-full bg-[#cdc8c817] rounded-md p-4 ${
+                  className={`w-full bg-[#cdc8c817] p-4 ${
                     showSectionInput ? "mt-6" : "mb-0"
                   }`}
                 >
@@ -175,11 +146,13 @@ export const CourseContent = ({
                           }}
                         />
 
-                        <PencilIcon className=" cursor-pointer dark:text-white text-black" />
+                        <PencilIcon
+                          size={21}
+                          className="cursor-pointer text-[10px] dark:text-white text-black"
+                        />
                       </div>
                     </>
                   )}
-
                   <div className="flex w-full justify-between items-center my-0">
                     {isCollapsed[idx] ? (
                       <>
@@ -224,7 +197,6 @@ export const CourseContent = ({
                       />
                     </div>
                   </div>
-
                   {!isCollapsed[idx] && (
                     <div className="flex flex-col space-y-4">
                       <div className="my- flex flex-col space-y-2">
@@ -240,6 +212,7 @@ export const CourseContent = ({
                             updateData[idx].title = e.target.value;
                             setCourseContentData(updateData);
                           }}
+                          required
                         />
                       </div>
                       <div className="my- flex flex-col space-y-2">
@@ -274,36 +247,34 @@ export const CourseContent = ({
                         />
 
                         <br />
-                        <br />
                       </div>
-                      
-                      {item?.links?.map((link: any, index: number) => {
-                        <div className=" mb-3">l
-                          <div className="w-full flex items-center justify-between">
-                            <label>Link {index + 1}</label>
+
+                      {item?.links?.map((link: any, linkIndex: number) => (
+                        <div key={linkIndex} className="mb-3">
+                          <div className="w-full flex space-y-2 items-center justify-between">
+                            <label>Link {linkIndex + 1}</label>
 
                             <AiOutlineDelete
                               className={`${
-                                index === 0
+                                linkIndex === 0
                                   ? "cursor-no-drop"
                                   : "cursor-pointer"
                               } text-black dark:text-white text-[20px]`}
                               onClick={() =>
-                                index === 0
+                                linkIndex === 0
                                   ? null
-                                  : handleRemoveLink(idx, index)
+                                  : handleRemoveLink(idx, linkIndex)
                               }
                             />
                           </div>
-
                           <input
                             type="text"
                             placeholder="Source code (Link title)"
-                            className="border rounded-md py-2 px-4 placeholder:text-slate-500 border-slate-600 focus:outline-none"
+                            className="w-full border rounded-md py-2 px-4 placeholder:text-slate-500 border-slate-600 focus:outline-none"
                             value={link.title}
                             onChange={(e) => {
                               const updateData = [...courseContentData];
-                              updateData[idx].links[index].title =
+                              updateData[idx].links[linkIndex].title =
                                 e.target.value;
                               setCourseContentData(updateData);
                             }}
@@ -311,22 +282,53 @@ export const CourseContent = ({
                           <input
                             type="text"
                             placeholder="Source code Url (Link URL)"
-                            className="border rounded-md py-2 px-4 placeholder:text-slate-500 border-slate-600 focus:outline-none"
+                            className="w-full mt-3 border rounded-md py-2 px-4 placeholder:text-slate-500 border-slate-600 focus:outline-none"
                             value={link.url}
                             onChange={(e) => {
                               const updateData = [...courseContentData];
-                              updateData[idx].links[index].url = e.target.value;
+                              updateData[idx].links[linkIndex].url =
+                                e.target.value;
                               setCourseContentData(updateData);
                             }}
                           />
-                        </div>;
-                      })}
+                        </div>
+                      ))}
+
+                      {/*  add link bottom */}
+
+                      <div className="inline-block mb-4">
+                        <span
+                          className="flex items-center text-[16px] dark:text-white ☐text-black cursor-pointer"
+                          onClick={() => handleAddLink(idx)}
+                        >
+                          <Link size={17} className="mr-2" /> Add Link
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* add new content */}
+                  {idx == courseContentData.length - 1 && (
+                    <div className="pt-2">
+                      <span
+                        className="flex items-center text-[18px] dark:text-white text-black cursor-pointer"
+                        onClick={(e: any) => newcontentHandler(item)}
+                      >
+                        <AiOutlinePlusCircle className="mr-2" /> Add New Content
+                      </span>
                     </div>
                   )}
                 </div>
               </>
             );
           })}
+
+          <div
+            className="mt-4 flex items-center text-[20px] dark:text-white text-black cursor-pointer"
+            onClick={() => addNewSection()}
+          >
+            <AiOutlinePlusCircle className="mr-2" /> Add new Section
+          </div>
         </div>
       </div>
       <Toaster />

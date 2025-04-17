@@ -136,11 +136,13 @@ const CourseInformation = () => {
 
       {/* drag file */}
       <div className="w-full">
-      <Controller
-        control={control}
-        name="thumbnail"
-        render={({ field }) => <FileInput value={field.value} onChange={field.onChange} />}
-      />
+        <Controller
+          control={control}
+          name="thumbnail"
+          render={({ field }) => (
+            <FileInput value={field.value} onChange={field.onChange} />
+          )}
+        />
       </div>
     </div>
   );

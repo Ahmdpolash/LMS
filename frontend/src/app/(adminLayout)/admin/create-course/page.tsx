@@ -57,22 +57,7 @@ const page = () => {
       level: "",
       demoUrl: "",
       thumbnail: "",
-
-      // courseContentData: [
-      //   {
-      //     videoUrl: "",
-      //     title: "",
-      //     description: "",
-      //     videoSection: "Untitled Section",
-      //     links: [
-      //       {
-      //         title: "",
-      //         url: "",
-      //       },
-      //     ],
-      //     suggestion: "",
-      //   },
-      // ],
+      benefits,
       courseContentData,
       prerequisites,
     },
@@ -97,7 +82,14 @@ const page = () => {
       ]);
     if (step === 2)
       isStepValid = await methods.trigger(["benefits", "prerequisites"]);
-    // if (step === 3) isStepValid = await methods.trigger(["courseContentData"]);
+
+    if (step === 3) {
+      methods.setValue("courseContentData", courseContentData);
+
+      // Temporary bypass since RHF can't validate custom nested state
+      setStep(step + 1);
+      return;
+    }
 
     if (step === 4) {
       methods.handleSubmit((data) => {
@@ -137,7 +129,6 @@ const page = () => {
 
           {step === 4 && <div>preview</div>}
 
-
           {step === 5 && (
             <div className="flex items-center justify-center w-full flex-col">
               <img
@@ -155,7 +146,7 @@ const page = () => {
             </div>
           )}
 
-          <div className="w-full flex items-end justify-between mt-8">
+          <div className="w-full flex items-end justify-between py-8">
             <button
               disabled={step <= 1}
               type="button"
