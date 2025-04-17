@@ -26,7 +26,7 @@ const FileInput = ({ value, onChange }: any) => {
   };
 
   return (
-    <div className="p-8 mb-4 flex items-center flex-col gap-5 justify-center cursor-pointer">
+    <div className="p-8 mb-4 flex items-center flex-col gap-5 justify-center cursor-pointer ">
       <input
         type="file"
         name="image"
@@ -36,7 +36,7 @@ const FileInput = ({ value, onChange }: any) => {
         onChange={handleFileChange}
       ></input>
       {!preview ? (
-        <div className="w-full md:w-[90%] cursor-pointer flex dark:border-slate-700 dark:bg-slate-900 items-center justify-center flex-col bg-white border border-dashed border-[#3B9DF8] rounded-md py-6 ">
+        <div className="w-full md:w-[90%] cursor-pointer  flex dark:border-slate-700 dark:bg-slate-800/70 items-center justify-center flex-col bg-white border border-dashed border-[#3B9DF8] rounded-md py-6 ">
           <IoMdCloudUpload className="text-[3rem] text-primary" />
           <p className="mt-2 text-text dark:text-[#abc2d3]">
             Drop here the Thumbnail file
@@ -50,7 +50,7 @@ const FileInput = ({ value, onChange }: any) => {
           </button>
         </div>
       ) : (
-        <div className="relative w-full md:w-[80%] h-[200px] border-2 border-teal-500 border-dashed  p-2">
+        <div className="relative w-full  md:w-[80%] h-[200px] border-2 border-teal-500 border-dashed  p-2">
           <img
             src={preview}
             alt="preview"

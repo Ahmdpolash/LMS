@@ -31,7 +31,7 @@ const CourseInformation = () => {
   const { control } = useFormContext();
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 dark:bg-[#101828]  p-5 rounded-md" >
       <FormField
         control={control}
         name="name"

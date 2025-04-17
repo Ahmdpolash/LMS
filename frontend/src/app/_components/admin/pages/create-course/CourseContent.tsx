@@ -12,7 +12,7 @@ type TCourseProps = {
 export const CourseContent = ({
   setCourseContentData,
   courseContentData,
-}: TCourseProps) => {
+}: any) => {
   console.log(courseContentData);
 
   const [isCollapsed, setIsCollapsed] = useState(
@@ -73,6 +73,7 @@ export const CourseContent = ({
       setCourseContentData([...courseContentData, newContent]);
     }
   };
+
   // add new content
   const addNewSection = () => {
     if (
@@ -96,25 +97,9 @@ export const CourseContent = ({
     }
   };
 
-  // const handleOptions = () => {
-  //   if (
-  //     courseContentData[courseContentData.length - 1].title === "" ||
-  //     courseContentData[courseContentData.length - 1].description === "" ||
-  //     courseContentData[courseContentData.length - 1].videoUrl === "" ||
-  //     courseContentData[courseContentData.length - 1].links[0].title === "" ||
-  //     courseContentData[courseContentData.length - 1].links[0].url === ""
-  //   ) {
-  //     toast.error("Please fill all the fields first!");
-  //   } else {
-  //     // handlesubmit
-
-  //     setStep(step + 1);
-  //   }
-  // };
-
   return (
     <>
-      <div className="space-y-6">
+      <div className="space-y-6 dark:bg-[#101828]  p-5 rounded-md">
         <div>
           {courseContentData?.map((item: any, idx: number) => {
             const showSectionInput =
@@ -124,7 +109,7 @@ export const CourseContent = ({
             return (
               <>
                 <div
-                  className={`w-full bg-[#cdc8c817] p-4 ${
+                  className={`w-full  p-4 ${
                     showSectionInput ? "mt-6" : "mb-0"
                   }`}
                 >
@@ -133,11 +118,11 @@ export const CourseContent = ({
                       <div className="flex items-center w-full">
                         <input
                           type="text"
-                          className={`text-[20px] ${
+                          className={`text-[20px]  ${
                             item.videoSection === "Untitled Section"
                               ? "w-[170px]"
                               : "w-min"
-                          } font-poppins cursor-pointer dark:text-white text-black bg-transparent outline-none`}
+                          } font-poppins  cursor-pointer dark:text-white text-black bg-transparent outline-none`}
                           value={item.videoSection}
                           onChange={(e) => {
                             const updateData = [...courseContentData];
@@ -205,7 +190,7 @@ export const CourseContent = ({
                           type="text"
                           name="title"
                           placeholder="Setup the first project"
-                          className="border rounded-md py-2 px-4 placeholder:text-slate-500 border-slate-600 dark:border-slate-400 focus:outline-none"
+                          className="dark:bg-[#0C111B] border rounded-md py-2 px-4 placeholder:text-slate-500 border-slate-600 focus:outline-none"
                           value={item.title}
                           onChange={(e) => {
                             const updateData = [...courseContentData];
@@ -221,7 +206,7 @@ export const CourseContent = ({
                           type="text"
                           name="videoUrl"
                           placeholder="Set video URL"
-                          className="border rounded-md py-2 px-4 placeholder:text-slate-500 border-slate-600 dark:border-slate-400 focus:outline-none"
+                          className="dark:bg-[#0C111B] border rounded-md py-2 px-4 placeholder:text-slate-500 border-slate-600  focus:outline-none"
                           value={item.videoUrl}
                           onChange={(e) => {
                             const updateData = [...courseContentData];
@@ -237,7 +222,7 @@ export const CourseContent = ({
                           cols={15}
                           name="description"
                           placeholder="Write about the video"
-                          className="border rounded-md py-2 px-4 placeholder:text-slate-500 border-slate-600 dark:border-slate-400 focus:outline-none !h-min"
+                          className="border dark:bg-[#0C111B] rounded-md py-2 px-4 placeholder:text-slate-500 border-slate-600 dark:border-slate-600 focus:outline-none !h-min"
                           value={item.description}
                           onChange={(e) => {
                             const updateData = [...courseContentData];
@@ -270,7 +255,7 @@ export const CourseContent = ({
                           <input
                             type="text"
                             placeholder="Source code (Link title)"
-                            className="w-full border rounded-md py-2 px-4 placeholder:text-slate-500 border-slate-600 focus:outline-none"
+                            className="w-full bg-[#0C111B] border rounded-md py-2 px-4 placeholder:text-slate-500 border-slate-600 focus:outline-none"
                             value={link.title}
                             onChange={(e) => {
                               const updateData = [...courseContentData];
@@ -282,7 +267,7 @@ export const CourseContent = ({
                           <input
                             type="text"
                             placeholder="Source code Url (Link URL)"
-                            className="w-full mt-3 border rounded-md py-2 px-4 placeholder:text-slate-500 border-slate-600 focus:outline-none"
+                            className="w-full dark:bg-[#0C111B] mt-3 border rounded-md py-2 px-4 placeholder:text-slate-500 border-slate-600 focus:outline-none"
                             value={link.url}
                             onChange={(e) => {
                               const updateData = [...courseContentData];

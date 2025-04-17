@@ -9,6 +9,7 @@ import CoursePB from "@/app/_components/admin/pages/create-course/CoursePB";
 import { courseFormSchema } from "@/types/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CourseContent } from "@/app/_components/admin/pages/create-course/CourseContent";
+import CoursePreview from "@/app/_components/admin/pages/create-course/Preview";
 
 const page = () => {
   const [courseInfo, setCourseInfo] = useState({
@@ -41,9 +42,8 @@ const page = () => {
       suggestion: "",
     },
   ]);
-  const [courseData, setCourseData] = useState({});
 
-  const [step, setStep] = useState<number>(3);
+  const [step, setStep] = useState<number>(4);
 
   const methods = useForm({
     resolver: zodResolver(courseFormSchema),
@@ -80,6 +80,7 @@ const page = () => {
         "demoUrl",
         "thumbnail",
       ]);
+
     if (step === 2)
       isStepValid = await methods.trigger(["benefits", "prerequisites"]);
 
@@ -107,7 +108,7 @@ const page = () => {
   const prevStep = () => setStep(step - 1);
 
   return (
-    <div className="w-full  min-h-screen lg:max-w-5xl mx-auto">
+    <div className="w-full  min-h-screen lg:max-w-6xl mx-auto">
       <CourseOption step={step} />
 
       <FormProvider {...methods}>
@@ -115,7 +116,7 @@ const page = () => {
           onSubmit={methods.handleSubmit(() => {
             nextStep();
           })}
-          className="mt-10 w-full "
+          className="mt-7 w-full "
         >
           {step === 1 && <CourseInformation />}
 
@@ -124,10 +125,12 @@ const page = () => {
             <CourseContent
               setCourseContentData={setCourseContentData}
               courseContentData={courseContentData}
+              // step={step}
+              // setStep={setStep}
             />
           )}
 
-          {step === 4 && <div>preview</div>}
+          {step === 4 && <CoursePreview />}
 
           {step === 5 && (
             <div className="flex items-center justify-center w-full flex-col">

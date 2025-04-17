@@ -28,7 +28,7 @@ const CoursePB = () => {
   });
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 bg-[#101828]  p-5 rounded-md">
       {/* Benefits */}
       <div className="space-y-4">
         <h2 className="font-semibold text-lg">
