@@ -6,10 +6,18 @@ export const courseFormSchema = z.object({
   category: z.string().min(1, "Category is required"),
   price: z.string().min(1, "Price is required"),
   estimatedPrice: z.string().optional(),
-  tags: z.string(),
+  tags: z
+    .string()
+    .min(1, "Tags are required")
+    .transform((val) =>
+      val
+        .split(/[,\s]+/) // 🔥 split by comma or space
+        .map((tag) => tag.trim().toLowerCase())
+        .filter(Boolean)
+    ),
+
   level: z.string(),
-  demoUrl: z.string().url("Demo URL must be valid"),
-  // thumbnail: z.string().url("Thumbnail must be a valid URL"),
+  demoUrl: z.string().min(1, "Demo URL is Required"),
   thumbnail: z
     .any()
     .refine(
@@ -19,7 +27,7 @@ export const courseFormSchema = z.object({
 
   courseContentData: z.array(
     z.object({
-      videoUrl: z.string().url("Video URL is required"),
+      videoUrl: z.string().min(1, "Video URL required"),
       title: z.string().min(1, "Title required"),
       description: z.string().min(1, "Description required"),
       videoSection: z.string(),
@@ -27,7 +35,7 @@ export const courseFormSchema = z.object({
       links: z.array(
         z.object({
           title: z.string(),
-          url: z.string().url("Must be a valid URL"),
+          url: z.string().min(1, "Link is required"),
         })
       ),
     })

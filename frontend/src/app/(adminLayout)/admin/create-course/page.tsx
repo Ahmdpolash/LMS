@@ -10,6 +10,12 @@ import { courseFormSchema } from "@/types/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CourseContent } from "@/app/_components/admin/pages/create-course/CourseContent";
 import CoursePreview from "@/app/_components/admin/pages/create-course/Preview";
+import { Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import toast from "react-hot-toast";
+import Success from "@/app/_components/admin/pages/create-course/Success";
+import StepperButton from "@/app/_components/admin/pages/create-course/StepperButton";
 
 const page = () => {
   const [courseInfo, setCourseInfo] = useState({
@@ -17,7 +23,7 @@ const page = () => {
     description: "",
     price: "",
     estimatedPrice: "",
-    tags: "",
+    tags: [],
     level: "",
     demoUrl: "",
     thumbnail: "",
@@ -25,6 +31,7 @@ const page = () => {
   });
 
   const [benefits, setBenefits] = useState([{ title: "" }]);
+  // const [tags, setTags] = useState([""]);
   const [prerequisites, setPrerequisites] = useState([{ title: "" }]);
 
   const [courseContentData, setCourseContentData] = useState([
@@ -43,7 +50,7 @@ const page = () => {
     },
   ]);
 
-  const [step, setStep] = useState<number>(4);
+  const [step, setStep] = useState<number>(1);
 
   const methods = useForm({
     resolver: zodResolver(courseFormSchema),
@@ -53,7 +60,7 @@ const page = () => {
       category: "",
       price: "",
       estimatedPrice: "",
-      tags: "",
+      tags: [],
       level: "",
       demoUrl: "",
       thumbnail: "",
@@ -66,6 +73,20 @@ const page = () => {
   useEffect(() => {
     console.log(`📋 Entered Step ${step}:`, methods.getValues());
   }, [step]);
+
+  const handleSubmitCourse = async (data: any) => {
+    try {
+      console.log("✅ Final Submit:", data);
+      // You can add your API call here, e.g.:
+      // await axios.post("/api/courses", data);
+      toast.success("Course submitted successfully!");
+      return true;
+    } catch (error) {
+      console.error("❌ Submit Error:", error);
+      toast.error("Failed to submit course. Please try again.");
+      return false;
+    }
+  };
 
   const nextStep = async () => {
     let isStepValid = false;
@@ -94,11 +115,30 @@ const page = () => {
 
     if (step === 4) {
       methods.handleSubmit((data) => {
-        console.log("✅ Final Submit:", data);
+        console.log("Tags:", data.tags);
+        const courseData = {
+          totalVideos: data?.courseContentData.length,
+          ...data,
+        };
+
+        console.log("✅ Final Submit:", courseData);
         setStep(step + 1);
       })();
       return;
     }
+
+    // if (step === 4) {
+    //   const result = await methods.trigger(); // Validate everything
+
+    //   if (!result) {
+    //     toast.error("Please fix the errors before submitting.");
+    //     return;
+    //   }
+
+    //   const success = await handleSubmitCourse(methods.getValues());
+    //   if (success) setStep(step + 1);
+    //   return;
+    // }
 
     if (isStepValid) {
       setStep(step + 1);
@@ -113,64 +153,30 @@ const page = () => {
 
       <FormProvider {...methods}>
         <form
-          onSubmit={methods.handleSubmit(() => {
-            nextStep();
+          // onSubmit={methods.handleSubmit(() => {
+          //   nextStep();
+          // })}
+          onSubmit={methods.handleSubmit((data) => {
+            console.log("Form submitted successfully:", data);
           })}
           className="mt-7 w-full "
         >
           {step === 1 && <CourseInformation />}
 
           {step === 2 && <CoursePB />}
+
           {step === 3 && (
             <CourseContent
               setCourseContentData={setCourseContentData}
               courseContentData={courseContentData}
-              // step={step}
-              // setStep={setStep}
             />
           )}
 
           {step === 4 && <CoursePreview />}
 
-          {step === 5 && (
-            <div className="flex items-center justify-center w-full flex-col">
-              <img
-                src="https://i.ibb.co/LC1yhZG/Prize-cup-for-the-first-place-removebg-preview.png"
-                alt="vector"
-                className="w-[200px]"
-              />
+          {step === 5 && <Success />}
 
-              <h1 className="text-[1.4rem] font-[600] mt-4">
-                Course Adding Completed!
-              </h1>
-              <p className="text-gray-500 text-[1rem] font-[400] mt-1">
-                We will process it and reach out to you in a days.
-              </p>
-            </div>
-          )}
-
-          <div className="w-full flex items-end justify-between py-8">
-            <button
-              disabled={step <= 1}
-              type="button"
-              onClick={prevStep}
-              className={`${
-                step <= 1 && "cursor-not-allowed hidden"
-              } text-[1rem]  bg-blue-500 py-2.5 px-6 rounded-md text-white cursor-pointer`}
-            >
-              Previous
-            </button>
-            <button
-              type="button"
-              disabled={step > 4}
-              onClick={nextStep}
-              className={`${
-                step > 4 && "!bg-blue-300 cursor-not-allowed"
-              } bg-blue-500 py-2.5 px-6 rounded-md text-white cursor-pointer`}
-            >
-              {step > 3 ? "Submit" : "Next"}
-            </button>
-          </div>
+          <StepperButton step={step} prevStep={prevStep} nextStep={nextStep} />
         </form>
       </FormProvider>
     </div>

@@ -1,7 +1,8 @@
 //need to watch more lms project tutorials
 
+import AppError from "../../errors/AppError";
 import catchAsync from "../../utils/catchAsync";
-
+import axios from "axios";
 import { CourseServices } from "./course.services";
 
 // create a new Course
@@ -130,6 +131,27 @@ const deleteCourse = catchAsync(async (req, res) => {
   });
 });
 
+const generateVideoURL = catchAsync(async (req, res) => {
+  try {
+    const { videoId } = req.body;
+    const response = axios.post(
+      `https://dev.vdocipher.com/api/videos/${videoId}/otp`,
+      { ttl: 300 },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Apisecret ${process.env.VDOCIPHER_API_SECRET}`,
+        },
+      }
+    );
+
+    res.json((await response).data);
+  } catch (error: any) {
+    throw new AppError(error.message, 400);
+  }
+});
+
 export const CourseControllers = {
   uploadCourse,
   editCourse,
@@ -141,4 +163,5 @@ export const CourseControllers = {
   addReviews,
   replyReview,
   deleteCourse,
+  generateVideoURL,
 };

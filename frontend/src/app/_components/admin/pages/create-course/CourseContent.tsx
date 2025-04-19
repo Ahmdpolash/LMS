@@ -13,7 +13,7 @@ export const CourseContent = ({
   setCourseContentData,
   courseContentData,
 }: any) => {
-  console.log(courseContentData);
+
 
   const [isCollapsed, setIsCollapsed] = useState(
     Array(courseContentData.length).fill(false)

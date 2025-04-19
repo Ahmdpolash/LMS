@@ -1,12 +1,34 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Check, Clock, DollarSign, FileText, Link, PlayCircle, Tag, Users } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { useState } from "react";
+import {
+  Check,
+  Clock,
+  DollarSign,
+  FileText,
+  Link,
+  PlayCircle,
+  Tag,
+  Users,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { useFormContext } from "react-hook-form";
+import CoursePlayer from "./CoursePlayer";
 
 export default function CoursePreview() {
   // This would normally come from your form state
@@ -39,8 +61,14 @@ export default function CoursePreview() {
           {
             title: "Setup the first project",
             videoUrl: "https://example.com/video1",
-            description: "Learn how to set up your development environment and create your first project.",
-            links: [{ title: "Source code", url: "https://github.com/example/project1" }],
+            description:
+              "Learn how to set up your development environment and create your first project.",
+            links: [
+              {
+                title: "Source code",
+                url: "https://github.com/example/project1",
+              },
+            ],
           },
           {
             title: "HTML Fundamentals",
@@ -62,34 +90,38 @@ export default function CoursePreview() {
         ],
       },
     ],
-  })
+  });
+
+  const { getValues } = useFormContext();
+
+  const data = getValues();
+  console.log(data);
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#0f172a] text-white">
+    <div className="flex flex-col min-h-screen bg-[#0f172a] text-white rounded-md p-5">
       {/* Progress Steps */}
-      <div className="container mx-auto py-6 px-4">
-       
+      <div className="">
+        <h1 className="text-[19px] sm:text-xl font-bold mb-6">
+          Course Preview
+        </h1>
 
-        <h1 className="text-xl sm:text-2xl font-bold mb-6">Course Preview</h1>
-
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Main Course Info */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="col-span-2 space-y-6">
             <Card className="bg-[#1a2234] border-[#2a3348] text-white overflow-hidden">
-              {courseData.thumbnail && (
-                <div className="w-full h-48 sm:h-64 md:h-80 relative">
-                  <img
-                    src={courseData.thumbnail || "/placeholder.svg"}
-                    alt={`${courseData.name} thumbnail`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
+              <div className="w-full h-48 sm:h-64 md:h-80 relative">
+                <CoursePlayer videoUrl={data?.demoUrl} title={data?.title} />
+              </div>
+
               <CardHeader>
-                <CardTitle className="text-xl sm:text-2xl">{courseData.name}</CardTitle>
+                <CardTitle className="text-xl sm:text-2xl">
+                  {data?.name}
+                </CardTitle>
                 <CardDescription className="text-gray-400">
                   <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-2">
-                    <Badge className="bg-blue-600 hover:bg-blue-700">{courseData.level}</Badge>
+                    <Badge className="bg-blue-600 hover:bg-blue-700">
+                      {data?.level}
+                    </Badge>
                     <div className="flex items-center gap-1">
                       <Clock className="h-4 w-4 text-gray-400" />
                       <span>12 hours total</span>
@@ -97,18 +129,26 @@ export default function CoursePreview() {
                     <div className="flex items-center gap-1">
                       <FileText className="h-4 w-4 text-gray-400" />
                       <span>
-                        {courseData.sections.reduce((acc, section) => acc + section.content.length, 0)} lessons
+                        {courseData.sections.reduce(
+                          (acc, section) => acc + section.content.length,
+                          0
+                        )}{" "}
+                        lessons
                       </span>
                     </div>
                   </div>
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-300 mb-4">{courseData.description}</p>
+                <p className="text-gray-300 mb-4">{data?.description}</p>
 
                 <div className="flex flex-wrap gap-2 mb-4">
                   {courseData.tags.map((tag, index) => (
-                    <Badge key={index} variant="outline" className="border-gray-600 text-gray-300">
+                    <Badge
+                      key={index}
+                      variant="outline"
+                      className="border-gray-600 text-gray-300"
+                    >
                       {tag}
                     </Badge>
                   ))}
@@ -149,7 +189,11 @@ export default function CoursePreview() {
                 <CardTitle>Course Content</CardTitle>
                 <CardDescription className="text-gray-400">
                   {courseData.sections.length} sections •{" "}
-                  {courseData.sections.reduce((acc, section) => acc + section.content.length, 0)} lessons
+                  {courseData.sections.reduce(
+                    (acc, section) => acc + section.content.length,
+                    0
+                  )}{" "}
+                  lessons
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -163,21 +207,33 @@ export default function CoursePreview() {
                       <AccordionTrigger className="hover:text-blue-500">
                         <div className="text-left">
                           <div className="font-medium">{section.title}</div>
-                          <div className="text-sm text-gray-400">{section.content.length} lessons</div>
+                          <div className="text-sm text-gray-400">
+                            {section.content.length} lessons
+                          </div>
                         </div>
                       </AccordionTrigger>
                       <AccordionContent>
                         <div className="space-y-3 pt-2">
                           {section.content.map((lesson, lessonIndex) => (
-                            <div key={lessonIndex} className="flex items-start p-2 rounded hover:bg-[#2a3348]">
+                            <div
+                              key={lessonIndex}
+                              className="flex items-start p-2 rounded hover:bg-[#2a3348]"
+                            >
                               <PlayCircle className="h-5 w-5 text-blue-500 mr-3 mt-0.5 flex-shrink-0" />
                               <div>
-                                <div className="font-medium">{lesson.title}</div>
-                                <div className="text-sm text-gray-400 mt-1">{lesson.description}</div>
+                                <div className="font-medium">
+                                  {lesson.title}
+                                </div>
+                                <div className="text-sm text-gray-400 mt-1">
+                                  {lesson.description}
+                                </div>
                                 {lesson.links.length > 0 && (
                                   <div className="mt-2 space-y-1">
                                     {lesson.links.map((link, linkIndex) => (
-                                      <div key={linkIndex} className="flex items-center text-sm text-blue-400">
+                                      <div
+                                        key={linkIndex}
+                                        className="flex items-center text-sm text-blue-400"
+                                      >
                                         <Link className="h-3.5 w-3.5 mr-1" />
                                         <span>{link.title}</span>
                                       </div>
@@ -197,7 +253,7 @@ export default function CoursePreview() {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6 md:col-span-1">
+          <div className="space-y-6 ">
             <Card className="bg-[#1a2234] border-[#2a3348] text-white md:sticky md:top-6">
               <CardHeader>
                 <CardTitle>Course Summary</CardTitle>
@@ -209,9 +265,11 @@ export default function CoursePreview() {
                     <span className="font-semibold">Price:</span>
                   </div>
                   <div>
-                    <span className="font-bold text-lg">{courseData.price}</span>
+                    <span className="font-bold text-lg">{data.price}</span>
                     {courseData.estimatedPrice && (
-                      <span className="text-gray-400 line-through ml-2 text-sm">{courseData.estimatedPrice}</span>
+                      <span className="text-gray-400 line-through ml-2 text-sm">
+                        {data.estimatedPrice}
+                      </span>
                     )}
                   </div>
                 </div>
@@ -219,9 +277,11 @@ export default function CoursePreview() {
                 <div className="flex justify-between items-center">
                   <div className="flex items-center">
                     <Tag className="h-5 w-5 text-blue-500 mr-1" />
-                    <span className="font-semibold">Categories:</span>
+                    <span className="font-semibold">Category:</span>
                   </div>
-                  <div className="text-right">{courseData.categories.join(", ")}</div>
+                  <div className="text-right">
+                    {data.category}
+                  </div>
                 </div>
 
                 <div className="flex justify-between items-center">
@@ -229,7 +289,7 @@ export default function CoursePreview() {
                     <Users className="h-5 w-5 text-purple-500 mr-1" />
                     <span className="font-semibold">Level:</span>
                   </div>
-                  <div>{courseData.level}</div>
+                  <div>{data.level}</div>
                 </div>
 
                 {courseData.demoUrl && (
@@ -247,15 +307,15 @@ export default function CoursePreview() {
                 <Separator className="my-2 bg-[#2a3348]" />
 
                 <div className="pt-2">
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">Submit Course</Button>
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                    Submit Course
+                  </Button>
                 </div>
               </CardContent>
             </Card>
           </div>
         </div>
-
-        
       </div>
     </div>
-  )
+  );
 }
