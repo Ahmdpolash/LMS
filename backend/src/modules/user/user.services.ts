@@ -8,7 +8,7 @@ import config from "../../config";
 import { jwtHelper } from "../../helper/JwtHelper";
 import { sendToken } from "../../utils/sentToken";
 import { Response } from "express";
-import { redis } from "../../redis";
+import  redis  from "../../redis";
 import { generateStudentId } from "../../utils/generateRandomId";
 
 // CREATE USER

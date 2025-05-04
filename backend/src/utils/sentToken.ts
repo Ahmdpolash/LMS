@@ -6,7 +6,7 @@ import {
 import config from "../config";
 
 import { IUser } from "../modules/user/user.interface";
-import { redis } from "../redis";
+import redis from "../redis";
 import { Response } from "express";
 
 export const sendToken = async (user: IUser, res: Response) => {

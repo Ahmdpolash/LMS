@@ -95,7 +95,7 @@ export default function CoursePreview() {
   const { getValues } = useFormContext();
 
   const data = getValues();
-  console.log(data);
+
 
   return (
     <div className="flex flex-col min-h-screen bg-[#0f172a] text-white rounded-md p-5">
@@ -159,10 +159,10 @@ export default function CoursePreview() {
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold">What You'll Learn</h3>
                   <ul className="space-y-2">
-                    {courseData.benefits.map((benefit, index) => (
+                    {data.benefits.map((benefit:any, index:number) => (
                       <li key={index} className="flex items-start">
                         <Check className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                        <span>{benefit}</span>
+                        <span>{benefit.title}</span>
                       </li>
                     ))}
                   </ul>
@@ -173,10 +173,10 @@ export default function CoursePreview() {
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold">Prerequisites</h3>
                   <ul className="space-y-2">
-                    {courseData.prerequisites.map((prerequisite, index) => (
+                    {data.prerequisites.map((prerequisite:any, index:number) => (
                       <li key={index} className="flex items-start">
                         <Check className="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
-                        <span>{prerequisite}</span>
+                        <span>{prerequisite.title}</span>
                       </li>
                     ))}
                   </ul>
@@ -279,9 +279,7 @@ export default function CoursePreview() {
                     <Tag className="h-5 w-5 text-blue-500 mr-1" />
                     <span className="font-semibold">Category:</span>
                   </div>
-                  <div className="text-right">
-                    {data.category}
-                  </div>
+                  <div className="text-right">{data.category}</div>
                 </div>
 
                 <div className="flex justify-between items-center">
@@ -292,7 +290,7 @@ export default function CoursePreview() {
                   <div>{data.level}</div>
                 </div>
 
-                {courseData.demoUrl && (
+                {data.demoUrl && (
                   <div className="flex justify-between items-center">
                     <div className="flex items-center">
                       <PlayCircle className="h-5 w-5 text-red-500 mr-1" />

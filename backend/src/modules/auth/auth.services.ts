@@ -5,8 +5,9 @@ import { User } from "../user/user.models";
 import { ILogin } from "./auth.interface";
 import httpStatus from "http-status";
 import bcrypt from "bcryptjs";
-import { redis } from "../../redis";
+import redis from "../../redis";
 import cloudinary from "cloudinary";
+import { storeSession } from "../../helper/storeSessionToRedis";
 
 // LOGIN USER
 const LoginUser = async (payload: ILogin) => {
@@ -63,7 +64,7 @@ const LoginUser = async (payload: ILogin) => {
 
   redis.set(user._id, JSON.stringify(user) as any);
 
-  //   storeSession(user);
+  // storeSession(user);
 
   return { accessToken, refreshToken, user };
 };
@@ -221,7 +222,6 @@ const updatedProfilePhoto = async (id: string, payload: { avatar: string }) => {
 
       const myCloud = await cloudinary.v2.uploader.upload(avatar, {
         folder: "avatars",
-     
       });
       user.avatar = {
         public_id: myCloud.public_id,
@@ -230,7 +230,6 @@ const updatedProfilePhoto = async (id: string, payload: { avatar: string }) => {
     } else {
       const myCloud = await cloudinary.v2.uploader.upload(avatar, {
         folder: "avatars",
-       
       });
       user.avatar = {
         public_id: myCloud.public_id,

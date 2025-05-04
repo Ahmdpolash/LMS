@@ -1,5 +1,5 @@
 import { IUser } from "../modules/user/user.interface";
-import { redis } from "../redis";
+import redis from "../redis";
 
 export const storeSession = async (user: IUser) => {
   if (!user) {

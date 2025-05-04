@@ -4,7 +4,7 @@ import AppError from "../errors/AppError";
 import httpStatus from "http-status";
 import { jwtHelper } from "../helper/JwtHelper";
 import config from "../config";
-import { redis } from "../redis";
+import redis from "../redis";
 import { JwtPayload } from "jsonwebtoken";
 import { TUserRole } from "../modules/user/user.interface";
 
@@ -43,7 +43,10 @@ export const auth = (...role: TUserRole[]) => {
       // verify user from redis
       const user = await redis.get(decoded.userId);
       if (!user) {
-        throw new AppError("please login to access this resource !", httpStatus.UNAUTHORIZED);
+        throw new AppError(
+          "please login to access this resource !",
+          httpStatus.UNAUTHORIZED
+        );
       }
       const userData = user ? JSON.parse(user) : null;
 

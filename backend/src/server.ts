@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import app from "./app";
 import config from "./config";
 import { v2 as cloudinary } from "cloudinary";
+import redis from "./redis";
 
 cloudinary.config({
   cloud_name: config.cloudinary.cloud_name,

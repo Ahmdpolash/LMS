@@ -4,7 +4,7 @@ import {
   accessTokenOptions,
   refreshTokenOptions,
 } from "../../helper/JwtHelper";
-import { redis } from "../../redis";
+import redis from "../../redis";
 import catchAsync from "../../utils/catchAsync";
 import { AuthServices } from "./auth.services";
 

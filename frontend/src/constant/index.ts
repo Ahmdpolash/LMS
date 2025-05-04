@@ -63,6 +63,10 @@ export const AdminSidebarItem = {
       isActive: true,
       items: [
         {
+          title: "All Courses",
+          url: "/admin/all-courses",
+        },
+        {
           title: "Create Course",
           url: "/admin/create-course",
         },

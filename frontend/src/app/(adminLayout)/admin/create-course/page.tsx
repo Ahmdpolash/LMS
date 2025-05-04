@@ -16,8 +16,26 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import Success from "@/app/_components/admin/pages/create-course/Success";
 import StepperButton from "@/app/_components/admin/pages/create-course/StepperButton";
+import { useCreateCourseMutation } from "@/redux/features/course/courseApi";
+import { redirect } from "next/navigation";
 
 const page = () => {
+  const [createCourse, { isSuccess, error, isLoading, data }] =
+    useCreateCourseMutation();
+  console.log("final data", data);
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Course created successfull");
+      redirect("/admin/all-courses");
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorMessage = error as any;
+        toast.error(errorMessage.data.message);
+      }
+    }
+  }, [isLoading, isSuccess, error]);
+
   const [courseInfo, setCourseInfo] = useState({
     name: "",
     description: "",
@@ -108,37 +126,23 @@ const page = () => {
     if (step === 3) {
       methods.setValue("courseContentData", courseContentData);
 
-      // Temporary bypass since RHF can't validate custom nested state
       setStep(step + 1);
       return;
     }
 
     if (step === 4) {
-      methods.handleSubmit((data) => {
-        console.log("Tags:", data.tags);
+      methods.handleSubmit(async (data) => {
         const courseData = {
           totalVideos: data?.courseContentData.length,
           ...data,
         };
 
-        console.log("✅ Final Submit:", courseData);
+        await createCourse(courseData);
+        toast.success("course created successfully");
         setStep(step + 1);
       })();
       return;
     }
-
-    // if (step === 4) {
-    //   const result = await methods.trigger(); // Validate everything
-
-    //   if (!result) {
-    //     toast.error("Please fix the errors before submitting.");
-    //     return;
-    //   }
-
-    //   const success = await handleSubmitCourse(methods.getValues());
-    //   if (success) setStep(step + 1);
-    //   return;
-    // }
 
     if (isStepValid) {
       setStep(step + 1);
@@ -156,9 +160,7 @@ const page = () => {
           // onSubmit={methods.handleSubmit(() => {
           //   nextStep();
           // })}
-          onSubmit={methods.handleSubmit((data) => {
-            console.log("Form submitted successfully:", data);
-          })}
+          onSubmit={methods.handleSubmit(() => nextStep())}
           className="mt-7 w-full "
         >
           {step === 1 && <CourseInformation />}

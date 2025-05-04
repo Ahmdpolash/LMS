@@ -7,7 +7,7 @@ import {
 } from "./course.interface";
 import cloudinary from "cloudinary";
 import Course from "./course.model";
-import { redis } from "../../redis";
+import redis  from "../../redis";
 import AppError from "../../errors/AppError";
 import mongoose from "mongoose";
 import { sendEmail } from "../../utils/sendMail";
