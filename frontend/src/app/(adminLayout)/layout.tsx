@@ -12,13 +12,13 @@ export default function AdminDashboardLayout({
   children: ReactNode;
 }) {
   return (
-    <div className=" font-poppins bg-white dark:bg-[#121A3A]">
+    <div className=" font-poppins bg-white dark:bg-[#121A3A] ">
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
           {/*side header and children */}
           <Header />
-          <div className="px-2 lg:px-5 z-10 pt-5 dark:bg-[#0C111B] ">
+          <div className="px-2 lg:px-5 z-10 pt-5  dark:bg-[#0C111B] min-h-screen">
             <AdminProtectedRoute>{children}</AdminProtectedRoute>
           </div>
         </SidebarInset>
@@ -26,3 +26,6 @@ export default function AdminDashboardLayout({
     </div>
   );
 }
+
+
+//dark:bg-[#0C111B]

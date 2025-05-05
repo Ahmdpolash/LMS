@@ -44,65 +44,6 @@ export default function CoursePreview({
   handleCourseCreate,
 }: TProps) {
   // This would normally come from your form state
-  const [courseData, setCourseData] = useState({
-    name: "Complete Web Development",
-    description:
-      "A comprehensive course covering all aspects of modern web development from fundamentals to advanced concepts. Learn HTML, CSS, JavaScript, React, Node.js and more to become a full-stack developer.",
-    price: "$99.99",
-    estimatedPrice: "$149.99",
-    thumbnail: "/placeholder.svg?height=400&width=600",
-    tags: ["MERN", "FRONTEND", "BACKEND", "JavaScript", "React"],
-    categories: ["Web Development", "Programming"],
-    demoUrl: "https://example.com/demo",
-    level: "Intermediate",
-    benefits: [
-      "Master both frontend and backend development",
-      "Build real-world projects for your portfolio",
-      "Learn industry best practices and coding standards",
-      "Gain job-ready skills for the tech industry",
-    ],
-    prerequisites: [
-      "Basic computer knowledge",
-      "Understanding of HTML and CSS fundamentals",
-      "No prior programming experience required",
-    ],
-    sections: [
-      {
-        title: "Getting Started with Web Development",
-        content: [
-          {
-            title: "Setup the first project",
-            videoUrl: "https://example.com/video1",
-            description:
-              "Learn how to set up your development environment and create your first project.",
-            links: [
-              {
-                title: "Source code",
-                url: "https://github.com/example/project1",
-              },
-            ],
-          },
-          {
-            title: "HTML Fundamentals",
-            videoUrl: "https://example.com/video2",
-            description: "Understanding the building blocks of the web.",
-            links: [],
-          },
-        ],
-      },
-      {
-        title: "CSS and Styling",
-        content: [
-          {
-            title: "CSS Basics",
-            videoUrl: "https://example.com/video3",
-            description: "Learn how to style your web pages with CSS.",
-            links: [],
-          },
-        ],
-      },
-    ],
-  });
 
   const prevStep = () => setStep(step - 1);
 
@@ -131,9 +72,7 @@ export default function CoursePreview({
                   <CardTitle className="text-xl sm:text-2xl">
                     {data?.name}
                   </CardTitle>
-                  <CardTitle className="text-sm">
-                    0 Students 
-                  </CardTitle>
+                  <CardTitle className="text-sm">0 Students</CardTitle>
                 </div>
                 <CardDescription className="text-gray-400">
                   <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-2">
@@ -146,13 +85,7 @@ export default function CoursePreview({
                     </div>
                     <div className="flex items-center gap-1">
                       <FileText className="h-4 w-4 text-gray-400" />
-                      <span>
-                        {courseData.sections.reduce(
-                          (acc, section) => acc + section.content.length,
-                          0
-                        )}{" "}
-                        lessons
-                      </span>
+                      <span>{data?.courseData?.length} lessons</span>
                     </div>
                   </div>
                 </CardDescription>
@@ -208,17 +141,12 @@ export default function CoursePreview({
               <CardHeader>
                 <CardTitle>Course Content</CardTitle>
                 <CardDescription className="text-gray-400">
-                  {courseData.sections.length} sections •{" "}
-                  {courseData.sections.reduce(
-                    (acc, section) => acc + section.content.length,
-                    0
-                  )}{" "}
-                  lessons
+                  0 lessons
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <Accordion type="single" collapsible className="w-full">
-                  {data?.courseData.map((item: any, sectionIndex : number) => (
+                  {data?.courseData.map((item: any, sectionIndex: number) => (
                     <AccordionItem
                       key={sectionIndex}
                       value={`section-${sectionIndex}`}
@@ -226,7 +154,9 @@ export default function CoursePreview({
                     >
                       <AccordionTrigger className="hover:text-blue-500">
                         <div className="text-left">
-                          <div className="font-medium">{item?.videoSection}</div>
+                          <div className="font-medium">
+                            {item?.videoSection}
+                          </div>
                           <div className="text-sm text-gray-400">
                             {item?.content?.length} lessons
                           </div>
@@ -234,22 +164,17 @@ export default function CoursePreview({
                       </AccordionTrigger>
                       <AccordionContent>
                         <div className="space-y-3 pt-2">
-                        
-                            <div
-                              
-                              className="flex items-start p-2 rounded hover:bg-[#2a3348]"
-                            >
-                              <PlayCircle className="h-5 w-5 text-blue-500 mr-3 mt-0.5 flex-shrink-0" />
-                              <div>
-                                <div className="font-medium">
-                                  {data.title}
-                                </div>
-                                <div className="text-sm text-gray-400 mt-1">
-                                  {data.description}
-                                </div>
-                                {item?.links?.length > 0 && (
-                                  <div className="mt-2 space-y-1 cursor-pointer">
-                                    {item.links.map((link : any, linkIndex : number) => (
+                          <div className="flex items-start p-2 rounded hover:bg-[#2a3348]">
+                            <PlayCircle className="h-5 w-5 text-blue-500 mr-3 mt-0.5 flex-shrink-0" />
+                            <div>
+                              <div className="font-medium">{data.title}</div>
+                              <div className="text-sm text-gray-400 mt-1">
+                                {data.description}
+                              </div>
+                              {item?.links?.length > 0 && (
+                                <div className="mt-2 space-y-1 cursor-pointer">
+                                  {item.links.map(
+                                    (link: any, linkIndex: number) => (
                                       <div
                                         key={linkIndex}
                                         className="flex items-center text-sm text-blue-400 cursor-pointer"
@@ -257,12 +182,12 @@ export default function CoursePreview({
                                         <Link className="h-3.5 w-3.5 mr-1" />
                                         <span>{link.title}</span>
                                       </div>
-                                    ))}
-                                  </div>
-                                )}
-                              </div>
+                                    )
+                                  )}
+                                </div>
+                              )}
                             </div>
-                        
+                          </div>
                         </div>
                       </AccordionContent>
                     </AccordionItem>
@@ -286,7 +211,7 @@ export default function CoursePreview({
                   </div>
                   <div>
                     <span className="font-bold text-lg">{data.price}</span>
-                    {courseData.estimatedPrice && (
+                    {data.estimatedPrice && (
                       <span className="text-gray-400 line-through ml-2 text-sm">
                         {data.estimatedPrice}
                       </span>
@@ -362,3 +287,5 @@ export default function CoursePreview({
     </div>
   );
 }
+
+// demo link e click korle vidoe modal from magic ui

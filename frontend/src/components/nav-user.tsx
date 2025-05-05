@@ -36,6 +36,7 @@ export function NavUser({ user }: { user: TUser | null }) {
     await persistor.purge(); // Clear Redux persisted store
     await signOut({ redirect: false }); // Sign out from NextAuth
     router.push("/"); // Redirect after logout
+    router.refresh();
     toast.success("Logged out successfully");
   };
 
