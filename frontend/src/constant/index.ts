@@ -101,7 +101,7 @@ export const AdminSidebarItem = {
       items: [
         {
           title: "Manage Team",
-          url: "#",
+          url: "/admin/manage-team",
         },
       ],
     },

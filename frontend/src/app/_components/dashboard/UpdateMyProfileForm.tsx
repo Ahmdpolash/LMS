@@ -6,20 +6,29 @@ import {
 } from "@/redux/features/user/userApi";
 import { TUser } from "@/types";
 import { CreditCard, Mail, Smartphone, User } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { AiOutlineCamera } from "react-icons/ai";
 import { FiLoader } from "react-icons/fi";
 import { toast } from "sonner";
-const UpdateMyProfileForm = ({ user }: { user: TUser }) => {
+
+const UpdateMyProfileForm = ({ user,setOpen }: { user: TUser, setOpen: any }) => {
   const [udpateAvatar, { isSuccess, error, isLoading }] =
     useUpdateAvatarMutation();
+
   const [updateUserInfo, { isLoading: loading, isSuccess: success }] =
     useUpdateProfileInfoMutation();
+
   const [currentUser, setCurrentUser] = useState(false);
+
   const {} = useCurrentUserQuery(undefined, {
     skip: currentUser ? false : true,
   });
+
+  const { data: session } = useSession();
+  const usera = user || session?.user || null;
+
   const [formData, setFormData] = useState({
     name: user && user?.name,
     userId: (user && user?.userId) || "N/A",
@@ -44,6 +53,7 @@ const UpdateMyProfileForm = ({ user }: { user: TUser }) => {
   useEffect(() => {
     if (isSuccess) {
       setCurrentUser(true);
+      setOpen(false);
       toast.success("Image Updated");
     }
     if (error) {
@@ -80,7 +90,12 @@ const UpdateMyProfileForm = ({ user }: { user: TUser }) => {
             <FiLoader className="text-[2.8rem] animate-spin text-[#3B9DF8]" />
           ) : (
             <Image
-              src={user?.avatar ? user?.avatar.url : "avatar.jpeg"}
+              // src={user?.avatar ? user?.avatar.url : "avatar.jpeg"}
+              src={
+                user
+                  ? user.avatar?.url || "/avatar.jpeg"
+                  : session?.user?.image || "/avatar.jpeg"
+              }
               alt="Profile"
               width={128}
               height={128}

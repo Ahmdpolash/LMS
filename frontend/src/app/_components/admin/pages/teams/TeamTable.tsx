@@ -30,22 +30,18 @@ interface Course {
   status: "published" | "draft" | "archived";
 }
 
-export default function UserTable() {
+export default function TeamTable() {
   const { data: users, isLoading } = useGetAllUsersQuery({});
+
   const [deleteUser] = useDeleteUserMutation();
 
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Function to render stars based on rating
-  const renderStars = (rating: number) => {
-    return (
-      <div className="flex items-center">
-        <span className="font-medium mr-1">{rating}</span>
-        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-      </div>
+  const filteredUsers = users?.data?.filter(
+    (user: any) => user?.role === "admin"
     );
-  };
-
+    
+    
   // Function to handle course deletion
   const handleDelete = async (id: string) => {
     const res = await deleteUser(id);
@@ -60,7 +56,7 @@ export default function UserTable() {
     <div className="p-4">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          All Users
+          Manage All Elearning Platform Users
         </h1>
 
         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
@@ -108,8 +104,8 @@ export default function UserTable() {
             </TableHeader>
             {!isLoading ? (
               <TableBody className="bg-white dark:bg-[#1B2537] divide-y divide-gray-200 dark:divide-gray-700 ">
-                {users?.data?.length > 0 ? (
-                  users?.data?.map((user: any) => (
+                {filteredUsers?.length > 0 ? (
+                  filteredUsers?.map((user: any) => (
                     <TableRow
                       key={user?._id}
                       className=" hover:bg-gray-50  dark:hover:bg-gray-800/50"

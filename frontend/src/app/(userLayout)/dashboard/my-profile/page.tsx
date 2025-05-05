@@ -76,7 +76,7 @@ export default function ProfilePage() {
             </div>
           </>
         ) : (
-          <UpdateMyProfileForm user={user as TUser} />
+          <UpdateMyProfileForm user={user as TUser} setOpen={setOpen} />
         )}
       </div>
     </div>

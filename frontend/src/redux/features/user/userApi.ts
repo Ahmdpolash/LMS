@@ -1,6 +1,7 @@
 import { baseApi } from "@/redux/api/baseApi";
 import { loggedUser } from "../auth/authSlice";
 import { RootState } from "@/redux/store";
+import { tagTypes } from "@/redux/tag-type";
 
 export const UserApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -36,6 +37,7 @@ export const UserApi = baseApi.injectEndpoints({
         body,
         credentials: "include",
       }),
+
       async onQueryStarted(arg, { queryFulfilled, dispatch, getState }) {
         try {
           const result = await queryFulfilled;
@@ -54,6 +56,7 @@ export const UserApi = baseApi.injectEndpoints({
           console.error(err);
         }
       },
+      invalidatesTags: [tagTypes.user],
     }),
     getAllUsers: builder.query({
       query: () => ({
@@ -61,6 +64,7 @@ export const UserApi = baseApi.injectEndpoints({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: [tagTypes.user],
     }),
     deleteUser: builder.mutation({
       query: (id) => ({
@@ -68,6 +72,7 @@ export const UserApi = baseApi.injectEndpoints({
         method: "DELETE",
         credentials: "include",
       }),
+      invalidatesTags: [tagTypes.user],
     }),
   }),
 });
