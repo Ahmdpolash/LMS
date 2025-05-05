@@ -20,6 +20,7 @@ import {
   useGetAllUsersQuery,
   useDeleteUserMutation,
 } from "@/redux/features/user/userApi";
+import { ChangeRoleModal } from "./ChangeRoleModal";
 
 interface Course {
   id: string;
@@ -39,9 +40,8 @@ export default function TeamTable() {
 
   const filteredUsers = users?.data?.filter(
     (user: any) => user?.role === "admin"
-    );
-    
-    
+  );
+
   // Function to handle course deletion
   const handleDelete = async (id: string) => {
     const res = await deleteUser(id);
@@ -70,6 +70,8 @@ export default function TeamTable() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
+
+          <ChangeRoleModal users={users} />
         </div>
       </div>
 
