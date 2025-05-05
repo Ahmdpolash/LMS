@@ -239,7 +239,7 @@ const CourseInformation = ({
             <FileInput
               value={courseInfo.thumbnail}
               onChange={(fileObj: { public_id: string; url: string } | null) =>
-                setCourseInfo({ ...courseInfo, thumbnail: fileObj })
+                setCourseInfo({ ...courseInfo, thumbnail: fileObj  })
               }
             />
           </div>

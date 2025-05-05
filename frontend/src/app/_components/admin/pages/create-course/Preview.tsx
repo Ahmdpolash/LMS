@@ -43,7 +43,6 @@ export default function CoursePreview({
   courseData: data,
   handleCourseCreate,
 }: TProps) {
-  
   // This would normally come from your form state
   const [courseData, setCourseData] = useState({
     name: "Complete Web Development",
@@ -128,9 +127,14 @@ export default function CoursePreview({
               </div>
 
               <CardHeader>
-                <CardTitle className="text-xl sm:text-2xl">
-                  {data?.name}
-                </CardTitle>
+                <div className="flex justify-between items-center">
+                  <CardTitle className="text-xl sm:text-2xl">
+                    {data?.name}
+                  </CardTitle>
+                  <CardTitle className="text-sm">
+                    0 Students 
+                  </CardTitle>
+                </div>
                 <CardDescription className="text-gray-400">
                   <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-2">
                     <Badge className="bg-blue-600 hover:bg-blue-700">
@@ -138,7 +142,7 @@ export default function CoursePreview({
                     </Badge>
                     <div className="flex items-center gap-1">
                       <Clock className="h-4 w-4 text-gray-400" />
-                      <span>12 hours total</span>
+                      <span>0 hours total</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <FileText className="h-4 w-4 text-gray-400" />
@@ -157,7 +161,7 @@ export default function CoursePreview({
                 <p className="text-gray-300 mb-4">{data?.description}</p>
 
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {data?.tags.map((tag:any,idx:number) => (
+                  {data?.tags.map((tag: any, idx: number) => (
                     <Badge
                       key={idx}
                       variant="outline"
@@ -214,7 +218,7 @@ export default function CoursePreview({
               </CardHeader>
               <CardContent>
                 <Accordion type="single" collapsible className="w-full">
-                  {courseData.sections.map((section, sectionIndex) => (
+                  {data?.courseData.map((item: any, sectionIndex : number) => (
                     <AccordionItem
                       key={sectionIndex}
                       value={`section-${sectionIndex}`}
@@ -222,33 +226,33 @@ export default function CoursePreview({
                     >
                       <AccordionTrigger className="hover:text-blue-500">
                         <div className="text-left">
-                          <div className="font-medium">{section.title}</div>
+                          <div className="font-medium">{item?.videoSection}</div>
                           <div className="text-sm text-gray-400">
-                            {section.content.length} lessons
+                            {item?.content?.length} lessons
                           </div>
                         </div>
                       </AccordionTrigger>
                       <AccordionContent>
                         <div className="space-y-3 pt-2">
-                          {section.content.map((lesson, lessonIndex) => (
+                        
                             <div
-                              key={lessonIndex}
+                              
                               className="flex items-start p-2 rounded hover:bg-[#2a3348]"
                             >
                               <PlayCircle className="h-5 w-5 text-blue-500 mr-3 mt-0.5 flex-shrink-0" />
                               <div>
                                 <div className="font-medium">
-                                  {lesson.title}
+                                  {data.title}
                                 </div>
                                 <div className="text-sm text-gray-400 mt-1">
-                                  {lesson.description}
+                                  {data.description}
                                 </div>
-                                {lesson.links.length > 0 && (
-                                  <div className="mt-2 space-y-1">
-                                    {lesson.links.map((link, linkIndex) => (
+                                {item?.links?.length > 0 && (
+                                  <div className="mt-2 space-y-1 cursor-pointer">
+                                    {item.links.map((link : any, linkIndex : number) => (
                                       <div
                                         key={linkIndex}
-                                        className="flex items-center text-sm text-blue-400"
+                                        className="flex items-center text-sm text-blue-400 cursor-pointer"
                                       >
                                         <Link className="h-3.5 w-3.5 mr-1" />
                                         <span>{link.title}</span>
@@ -258,7 +262,7 @@ export default function CoursePreview({
                                 )}
                               </div>
                             </div>
-                          ))}
+                        
                         </div>
                       </AccordionContent>
                     </AccordionItem>
