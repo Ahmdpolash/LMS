@@ -15,6 +15,11 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
+import {
+  useDeleteCourseMutation,
+  useGetAllCoursesQuery,
+} from "@/redux/features/course/courseApi";
+import { toast } from "sonner";
 
 interface Course {
   id: string;
@@ -26,82 +31,18 @@ interface Course {
 }
 
 export default function CourseTable() {
-  // Mock data for courses
-  const [courses, setCourses] = useState<Course[]>([
-    {
-      id: "WEB-1234",
-      title: "Complete Web Development Bootcamp",
-      rating: 4.8,
-      purchased: 15420,
-      createdAt: "2025-04-15",
-      status: "published",
-    },
-    {
-      id: "DS-5678",
-      title: "Data Science & Machine Learning Fundamentals",
-      rating: 4.9,
-      purchased: 12350,
-      createdAt: "2025-03-22",
-      status: "published",
-    },
-    {
-      id: "UI-9012",
-      title: "UI/UX Design Masterclass",
-      rating: 4.7,
-      purchased: 8750,
-      createdAt: "2025-02-18",
-      status: "published",
-    },
-    {
-      id: "JS-3456",
-      title: "Advanced JavaScript: From Fundamentals to Mastery",
-      rating: 4.9,
-      purchased: 10840,
-      createdAt: "2025-01-30",
-      status: "published",
-    },
-    {
-      id: "MKT-7890",
-      title: "Digital Marketing Strategy & Social Media",
-      rating: 4.6,
-      purchased: 7650,
-      createdAt: "2024-12-12",
-      status: "published",
-    },
-    {
-      id: "RN-2345",
-      title: "Mobile App Development with React Native",
-      rating: 4.8,
-      purchased: 9320,
-      createdAt: "2024-11-05",
-      status: "draft",
-    },
-    {
-      id: "PY-6789",
-      title: "Python for Data Analysis and Visualization",
-      rating: 4.7,
-      purchased: 11250,
-      createdAt: "2024-10-20",
-      status: "published",
-    },
-    {
-      id: "AI-0123",
-      title: "Artificial Intelligence and Deep Learning",
-      rating: 4.9,
-      purchased: 6540,
-      createdAt: "2024-09-15",
-      status: "draft",
-    },
-  ]);
+  const { data, isLoading } = useGetAllCoursesQuery({});
+  const [deleteCourse, { isSuccess }] = useDeleteCourseMutation();
+  console.log(data, "data from course table");
 
   const [searchQuery, setSearchQuery] = useState("");
 
   // Filter courses based on search query
-  const filteredCourses = courses.filter(
-    (course) =>
-      course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      course.id.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  //   const filteredCourses = courses.filter(
+  //     (course) =>
+  //       course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //       course.id.toLowerCase().includes(searchQuery.toLowerCase())
+  //   );
 
   // Function to render stars based on rating
   const renderStars = (rating: number) => {
@@ -124,9 +65,12 @@ export default function CourseTable() {
   };
 
   // Function to handle course deletion
-  const handleDelete = (id: string) => {
-    if (confirm("Are you sure you want to delete this course?")) {
-      setCourses(courses.filter((course) => course.id !== id));
+  const handleDelete = async (id: string) => {
+    const res = await deleteCourse(id);
+    if (res?.data?.success) {
+      toast.success("Course deleted successfully!");
+    } else {
+      toast.error("Failed to delete course. Please try again.");
     }
   };
 
@@ -185,57 +129,65 @@ export default function CourseTable() {
               </TableRow>
             </TableHeader>
             <TableBody className="bg-white dark:bg-[#1B2537] divide-y divide-gray-200 dark:divide-gray-700 ">
-              {filteredCourses.length > 0 ? (
-                filteredCourses.map((course) => (
-                  <TableRow
-                    key={course.id}
-                    className=" hover:bg-gray-50  dark:hover:bg-gray-800/50"
-                  >
-                    <TableCell className="font-medium text-center">
-                      {course.id}
-                    </TableCell>
-                    <TableCell className=" truncate text-center">
-                      {course.title}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {renderStars(course.rating)}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {course.purchased.toLocaleString()}
-                    </TableCell>
-                    <TableCell className="text-center hidden md:table-cell">
-                      {formatDate(course.createdAt)}
-                    </TableCell>
+              {!isLoading ? (
+                <>
+                  {data?.data?.length > 0 ? (
+                    data?.data?.map((course: any) => (
+                      <TableRow
+                        key={course._id}
+                        className=" hover:bg-gray-50  dark:hover:bg-gray-800/50"
+                      >
+                        <TableCell className="font-medium text-center">
+                          {course._id}
+                        </TableCell>
+                        <TableCell className=" truncate text-center">
+                          {course?.name}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          {renderStars(course?.ratings)}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          {course.purchased.toLocaleString()}
+                        </TableCell>
+                        <TableCell className="text-center hidden md:table-cell">
+                          {formatDate(course?.createdAt)}
+                        </TableCell>
 
-                    <TableCell className="text-righ">
-                      <div className="flex justify-center gap-2">
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          className="h-8 w-8 p-0"
-                        >
-                          <Edit className="h-4 w-4" />
-                          <span className="sr-only">Edit</span>
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400"
-                          onClick={() => handleDelete(course.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                          <span className="sr-only">Delete</span>
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
+                        <TableCell className="text-righ">
+                          <div className="flex justify-center gap-2">
+                            <Link href={`/admin/courses/edit/${course._id}`}>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-8 w-8 p-0 cursor-pointer"
+                              >
+                                <Edit className="h-4 w-4" />
+                                <span className="sr-only">Edit</span>
+                              </Button>
+                            </Link>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="cursor-pointer h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400"
+                              onClick={() => handleDelete(course._id)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                              <span className="sr-only">Delete</span>
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={7} className="h-24 text-center">
+                        No courses found.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </>
               ) : (
-                <TableRow>
-                  <TableCell colSpan={7} className="h-24 text-center">
-                    No courses found.
-                  </TableCell>
-                </TableRow>
+                <div className="flex justify-center items-center my-10 w-10 h-10 animate-[spin_1s_linear_infinite] rounded-full border-4 border-r-[#3B9DF8] border-[#3b9df84b]"></div>
               )}
             </TableBody>
           </Table>

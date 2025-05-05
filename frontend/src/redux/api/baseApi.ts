@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { loggedUser } from "../features/auth/authSlice";
+import { tagTypesList } from "../tag-type";
 
 // Define a service using a base URL and expected endpoints
 export const baseApi = createApi({
@@ -10,6 +11,7 @@ export const baseApi = createApi({
     baseUrl: "http://localhost:8000/api/v1",
     credentials: "include",
   }),
+  tagTypes: tagTypesList,
 
   endpoints: (builder) => ({
     refreshToken: builder.mutation({

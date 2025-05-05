@@ -64,7 +64,7 @@ export const AdminSidebarItem = {
       items: [
         {
           title: "All Courses",
-          url: "/admin/all-courses",
+          url: "/admin/courses",
         },
         {
           title: "Create Course",
