@@ -2,7 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import Link from "next/link";
 
-const Success = () => {
+const Success = ({ step, setStep }: any) => {
+  const handleCreateAnotherCourse = () => {
+    setStep(1);
+    window.location.reload();
+  };
+
   return (
     <div className="flex flex-col items-center justify-center py-12 space-y-6 text-center">
       <div className="w-24 h-24 rounded-full bg-green-500 flex items-center justify-center mb-4">
@@ -16,14 +21,14 @@ const Success = () => {
       <div className="flex flex-col sm:flex-row gap-4 mt-6">
         <Button
           variant="outline"
-          className="border-[#2a3348] text-white hover:bg-[#2a3348]"
+          className="border-[#2a3348] text-white hover:bg-[#2a3348] cursor-pointer"
           asChild
         >
-          <Link href="/courses">View All Courses</Link>
+          <Link href="/admin/all-courses">View All Courses</Link>
         </Button>
         <Button
-          className="bg-blue-600 hover:bg-blue-700"
-        //   onClick={() => setStep(1)}
+          className="bg-blue-600 text-black dark:text-white hover:bg-blue-700 cursor-pointer"
+          onClick={handleCreateAnotherCourse}
         >
           Create Another Course
         </Button>

@@ -14,9 +14,12 @@ interface CourseOptionProps {
 }
 
 const CourseOption: React.FC<CourseOptionProps> = ({ step }) => {
+
+
+
   return (
     <>
-      <div className="w-full flex-col lg:flex-row mt-3 flex items-center gap-[10px] lg:gap-[20px ">
+      <div className="w-full flex-col lg:flex-row my-3 flex items-center gap-[10px] lg:gap-[20px] ">
         {stepsData?.map((stepItem, index) => (
           <div key={index} className="flex items-center w-full gap-[10px]">
             {step <= stepItem.id && (

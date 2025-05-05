@@ -19,19 +19,19 @@ import { Notification } from "../notification/notification.model";
 // create a new Course
 
 const uploadCourse = async (payload: ICourse) => {
-  const thumbnail = payload.thumbnail;
+  // const thumbnail = payload.thumbnail;
 
-  if (thumbnail) {
-    // Upload thumbnail to Cloudinary
-    const myCloud = await cloudinary.v2.uploader.upload(thumbnail as any, {
-      folder: "courses",
-    });
+  // if (thumbnail) {
+  //   // Upload thumbnail to Cloudinary
+  //   const myCloud = await cloudinary.v2.uploader.upload(thumbnail as any, {
+  //     folder: "courses",
+  //   });
 
-    payload.thumbnail = {
-      public_id: myCloud.public_id,
-      url: myCloud.secure_url,
-    };
-  }
+  //   payload.thumbnail = {
+  //     public_id: myCloud.public_id,
+  //     url: myCloud.secure_url,
+  //   };
+  // }
 
   // Save course to database
   const course = await Course.create(payload);

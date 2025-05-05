@@ -118,7 +118,7 @@ const LogOut = async (id: string) => {
 //   };
 // };
 
-const UpdateAccessToken = async (token: string) => {
+ const UpdateAccessToken = async (token: string) => {
   let decodedData;
 
   try {

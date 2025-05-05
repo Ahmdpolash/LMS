@@ -1,31 +1,51 @@
 "use client";
 
-import FormField from "@/components/Auth/FormField";
+import { Input } from "@/components/ui/input";
 import { PlusCircle, Trash2 } from "lucide-react";
-import { useFormContext, useFieldArray } from "react-hook-form";
+import { toast } from "sonner";
 
-const CoursePB = () => {
-  const { control } = useFormContext();
+type Props = {
+  step: number;
+  setStep: (step: number) => void;
+  prerequisites: any[];
+  setPrerequisites: (prerequisites: any[]) => void;
+  benefits: any[];
+  setBenefits: (benefits: any[]) => void;
+};
 
-  // Benefits array
-  const {
-    fields: benefitFields,
-    append: appendBenefit,
-    remove: removeBenefit,
-  } = useFieldArray({
-    control,
-    name: "benefits",
-  });
+const CoursePB = ({
+  step,
+  setStep,
+  benefits,
+  setBenefits,
+  prerequisites,
+  setPrerequisites,
+}: Props) => {
+  const handleBenefitChange = (index: number, value: string) => {
+    const updatedBenefits = [...benefits];
+    updatedBenefits[index].title = value;
+    setBenefits(updatedBenefits);
+  };
 
-  // Prerequisites array
-  const {
-    fields: prerequisiteFields,
-    append: appendPrerequisite,
-    remove: removePrerequisite,
-  } = useFieldArray({
-    control,
-    name: "prerequisites",
-  });
+  const handlePrerequisiteChange = (index: number, value: string) => {
+    const updatedPrerequisites = [...prerequisites];
+    updatedPrerequisites[index].title = value;
+    setPrerequisites(updatedPrerequisites);
+  };
+
+  // stepper btn
+
+  const prevStep = () => setStep(step - 1);
+  const handleOptions = () => {
+    if (
+      benefits[benefits.length - 1]?.title !== "" &&
+      prerequisites[prerequisites.length - 1]?.title !== ""
+    ) {
+      setStep(step + 1);
+    } else {
+      toast.error("Please fill all the fields first to Proceed next step!");
+    }
+  };
 
   return (
     <div className="space-y-8 bg-[#101828]  p-5 rounded-md">
@@ -35,21 +55,25 @@ const CoursePB = () => {
           What are the Benefits for Students in this Course?
         </h2>
 
-        {benefitFields.map((field, index) => (
-          <div key={field.id} className="w-full">
-            <FormField
-              control={control}
-              name={`benefits.${index}.title`}
-              label={`Benefit ${index + 1}`}
-              placeholder="Write a benefit"
-              className="placeholder:text-slate-500 w-full border-slate-600"
-            />
-          </div>
+        {benefits.map((benefit, index) => (
+          <Input
+            key={index}
+            name={`benefits.${index}.title`}
+            placeholder="Write a benefit"
+            required
+            value={benefit.title}
+            onChange={(e) => {
+              handleBenefitChange(index, e.target.value);
+            }}
+            className="placeholder:text-slate-500 border-slate-600 "
+          />
         ))}
 
         <button
           type="button"
-          onClick={() => appendBenefit({ title: "" })}
+          onClick={() => {
+            setBenefits([...benefits, { title: "" }]);
+          }}
           className="flex items-center text-blue-600 gap-1 cursor-pointer"
         >
           <PlusCircle size={20} />
@@ -63,25 +87,58 @@ const CoursePB = () => {
           What are the Prerequisites for Students in this Course?
         </h2>
 
-        {prerequisiteFields.map((field, index) => (
-          <div key={field.id} className="">
-            <FormField
-              control={control}
+        {prerequisites.map((prerequisite, index) => (
+          <div key={index} className="flex items-center gap-2">
+            <Input
               name={`prerequisites.${index}.title`}
-              label={`Prerequisite ${index + 1}`}
               placeholder="Write a prerequisite"
-              className="placeholder:text-slate-500 w-ful border-slate-600"
+              required
+              value={prerequisite.title}
+              onChange={(e) => {
+                handlePrerequisiteChange(index, e.target.value);
+              }}
+              className="placeholder:text-slate-500 border-slate-600 "
             />
           </div>
         ))}
 
         <button
           type="button"
-          onClick={() => appendPrerequisite({ title: "" })}
+          onClick={() => {
+            setPrerequisites([...prerequisites, { title: "" }]);
+          }}
           className="flex items-center text-blue-600 gap-1 cursor-pointer"
         >
           <PlusCircle size={20} />
           Add Prerequisite
+        </button>
+      </div>
+
+      {/* stepper button */}
+
+      <div className="w-full flex items-end justify-between py-8">
+        <button
+          disabled={step <= 1}
+          type="button"
+          onClick={prevStep}
+          className={`
+          py-2.5 px-6 rounded-md text-[1rem] text-white 
+          ${
+            step <= 1
+              ? "cursor-not-allowed bg-blue-300"
+              : "cursor-pointer bg-blue-500"
+          }
+        `}
+        >
+          Previous
+        </button>
+
+        <button
+          type="button"
+          onClick={handleOptions}
+          className="bg-blue-500 py-2.5 px-6 rounded-md text-white cursor-pointer"
+        >
+          Next
         </button>
       </div>
     </div>

@@ -40,7 +40,7 @@ interface ICourse extends Document {
   price: number;
   estimatedPrice?: number;
   thumbnail: object;
-  tags: string;
+  tags: string[];
   level: string;
   demoUrl: string;
   benefits: { title: string }[];
@@ -124,7 +124,7 @@ const courseSchema = new Schema<ICourse>(
       },
     },
     tags: {
-      type: String,
+      type: [String],
       required: true, // Fix typo
     },
     level: {

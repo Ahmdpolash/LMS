@@ -2,12 +2,14 @@ import { Router } from "express";
 import { CourseControllers } from "./course.controller";
 import { auth } from "../../middleware/auth";
 import { USER_ROLE } from "../user/user.constant";
+import { UpdateAccessToken } from "../auth/auth.controller";
 
 const router = Router();
 
 // CREATE COURSE ROUTE
 router.post(
   "/create-course",
+
   auth(USER_ROLE.admin),
   CourseControllers.uploadCourse
 );

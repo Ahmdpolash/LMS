@@ -66,7 +66,7 @@ const LogOut = catchAsync(async (req, res) => {
 });
 
 //REFRESH TOKEN
-const UpdateAccessToken = catchAsync(async (req, res) => {
+export const UpdateAccessToken = catchAsync(async (req, res) => {
   const { refreshToken } = req.cookies;
 
   if (!refreshToken) {

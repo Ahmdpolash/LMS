@@ -30,7 +30,20 @@ import {
 import { useFormContext } from "react-hook-form";
 import CoursePlayer from "./CoursePlayer";
 
-export default function CoursePreview() {
+type TProps = {
+  step: number;
+  setStep: (step: number) => void;
+  courseData: any;
+  handleCourseCreate: any;
+};
+
+export default function CoursePreview({
+  step,
+  setStep,
+  courseData: data,
+  handleCourseCreate,
+}: TProps) {
+  
   // This would normally come from your form state
   const [courseData, setCourseData] = useState({
     name: "Complete Web Development",
@@ -92,10 +105,11 @@ export default function CoursePreview() {
     ],
   });
 
-  const { getValues } = useFormContext();
+  const prevStep = () => setStep(step - 1);
 
-  const data = getValues();
-
+  const createCourse = async () => {
+    handleCourseCreate();
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-[#0f172a] text-white rounded-md p-5">
@@ -143,9 +157,9 @@ export default function CoursePreview() {
                 <p className="text-gray-300 mb-4">{data?.description}</p>
 
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {courseData.tags.map((tag, index) => (
+                  {data?.tags.map((tag:any,idx:number) => (
                     <Badge
-                      key={index}
+                      key={idx}
                       variant="outline"
                       className="border-gray-600 text-gray-300"
                     >
@@ -159,7 +173,7 @@ export default function CoursePreview() {
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold">What You'll Learn</h3>
                   <ul className="space-y-2">
-                    {data.benefits.map((benefit:any, index:number) => (
+                    {data.benefits.map((benefit: any, index: number) => (
                       <li key={index} className="flex items-start">
                         <Check className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
                         <span>{benefit.title}</span>
@@ -173,12 +187,14 @@ export default function CoursePreview() {
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold">Prerequisites</h3>
                   <ul className="space-y-2">
-                    {data.prerequisites.map((prerequisite:any, index:number) => (
-                      <li key={index} className="flex items-start">
-                        <Check className="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
-                        <span>{prerequisite.title}</span>
-                      </li>
-                    ))}
+                    {data.prerequisites.map(
+                      (prerequisite: any, index: number) => (
+                        <li key={index} className="flex items-start">
+                          <Check className="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
+                          <span>{prerequisite.title}</span>
+                        </li>
+                      )
+                    )}
                   </ul>
                 </div>
               </CardContent>
@@ -313,6 +329,31 @@ export default function CoursePreview() {
             </Card>
           </div>
         </div>
+      </div>
+      <div className="w-full flex items-end justify-between py-8">
+        <button
+          disabled={step <= 1}
+          type="button"
+          onClick={prevStep}
+          className={`
+          py-2.5 px-6 rounded-md text-[1rem] text-white 
+          ${
+            step <= 1
+              ? "cursor-not-allowed bg-blue-300"
+              : "cursor-pointer bg-blue-500"
+          }
+        `}
+        >
+          Previous
+        </button>
+
+        <button
+          type="button"
+          onClick={() => createCourse()}
+          className="bg-blue-500 py-2.5 px-6 rounded-md text-white cursor-pointer"
+        >
+          Submit
+        </button>
       </div>
     </div>
   );

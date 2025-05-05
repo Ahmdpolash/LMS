@@ -1,50 +1,37 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import CourseOption from "@/app/_components/admin/pages/create-course/CourseOption";
 import CourseInformation from "@/app/_components/admin/pages/create-course/CourseInformation";
-import { FormProvider, useForm } from "react-hook-form";
+
 import CoursePB from "@/app/_components/admin/pages/create-course/CoursePB";
-import { courseFormSchema } from "@/types/schema";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import { CourseContent } from "@/app/_components/admin/pages/create-course/CourseContent";
 import CoursePreview from "@/app/_components/admin/pages/create-course/Preview";
-import { Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import toast from "react-hot-toast";
+
 import Success from "@/app/_components/admin/pages/create-course/Success";
 import StepperButton from "@/app/_components/admin/pages/create-course/StepperButton";
 import { useCreateCourseMutation } from "@/redux/features/course/courseApi";
 import { redirect } from "next/navigation";
+import { CourseInfo } from "@/types/course";
+import { toast } from "sonner";
 
 const page = () => {
   const [createCourse, { isSuccess, error, isLoading, data }] =
     useCreateCourseMutation();
-  console.log("final data", data);
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success("Course created successfull");
-      redirect("/admin/all-courses");
-    }
-    if (error) {
-      if ("data" in error) {
-        const errorMessage = error as any;
-        toast.error(errorMessage.data.message);
-      }
-    }
-  }, [isLoading, isSuccess, error]);
 
-  const [courseInfo, setCourseInfo] = useState({
+  const [step, setStep] = useState<number>(1);
+
+  const [courseInfo, setCourseInfo] = useState<CourseInfo>({
     name: "",
     description: "",
-    price: "",
-    estimatedPrice: "",
+    price: 0,
+    estimatedPrice: 0,
     tags: [],
     level: "",
     demoUrl: "",
-    thumbnail: "",
+    thumbnail: { public_id: "", url: "" },
     category: "",
   });
 
@@ -68,119 +55,122 @@ const page = () => {
     },
   ]);
 
-  const [step, setStep] = useState<number>(1);
+  const [courseData, setCourseData] = useState({});
 
-  const methods = useForm({
-    resolver: zodResolver(courseFormSchema),
-    defaultValues: {
-      name: "",
-      description: "",
-      category: "",
-      price: "",
-      estimatedPrice: "",
-      tags: [],
-      level: "",
-      demoUrl: "",
-      thumbnail: "",
-      benefits,
-      courseContentData,
-      prerequisites,
-    },
-  });
+  const handleSubmit = async () => {
+    //format benefit array
+    const formattedBenefits = benefits.map((benefit) => ({
+      title: benefit.title,
+    }));
+    //format prerequisites array
+    const formattedPrerequisites = prerequisites.map((prerequisite) => ({
+      title: prerequisite.title,
+    }));
 
-  useEffect(() => {
-    console.log(`📋 Entered Step ${step}:`, methods.getValues());
-  }, [step]);
+    //format course content array
+    const formattedCourseContent = courseContentData.map((content) => ({
+      videoUrl: content.videoUrl,
+      title: content.title,
+      description: content.description,
+      videoSection: content.videoSection,
+      links: content.links.map((link) => ({
+        title: link.title,
+        url: link.url,
+      })),
+      suggestion: content.suggestion,
+    }));
 
-  const handleSubmitCourse = async (data: any) => {
+    // prepare data object
+
+    const data = {
+      name: courseInfo.name,
+      description: courseInfo.description,
+      price: courseInfo.price,
+      estimatedPrice: courseInfo.estimatedPrice,
+      tags: courseInfo.tags,
+      level: courseInfo.level,
+      demoUrl: courseInfo.demoUrl,
+      thumbnail: courseInfo.thumbnail,
+      category: courseInfo.category,
+      benefits: formattedBenefits,
+      prerequisites: formattedPrerequisites,
+      courseData: formattedCourseContent,
+      totalVideos: courseContentData.length,
+    };
+
+    setCourseData(data);
+  };
+
+  const handleCourseCreate = async () => {
+    const data = courseData;
+
     try {
-      console.log("✅ Final Submit:", data);
-      // You can add your API call here, e.g.:
-      // await axios.post("/api/courses", data);
-      toast.success("Course submitted successfully!");
-      return true;
+      const res = await createCourse(data).unwrap();
+      console.log("Course created successfully:", res);
+      if (res?.success) {
+        toast.success("Course created successfully!");
+        setStep(5);
+      }
     } catch (error) {
-      console.error("❌ Submit Error:", error);
-      toast.error("Failed to submit course. Please try again.");
-      return false;
+      console.error("Submission error:", error);
+      toast.error("Failed to create course. Please try again.");
     }
   };
 
-  const nextStep = async () => {
-    let isStepValid = false;
-
-    if (step === 1)
-      isStepValid = await methods.trigger([
-        "name",
-        "description",
-        "price",
-        "category",
-        "level",
-        "demoUrl",
-        "thumbnail",
-      ]);
-
-    if (step === 2)
-      isStepValid = await methods.trigger(["benefits", "prerequisites"]);
-
-    if (step === 3) {
-      methods.setValue("courseContentData", courseContentData);
-
-      setStep(step + 1);
-      return;
-    }
-
-    if (step === 4) {
-      methods.handleSubmit(async (data) => {
-        const courseData = {
-          totalVideos: data?.courseContentData.length,
-          ...data,
-        };
-
-        await createCourse(courseData);
-        toast.success("course created successfully");
-        setStep(step + 1);
-      })();
-      return;
-    }
-
-    if (isStepValid) {
-      setStep(step + 1);
-    }
-  };
-
-  const prevStep = () => setStep(step - 1);
+  console.log("courseData", courseData);
+  console.log("data", data);
 
   return (
     <div className="w-full  min-h-screen lg:max-w-6xl mx-auto">
       <CourseOption step={step} />
 
-      <FormProvider {...methods}>
-        <form
-          // onSubmit={methods.handleSubmit(() => {
-          //   nextStep();
-          // })}
-          onSubmit={methods.handleSubmit(() => nextStep())}
-          className="mt-7 w-full "
-        >
-          {step === 1 && <CourseInformation />}
+      {step === 1 && (
+        <CourseInformation
+          courseInfo={courseInfo}
+          setCourseInfo={setCourseInfo}
+          step={step}
+          setStep={setStep}
+        />
+      )}
 
-          {step === 2 && <CoursePB />}
+      {step === 2 && (
+        <CoursePB
+          step={step}
+          setStep={setStep}
+          prerequisites={prerequisites}
+          setPrerequisites={setPrerequisites}
+          benefits={benefits}
+          setBenefits={setBenefits}
+        />
+      )}
 
-          {step === 3 && (
-            <CourseContent
-              setCourseContentData={setCourseContentData}
-              courseContentData={courseContentData}
-            />
-          )}
+      {step === 3 && (
+        <CourseContent
+          setCourseContentData={setCourseContentData}
+          courseContentData={courseContentData}
+          step={step}
+          setStep={setStep}
+          handleSubmit={handleSubmit}
+        />
+      )}
 
-          {step === 4 && <CoursePreview />}
+      {step === 4 && (
+        <CoursePreview
+          step={step}
+          setStep={setStep}
+          courseData={courseData}
+          handleCourseCreate={handleCourseCreate}
+        />
+      )}
 
-          {step === 5 && <Success />}
+      {step === 5 && <Success step={step} setStep={setStep} />}
 
-          <StepperButton step={step} prevStep={prevStep} nextStep={nextStep} />
-        </form>
-      </FormProvider>
+      {/* <StepperButton
+            step={step}
+            prevStep={prevStep}
+            nextStep={nextStep}
+            isSubmitting={isLoading}
+          /> */}
     </div>
   );
 };

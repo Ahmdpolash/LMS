@@ -42,6 +42,7 @@ export const auth = (...role: TUserRole[]) => {
 
       // verify user from redis
       const user = await redis.get(decoded.userId);
+      
       if (!user) {
         throw new AppError(
           "please login to access this resource !",
