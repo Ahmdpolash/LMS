@@ -12,8 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
+import { format } from "timeago.js";
 import Link from "next/link";
 import {
   useDeleteCourseMutation,
@@ -33,7 +32,7 @@ interface Course {
 export default function CourseTable() {
   const { data, isLoading } = useGetAllCoursesQuery({});
   const [deleteCourse, { isSuccess }] = useDeleteCourseMutation();
-  console.log(data, "data from course table");
+  
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -150,7 +149,7 @@ export default function CourseTable() {
                           {course.purchased.toLocaleString()}
                         </TableCell>
                         <TableCell className="text-center hidden md:table-cell">
-                          {formatDate(course?.createdAt)}
+                          {format(course?.createdAt)}
                         </TableCell>
 
                         <TableCell className="text-righ">

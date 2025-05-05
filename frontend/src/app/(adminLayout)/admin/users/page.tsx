@@ -1,11 +1,11 @@
-import React from 'react';
+import CourseTable from "@/app/_components/admin/pages/all-course/CourseTable";
+import UserTable from "@/app/_components/admin/pages/users/UserTable";
 
-const page = () => {
-    return (
-        <div>
-            user
-        </div>
-    );
+const UsersPage = () => {
+  return (
+    <div className="">
+      <UserTable />
+    </div>
+  );
 };
-
-export default page;
+export default UsersPage;

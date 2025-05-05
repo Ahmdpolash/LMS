@@ -70,11 +70,6 @@ export const AdminSidebarItem = {
           title: "Create Course",
           url: "/admin/create-course",
         },
-
-        {
-          title: "Live Courses",
-          url: "/admin/live-course",
-        },
       ],
     },
     {

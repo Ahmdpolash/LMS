@@ -55,8 +55,26 @@ export const UserApi = baseApi.injectEndpoints({
         }
       },
     }),
+    getAllUsers: builder.query({
+      query: () => ({
+        url: "/user",
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
+    deleteUser: builder.mutation({
+      query: (id) => ({
+        url: `/user/${id}`,
+        method: "DELETE",
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
-export const { useUpdateAvatarMutation, useUpdateProfileInfoMutation } =
-  UserApi;
+export const {
+  useUpdateAvatarMutation,
+  useUpdateProfileInfoMutation,
+  useGetAllUsersQuery,
+  useDeleteUserMutation,
+} = UserApi;
