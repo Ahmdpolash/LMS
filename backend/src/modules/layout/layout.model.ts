@@ -31,33 +31,37 @@ const CategorySchema = new Schema<ICourseCategory>(
     title: {
       type: String,
     },
-  },
-  {
-    timestamps: true,
-  }
-);
-
-const BannerSchema = new Schema<IBannerImage>(
-  {
-    public_id: {
+    image: {
       type: String,
     },
-    url: { type: String },
   },
+
   {
     timestamps: true,
   }
 );
 
-const LayoutSchema = new Schema<ILayout>({
-  type: { type: String },
-  faq: [FaqSchema],
-  categories: [CategorySchema],
-  banner: {
-    image: BannerSchema,
-    title: { type: String },
-    subTitle: { type: String },
+const BannerSchema = new Schema<IBannerImage>({
+  public_id: {
+    type: String,
   },
+  url: { type: String },
 });
+
+const LayoutSchema = new Schema<ILayout>(
+  {
+    type: { type: String },
+    faq: [FaqSchema],
+    categories: [CategorySchema],
+    banner: {
+      image: BannerSchema,
+      title: { type: String },
+      subTitle: { type: String },
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 export const Layout = model<ILayout>("Layout", LayoutSchema);

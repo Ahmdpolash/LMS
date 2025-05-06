@@ -13,18 +13,18 @@ export const CreateLayout = async (type: string, req: Request) => {
 
   // if type is banner then create banner model data
   if (type === "Banner") {
-    const { image, title, subTitle } = req.body;
-    const myCloud = await cloudinary.v2.uploader.upload(image, {
-      folder: "layout",
-    });
+    const { image, title, subTitle } = req.body.banner;
 
     const banner = {
-      image: {
-        public_id: myCloud.public_id,
-        url: myCloud.secure_url,
+      type: "Banner",
+      banner: {
+        image: {
+          public_id: image.public_id,
+          url: image.url,
+        },
+        title,
+        subTitle,
       },
-      title,
-      subTitle,
     };
 
     await Layout.create(banner);
@@ -62,7 +62,7 @@ export const CreateLayout = async (type: string, req: Request) => {
 };
 
 // get layout
-export const GetLayoutByType = async (type: string) => {
+export const GetLayout = async (type: string) => {
   const result = await Layout.findOne({ type });
 
   return result;
@@ -78,20 +78,20 @@ export const EditLayout = async (type: string, req: Request) => {
 
     const { image, title, subTitle } = req.body;
 
-    // if already have then destroy the banner image
-    if (bannerData) {
-      await cloudinary.v2.uploader.destroy(bannerData.image.public_id);
-    }
+    // // if already have then destroy the banner image
+    // if (bannerData) {
+    //   await cloudinary.v2.uploader.destroy(bannerData.image.public_id);
+    // }
 
-    // upload banner
-    const myCloud = await cloudinary.v2.uploader.upload(image, {
-      folder: "layout",
-    });
+    // // upload banner
+    // const myCloud = await cloudinary.v2.uploader.upload(image, {
+    //   folder: "layout",
+    // });
 
     const banner = {
       image: {
-        public_id: myCloud.public_id,
-        url: myCloud.secure_url,
+        public_id: image.public_id,
+        url: image.url,
       },
       title,
       subTitle,

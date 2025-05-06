@@ -13,15 +13,29 @@ export const layoutApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.layout],
     }),
 
-    getAllLayouts: builder.query({
-      query: () => ({
-        url: "/layout",
+    getAllLayoutById: builder.query({
+      query: (type) => ({
+        url: `/layout/${type}`,
         method: "GET",
         credentials: "include",
       }),
       providesTags: [tagTypes.layout],
     }),
+
+    editLayout: builder.mutation({
+      query: (data) => ({
+        url: "/layout/update-layout",
+        method: "PATCH",
+        body: data,
+        credentials: "include",
+      }),
+      invalidatesTags: [tagTypes.layout],
+    }),
   }),
 });
 
-export const { useCreateLayoutMutation, useGetAllLayoutsQuery } = layoutApi;
+export const {
+  useCreateLayoutMutation,
+  useGetAllLayoutByIdQuery,
+  useEditLayoutMutation,
+} = layoutApi;

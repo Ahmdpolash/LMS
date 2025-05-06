@@ -1,3 +1,5 @@
+
+'use client'
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,10 +10,12 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 
-import { useCreateLayoutMutation } from "@/redux/features/layout/layoutApi";
+import { useCreateLayoutMutation ,useEditLayoutMutation} from "@/redux/features/layout/layoutApi";
 
-const BannerForm = () => {
+const UpdateBannerForm = () => {
   const [createBanner, { isLoading }] = useCreateLayoutMutation();
+  const [updateBanner] = useEditLayoutMutation();
+
   const [newBanner, setNewBanner] = useState({
     title: "",
     subTitle: "",
@@ -81,9 +85,9 @@ const BannerForm = () => {
       },
     };
 
-    try {
-      await createBanner(payload).unwrap();
+    const res = await createBanner(payload).unwrap();
 
+    if (res?.success) {
       toast.success("Banner created successfully!");
       setNewBanner({
         title: "",
@@ -91,11 +95,10 @@ const BannerForm = () => {
         image: null,
       });
       setPreview(null);
-    } catch (error: any) {
-      const message =
-       
-        "Already Have a Banner! Please update it instead of adding a new one.";
-      toast.error(message);
+    } else {
+      toast.error(
+        "Already Have an Banner ! Please Update this instead of Adding New One"
+      );
     }
   };
 
@@ -189,7 +192,7 @@ const BannerForm = () => {
                 className="bg-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/80 text-white cursor-pointer"
               >
                 <Save className="h-4 w-4 mr-2" />
-                {isLoading ? "Saving..." : "Save Banner"}
+                {isLoading ? "Updating..." : "Update Banner"}
               </Button>
             </div>
           </div>
@@ -199,4 +202,4 @@ const BannerForm = () => {
   );
 };
 
-export default BannerForm;
+export default UpdateBannerForm;

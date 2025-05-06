@@ -1,6 +1,6 @@
 import catchAsync from "../../utils/catchAsync";
 import { CreateLayout, EditLayout } from "./layout.services";
-import { GetLayoutByType } from "./layout.services";
+import { GetLayout } from "./layout.services";
 
 // create layout
 export const Layout = catchAsync(async (req, res) => {
@@ -16,10 +16,10 @@ export const Layout = catchAsync(async (req, res) => {
 
 // get layout
 
-export const GetAllLayout = catchAsync(async (req, res) => {
-  const { type } = req.body;
+export const GetLayoutByType = catchAsync(async (req, res) => {
+  const { type } = req.params;
 
-  const result = await GetLayoutByType(type);
+  const result = await GetLayout(type);
 
   res.status(200).json({
     success: true,

@@ -7,6 +7,7 @@ export interface IFaq {
 
 export interface ICourseCategory {
   title: string;
+  image: string;
 }
 
 export interface IBannerImage {

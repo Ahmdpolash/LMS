@@ -80,7 +80,7 @@ export const AdminSidebarItem = {
       items: [
         {
           title: "Add Banner",
-          url: "/admin/add-banner",
+          url: "/admin/banner",
         },
 
         {

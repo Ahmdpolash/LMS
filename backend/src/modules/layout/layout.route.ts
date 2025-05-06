@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { GetAllLayout, Layout, UpdateLayout } from "./layout.controller";
+import { GetLayoutByType, Layout, UpdateLayout } from "./layout.controller";
 import { auth } from "../../middleware/auth";
 import { USER_ROLE } from "../user/user.constant";
 
@@ -9,7 +9,7 @@ const router = Router();
 router.post("/create-layout", auth(USER_ROLE.admin), Layout);
 
 // GET ALL LAYOUTS API
-router.get("/", GetAllLayout);
+router.get("/:type", GetLayoutByType);
 
 // UPDATE LAYOUT API
 router.patch("/update-layout", auth(USER_ROLE.admin), UpdateLayout);

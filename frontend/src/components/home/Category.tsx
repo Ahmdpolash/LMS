@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Container from "../shared/Container";
+import Image from "next/image";
 
 interface Category {
   id: number;
@@ -125,11 +126,22 @@ export default function CategorySection() {
                     .replace(/\s+/g, "-")}`}
                   className="bg-white h-[160px] dark:bg-[#1a2342] rounded-xl p-5 text-center hover:shadow-lg transition-all duration-300 hover:transform hover:scale-105 border border-gray-100 dark:border-gray-800"
                 >
-                  <div
+                  {/* <div
                     className={`${category.color} p-3 rounded-full w-14 h-14 mx-auto mb-4 flex items-center justify-center`}
                   >
                     {category.icon}
+                  </div> */}
+
+                  <div className='p-3 bg-[#1E3569] rounded-full w-14 h-14 mx-auto mb-4 flex items-center justify-center'>
+                    <Image
+                      src={"/sss.png"}
+                      height={100}
+                      width={100}
+                      alt=""
+                      className=" w-[40px]"
+                    />
                   </div>
+
                   <h1 className="font-medium text-gray-900 dark:text-white mb-1">
                     {category.name}
                   </h1>
