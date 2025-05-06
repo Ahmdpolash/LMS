@@ -20,7 +20,7 @@ import { useChangeUserRoleMutation } from "@/redux/features/user/userApi";
 import { toast } from "sonner";
 
 export function ChangeRoleModal({ users }: any) {
-  const filterUser = users?.data?.filter((user: any) => user?.role === "user");
+//   const filterUser = users?.data?.filter((user: any) => user?.role === "user");
 
   const [changeRole] = useChangeUserRoleMutation();
   const [open, setOpen] = useState(false);
@@ -67,7 +67,7 @@ export function ChangeRoleModal({ users }: any) {
                 <SelectValue placeholder="Select User Email" />
               </SelectTrigger>
               <SelectContent>
-                {filterUser?.map((user: any) => (
+                {users?.data?.map((user: any) => (
                   <SelectItem key={user._id} value={user?._id}>
                     {user?.email}
                   </SelectItem>

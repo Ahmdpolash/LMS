@@ -117,9 +117,6 @@ const page = () => {
     }
   };
 
-  console.log("courseData", courseData);
-  console.log("data", data);
-
   return (
     <div className="w-full  min-h-screen lg:max-w-6xl mx-auto">
       <CourseOption step={step} />
