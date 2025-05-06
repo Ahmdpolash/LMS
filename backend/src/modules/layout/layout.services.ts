@@ -68,6 +68,12 @@ export const GetLayout = async (type: string) => {
   return result;
 };
 
+//single layout
+export const GetSingleLayout = async (id: string) => {
+  const result = await Layout.findById(id);
+  return result;
+};
+
 // update layout
 
 export const EditLayout = async (type: string, req: Request) => {
@@ -75,29 +81,26 @@ export const EditLayout = async (type: string, req: Request) => {
   if (type === "Banner") {
     // find banner data
     const bannerData: any = await Layout.findOne({ type: "Banner" });
+   
 
-    const { image, title, subTitle } = req.body;
+    const { image, title, subTitle } = req.body.banner;
 
-    // // if already have then destroy the banner image
-    // if (bannerData) {
-    //   await cloudinary.v2.uploader.destroy(bannerData.image.public_id);
-    // }
-
-    // // upload banner
-    // const myCloud = await cloudinary.v2.uploader.upload(image, {
-    //   folder: "layout",
-    // });
-
-    const banner = {
-      image: {
-        public_id: image.public_id,
-        url: image.url,
+    const res = await Layout.findByIdAndUpdate(
+      bannerData._id,
+      {
+        banner: {
+          image: {
+            public_id: image.public_id,
+            url: image.url,
+          },
+          title,
+          subTitle,
+        },
       },
-      title,
-      subTitle,
-    };
+      { new: true }
+    );
 
-    await Layout.findByIdAndUpdate(bannerData._id, banner, { new: true });
+
   }
 
   //if type is faq then create faq model data

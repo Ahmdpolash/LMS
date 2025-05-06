@@ -20,7 +20,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import BannerForm from "./BannerForm";
-import { useGetAllLayoutByIdQuery } from "@/redux/features/layout/layoutApi";
+import { useGetAllLayoutByTypeQuery } from "@/redux/features/layout/layoutApi";
 import Link from "next/link";
 // import { Switch } from "@/components/ui/switch";
 
@@ -34,7 +34,7 @@ interface Banner {
 }
 
 export default function BannersPage() {
-  const { data } = useGetAllLayoutByIdQuery("Banner");
+  const { data } = useGetAllLayoutByTypeQuery("Banner");
 
 
 

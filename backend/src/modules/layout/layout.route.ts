@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { GetLayoutByType, Layout, UpdateLayout } from "./layout.controller";
+import {
+  GetLayoutByType,
+  GetSingleLayoutById,
+  Layout,
+  UpdateLayout,
+} from "./layout.controller";
 import { auth } from "../../middleware/auth";
 import { USER_ROLE } from "../user/user.constant";
 
@@ -13,5 +18,8 @@ router.get("/:type", GetLayoutByType);
 
 // UPDATE LAYOUT API
 router.patch("/update-layout", auth(USER_ROLE.admin), UpdateLayout);
+
+// single layout
+router.get("/get-layout/:id", GetSingleLayoutById);
 
 export const LayoutRoutes = router;

@@ -13,9 +13,17 @@ export const layoutApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.layout],
     }),
 
-    getAllLayoutById: builder.query({
+    getAllLayoutByType: builder.query({
       query: (type) => ({
         url: `/layout/${type}`,
+        method: "GET",
+        credentials: "include",
+      }),
+      providesTags: [tagTypes.layout],
+    }),
+    getAllLayoutById: builder.query({
+      query: (id) => ({
+        url: `/layout/get-layout/${id}`,
         method: "GET",
         credentials: "include",
       }),
@@ -36,6 +44,7 @@ export const layoutApi = baseApi.injectEndpoints({
 
 export const {
   useCreateLayoutMutation,
-  useGetAllLayoutByIdQuery,
+  useGetAllLayoutByTypeQuery,
   useEditLayoutMutation,
+  useGetAllLayoutByIdQuery,
 } = layoutApi;

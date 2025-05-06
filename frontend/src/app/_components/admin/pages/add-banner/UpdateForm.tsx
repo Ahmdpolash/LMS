@@ -1,26 +1,42 @@
-
-'use client'
+"use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Save, Upload } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 
-import { useCreateLayoutMutation ,useEditLayoutMutation} from "@/redux/features/layout/layoutApi";
+import {
+  useEditLayoutMutation,
+  useGetAllLayoutByIdQuery,
+} from "@/redux/features/layout/layoutApi";
+import { useParams } from "next/navigation";
 
 const UpdateBannerForm = () => {
-  const [createBanner, { isLoading }] = useCreateLayoutMutation();
-  const [updateBanner] = useEditLayoutMutation();
+  const params = useParams();
+
+  const [updateBanner, { isLoading }] = useEditLayoutMutation();
+  const { data } = useGetAllLayoutByIdQuery(params.id);
 
   const [newBanner, setNewBanner] = useState({
     title: "",
     subTitle: "",
     image: null as null | { public_id: string; url: string },
   });
+
+  useEffect(() => {
+    if (data?.data?.banner) {
+      setNewBanner({
+        title: data.data.banner.title || "",
+        subTitle: data.data.banner.subTitle || "",
+        image: data.data.banner.image || null,
+      });
+      setPreview(data.data.banner.image?.url || null);
+    }
+  }, [data]);
 
   const [preview, setPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -85,28 +101,29 @@ const UpdateBannerForm = () => {
       },
     };
 
-    const res = await createBanner(payload).unwrap();
-
+    const res = await updateBanner(payload).unwrap();
+    console.log(res);
     if (res?.success) {
-      toast.success("Banner created successfully!");
+      toast.success("Banner Updated successfully!");
       setNewBanner({
-        title: "",
-        subTitle: "",
-        image: null,
+        title: newBanner.title,
+        subTitle: newBanner.subTitle,
+        image: newBanner.image,
       });
-      setPreview(null);
+      setPreview(newBanner.image?.url || null);
     } else {
-      toast.error(
-        "Already Have an Banner ! Please Update this instead of Adding New One"
-      );
+      toast.error("Something went wrong! Please try again or contact support.");
     }
   };
 
+
+
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="mt-10">
       <Card>
         <CardHeader>
-          <CardTitle>Add New Banner</CardTitle>
+          <CardTitle>Update Existing Banner</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-6">
