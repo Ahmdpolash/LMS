@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useGetAllLayoutByTypeQuery } from "@/redux/features/layout/layoutApi";
 
 type Props = {
   courseInfo: CourseInfo;
@@ -30,9 +31,10 @@ const CourseInformation = ({
   step,
   setStep,
 }: Props) => {
+  const { data:cate } = useGetAllLayoutByTypeQuery("Category");
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
- 
 
     const allFieldsFilled =
       courseInfo.name.trim() !== "" &&
@@ -45,7 +47,7 @@ const CourseInformation = ({
       courseInfo.category.trim() !== "";
 
     if (allFieldsFilled) {
-       setStep(step + 1);
+      setStep(step + 1);
     } else {
       toast.error(
         "Please fill all the fields first to proceed to the next step!"
@@ -184,10 +186,11 @@ const CourseInformation = ({
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="development">Development</SelectItem>
-                  <SelectItem value="design">Design</SelectItem>
-                  <SelectItem value="marketing">Marketing</SelectItem>
-                  <SelectItem value="music">Music</SelectItem>
+                  {cate?.data?.categories?.map((category:any) => (
+                    <SelectItem key={category?._id} value={category?.title}>
+                      {category?.title}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -239,7 +242,7 @@ const CourseInformation = ({
             <FileInput
               value={courseInfo.thumbnail}
               onChange={(fileObj: { public_id: string; url: string } | null) =>
-                setCourseInfo({ ...courseInfo, thumbnail: fileObj  })
+                setCourseInfo({ ...courseInfo, thumbnail: fileObj })
               }
             />
           </div>

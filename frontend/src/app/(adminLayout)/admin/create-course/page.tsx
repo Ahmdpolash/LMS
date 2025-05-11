@@ -45,6 +45,7 @@ const page = () => {
       title: "",
       description: "",
       videoSection: "Untitled Section",
+      videoLength: '',
       links: [
         {
           title: "",
@@ -56,6 +57,7 @@ const page = () => {
   ]);
 
   const [courseData, setCourseData] = useState({});
+  console.log(courseContentData);
 
   const handleSubmit = async () => {
     //format benefit array
@@ -73,6 +75,7 @@ const page = () => {
       title: content.title,
       description: content.description,
       videoSection: content.videoSection,
+      videoLength: content.videoLength,
       links: content.links.map((link) => ({
         title: link.title,
         url: link.url,

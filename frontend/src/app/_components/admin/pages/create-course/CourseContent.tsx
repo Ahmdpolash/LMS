@@ -242,6 +242,21 @@ export const CourseContent = ({
                         />
                       </div>
                       <div className="my- flex flex-col space-y-2">
+                        <label id="videoLength">Video Length</label>
+                        <input
+                          type="number"
+                          name="videoLength"
+                          placeholder="Set video Length (In Minutes)"
+                          className="dark:bg-[#0C111B] border rounded-md py-2 px-4 placeholder:text-slate-500 border-slate-600  focus:outline-none"
+                          value={item.videoLength}
+                          onChange={(e) => {
+                            const updateData = [...courseContentData];
+                            updateData[idx].videoLength = e.target.value;
+                            setCourseContentData(updateData);
+                          }}
+                        />
+                      </div>
+                      <div className="my- flex flex-col space-y-2">
                         <label id="description">Video Description</label>
                         <textarea
                           rows={6}

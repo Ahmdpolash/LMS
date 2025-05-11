@@ -23,8 +23,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGetAllLayoutByTypeQuery } from "@/redux/features/layout/layoutApi";
 import Link from "next/link";
 
-import Image from "next/image";
-
 import { toast } from "sonner";
 import FaqForm from "./FaqForm";
 

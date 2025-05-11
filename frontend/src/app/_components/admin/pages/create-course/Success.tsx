@@ -24,7 +24,7 @@ const Success = ({ step, setStep }: any) => {
           className="border-[#2a3348] text-white hover:bg-[#2a3348] cursor-pointer"
           asChild
         >
-          <Link href="/admin/all-courses">View All Courses</Link>
+          <Link href="/admin/courses">View All Courses</Link>
         </Button>
         <Button
           className="bg-blue-600 text-black dark:text-white hover:bg-blue-700 cursor-pointer"
