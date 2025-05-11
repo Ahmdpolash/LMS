@@ -121,7 +121,7 @@ export const AdminSidebarItem = {
         },
         {
           title: "Orders Analytics",
-          url: "/admin/course-analytics",
+          url: "/admin/order-analytics",
         },
       ],
     },
