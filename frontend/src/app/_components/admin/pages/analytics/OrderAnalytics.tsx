@@ -1,5 +1,6 @@
 "use client";
 
+import CustomLoading from "@/app/_components/CustomLoading";
 import { useGetOrderAnalyticsQuery } from "@/redux/features/analytics/analyticsApi";
 import { useEffect, useState } from "react";
 
@@ -36,7 +37,7 @@ const OrderAnalytics = ({ isDashboard }: { isDashboard?: boolean }) => {
   return (
     <div>
       {isLoading ? (
-        <h1>Loading</h1>
+        <CustomLoading />
       ) : (
         <div className="h-screen">
           <div>

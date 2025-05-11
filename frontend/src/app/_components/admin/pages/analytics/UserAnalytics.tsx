@@ -13,6 +13,7 @@ import {
 } from "recharts";
 
 import { useEffect, useState } from "react";
+import CustomLoading from "@/app/_components/CustomLoading";
 
 type Props = {
   isDashboard?: boolean;
@@ -36,7 +37,7 @@ const UserAnalytics = ({ isDashboard }: Props) => {
   return (
     <div>
       {isLoading ? (
-        <h1>Loading</h1>
+        <CustomLoading />
       ) : (
         <div
           className={`${

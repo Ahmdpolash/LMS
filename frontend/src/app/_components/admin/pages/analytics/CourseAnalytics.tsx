@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useEffect, useState } from "react";
+import CustomLoading from "@/app/_components/CustomLoading";
 
 // const analyticsData = [
 //   { name: "Jun 2023", uv: 3 },
@@ -49,7 +50,7 @@ const CourseAnalytics = () => {
   return (
     <div>
       {isLoading ? (
-        <h1>Loading</h1>
+        <CustomLoading />
       ) : (
         <div className="h-screen">
           <div className="">
