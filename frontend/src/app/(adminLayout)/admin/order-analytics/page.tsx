@@ -1,11 +1,12 @@
-import React from 'react';
+import OrderAnalytics from "@/app/_components/admin/pages/analytics/OrderAnalytics";
 
-const OrderAnalytics = () => {
-    return (
-        <div>
-            aa
-        </div>
-    );
+
+const OrderAnalyticsPage = () => {
+  return (
+    <div>
+      <OrderAnalytics />
+    </div>
+  );
 };
 
-export default OrderAnalytics;
+export default OrderAnalyticsPage;
