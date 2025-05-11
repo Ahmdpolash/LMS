@@ -23,13 +23,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGetAllLayoutByTypeQuery } from "@/redux/features/layout/layoutApi";
 import Link from "next/link";
 
-import CategoryForm from "./CategoryForm";
 import Image from "next/image";
 
 import { toast } from "sonner";
+import FaqForm from "./FaqForm";
 
-export default function CreateCategory() {
-  const { data } = useGetAllLayoutByTypeQuery("Category");
+export default function CreateFaqs() {
+  const { data } = useGetAllLayoutByTypeQuery("Faq");
 
   const handleDelete = () => {
     toast.error("Feature coming soon! 🚀");
@@ -38,21 +38,21 @@ export default function CreateCategory() {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-        Category Management
+        FAQ Management
       </h1>
 
       <Tabs defaultValue="all" className="w-full">
         <TabsList className="mb-6">
-          <TabsTrigger value="all">All Categories</TabsTrigger>
+          <TabsTrigger value="all">All FAQ</TabsTrigger>
           <TabsTrigger className="" value="add">
-            Add New Category
+            Add New FAQ
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="all">
           <Card className="dark:bg-[#020817]">
             <CardHeader>
-              <CardTitle>All Categories</CardTitle>
+              <CardTitle>All FAQ</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto">
@@ -62,8 +62,8 @@ export default function CreateCategory() {
                       <TableHead className="w-[100px] text-center">
                         No
                       </TableHead>
-                      <TableHead className="text-center">Name</TableHead>
-                      <TableHead className="text-center">Image</TableHead>
+                      <TableHead className="text-center">Question</TableHead>
+                      <TableHead className="text-center">Category</TableHead>
 
                       <TableHead className="hidden md:table-cell text-center">
                         Created
@@ -72,22 +72,16 @@ export default function CreateCategory() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {data?.data?.categories?.map((item: any, index: number) => (
+                    {data?.data?.faq?.map((item: any, index: number) => (
                       <TableRow>
                         <TableCell className="font-medium text-center">
                           {index + 1}
                         </TableCell>
                         <TableCell className="max-w-[200px] truncate text-center">
-                          {item.title}
+                          {item.question}
                         </TableCell>
-                        <TableCell className="max-w-[200px] truncate ">
-                          <Image
-                            src={item?.image}
-                            height={50}
-                            width={50}
-                            alt={"category"}
-                            className="h-[40px] w-[40px] rounded-full mx-auto"
-                          />
+                        <TableCell className="max-w-[200px] truncate text-center">
+                          {item.category}
                         </TableCell>
 
                         <TableCell className="hidden md:table-cell text-center">
@@ -95,7 +89,7 @@ export default function CreateCategory() {
                         </TableCell>
                         <TableCell className="text-center">
                           <div className="flex justify-center gap-2">
-                            <Link href={`/`}>
+                            <Link href={`/faq`}>
                               <Button
                                 size="sm"
                                 variant="ghost"
@@ -127,7 +121,7 @@ export default function CreateCategory() {
         </TabsContent>
 
         <TabsContent value="add">
-          <CategoryForm />
+          <FaqForm />
         </TabsContent>
       </Tabs>
     </div>

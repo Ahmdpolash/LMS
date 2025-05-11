@@ -14,10 +14,7 @@ const FaqSchema = new Schema<IFaq>(
     answer: {
       type: String,
     },
-    badge: {
-      type: String,
-    },
-    icon: {
+    category: {
       type: String,
     },
   },

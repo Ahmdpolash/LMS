@@ -101,7 +101,7 @@ const BannerForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Card>
+      <Card className="">
         <CardHeader>
           <CardTitle>Add New Banner</CardTitle>
         </CardHeader>

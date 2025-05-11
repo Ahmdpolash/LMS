@@ -87,23 +87,32 @@ export const CreateLayout = async (type: string, req: Request) => {
   }
 
   // Handle Faq (only one allowed)
-  // else if (type === "Faq") {
-  //   const isTypeExists = await Layout.findOne({ type });
-  //   if (isTypeExists) {
-  //     throw new AppError(`${type} is already exists`, 404);
-  //   }
+  else if (type === "Faq") {
+    const { question, answer, category } = req.body;
 
-  //   const { faq } = req.body;
+    if (!question || !answer) {
+      throw new AppError("FAQ question and answer are required", 400);
+    }
 
-  //   const faqItems = faq.map((item: any) => ({
-  //     question: item.question,
-  //     answer: item.answer,
-  //     badge: item.badge,
-  //     icon: item.icon,
-  //   }));
+    const newFaq = { question, answer, category };
 
-  //   await Layout.create({ type: "Faq", faq: faqItems });
-  // }
+    const existing = await Layout.findOne({ type: "Faq" });
+
+    if (existing) {
+      const duplicate = existing.faq.find(
+        (f) => f.question?.toLowerCase() === question?.toLowerCase()
+      );
+
+      if (duplicate) {
+        throw new AppError("This FAQ already exists", 400);
+      }
+
+      existing.faq.push(newFaq);
+      await existing.save();
+    } else {
+      await Layout.create({ type: "Faq", faq: [newFaq] });
+    }
+  }
 
   // Handle Category (can append multiple times)
   else if (type === "Category") {

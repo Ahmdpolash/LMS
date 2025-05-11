@@ -1,8 +1,10 @@
+import CreateFaqs from "@/app/_components/admin/pages/faqs/CreateFaqs";
+
 const FaqPage = () => {
-    return (
-        <div>
-            <p> Hello, This is page Page </p>
-        </div>
-    );
+  return (
+    <div>
+      <CreateFaqs />
+    </div>
+  );
 };
 export default FaqPage;

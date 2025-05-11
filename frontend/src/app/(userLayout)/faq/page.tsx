@@ -5,21 +5,13 @@ import type React from "react";
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Search,
-  HelpCircle,
-  BookOpen,
-  Users,
-  PlusIcon,
-} from "lucide-react";
+import { Search, HelpCircle, BookOpen, Users, PlusIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { faqItems } from "@/constant/faqData";
 import Container from "@/components/shared/Container";
-
-
 
 export default function FaqPage() {
   const [openItem, setOpenItem] = useState<number | null>(null);

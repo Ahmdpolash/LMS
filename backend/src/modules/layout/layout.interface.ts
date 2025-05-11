@@ -1,8 +1,7 @@
 export interface IFaq {
   question: string;
   answer: string;
-  badge?: string;
-  icon?: string;
+  category: string;
 }
 
 export interface ICourseCategory {
