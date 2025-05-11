@@ -85,51 +85,53 @@ export default function CreateCategory() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    <TableRow>
-                      <TableCell className="font-medium text-center">
-                        Banner 1
-                      </TableCell>
-                      <TableCell className="max-w-[200px] truncate">
-                        {data?.data?.banner?.title}
-                      </TableCell>
-                      <TableCell className="max-w-[200px] truncate ">
-                        <Image
-                          src={"/avatar.jpeg"}
-                          height={50}
-                          width={50}
-                          alt={"category"}
-                          className="h-[40px] w-[40px] rounded-full mx-auto"
-                        />
-                      </TableCell>
+                    {data?.data?.categories?.map((item: any, index: number) => (
+                      <TableRow>
+                        <TableCell className="font-medium text-center">
+                          {index + 1}
+                        </TableCell>
+                        <TableCell className="max-w-[200px] truncate text-center">
+                          {item.title}
+                        </TableCell>
+                        <TableCell className="max-w-[200px] truncate ">
+                          <Image
+                            src={item?.image}
+                            height={50}
+                            width={50}
+                            alt={"category"}
+                            className="h-[40px] w-[40px] rounded-full mx-auto"
+                          />
+                        </TableCell>
 
-                      <TableCell className="hidden md:table-cell text-center">
-                        {format(data?.data?.createdAt)}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <div className="flex justify-center gap-2">
-                          <Link href={`/`}>
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="h-8 w-8 p-0"
-                            >
-                              <Eye className="h-4 w-4" />
-                              <span className="sr-only">View</span>
-                            </Button>
-                          </Link>
-                          <Link href={`/admin/banner/edit/${data?.data?._id}`}>
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400 cursor-pointer"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                              <span className="sr-only">Edit</span>
-                            </Button>
-                          </Link>
-                        </div>
-                      </TableCell>
-                    </TableRow>
+                        <TableCell className="hidden md:table-cell text-center">
+                          {format(item?.createdAt)}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          <div className="flex justify-center gap-2">
+                            <Link href={`/`}>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-8 w-8 p-0"
+                              >
+                                <Eye className="h-4 w-4" />
+                                <span className="sr-only">View</span>
+                              </Button>
+                            </Link>
+                            
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400 cursor-pointer"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                                <span className="sr-only">Edit</span>
+                              </Button>
+                            
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </div>
