@@ -4,15 +4,71 @@ import { Layout } from "./layout.model";
 import AppError from "../../errors/AppError";
 
 // create layout
+// export const CreateLayout = async (type: string, req: Request) => {
+//   const isTypeExists = await Layout.findOne({ type });
+
+//   if (isTypeExists) {
+//     throw new AppError(${type} is already exists, 404);
+//   }
+
+//   // if type is banner then create banner model data
+//   if (type === "Banner") {
+//     const { image, title, subTitle } = req.body.banner;
+
+//     const banner = {
+//       type: "Banner",
+//       banner: {
+//         image: {
+//           public_id: image.public_id,
+//           url: image.url,
+//         },
+//         title,
+//         subTitle,
+//       },
+//     };
+
+//     await Layout.create(banner);
+//   }
+
+//   //if type is faq then create faq model data
+
+//   if (type === "Faq") {
+//     const { faq } = req.body;
+
+//     const faqItems = await Promise.all(
+//       faq.map(async (item: any) => ({
+//         question: item.question,
+//         answer: item.answer,
+//         badge: item.badge,
+//         icon: item.icon,
+//       }))
+//     );
+//     await Layout.create({ type: "Faq", faq: faqItems });
+//   }
+
+//   // if type is category then create category model data
+
+//   if (type === "Category") {
+//     const { categories } = req.body;
+//     const categoriesItem = await Promise.all(
+//       categories.map(async (item: any) => ({
+//         title: item.title,
+//       }))
+//     );
+//     await Layout.create({ type: "Category", categories: categoriesItem });
+//   }
+
+//   return { message: "Layout created successfully" };
+// };
+
 export const CreateLayout = async (type: string, req: Request) => {
-  const isTypeExists = await Layout.findOne({ type });
-
-  if (isTypeExists) {
-    throw new AppError(`${type} is already exists`, 404);
-  }
-
-  // if type is banner then create banner model data
+  // Handle Banner (only one allowed)
   if (type === "Banner") {
+    const isTypeExists = await Layout.findOne({ type });
+    if (isTypeExists) {
+      throw new AppError(`${type} is already exists`, 404);
+    }
+
     const { image, title, subTitle } = req.body.banner;
 
     const banner = {
@@ -30,32 +86,47 @@ export const CreateLayout = async (type: string, req: Request) => {
     await Layout.create(banner);
   }
 
-  //if type is faq then create faq model data
+  // Handle Faq (only one allowed)
+  // else if (type === "Faq") {
+  //   const isTypeExists = await Layout.findOne({ type });
+  //   if (isTypeExists) {
+  //     throw new AppError(`${type} is already exists`, 404);
+  //   }
 
-  if (type === "Faq") {
-    const { faq } = req.body;
+  //   const { faq } = req.body;
 
-    const faqItems = await Promise.all(
-      faq.map(async (item: any) => ({
-        question: item.question,
-        answer: item.answer,
-        badge: item.badge,
-        icon: item.icon,
-      }))
-    );
-    await Layout.create({ type: "Faq", faq: faqItems });
-  }
+  //   const faqItems = faq.map((item: any) => ({
+  //     question: item.question,
+  //     answer: item.answer,
+  //     badge: item.badge,
+  //     icon: item.icon,
+  //   }));
 
-  // if type is category then create category model data
+  //   await Layout.create({ type: "Faq", faq: faqItems });
+  // }
 
-  if (type === "Category") {
-    const { categories } = req.body;
-    const categoriesItem = await Promise.all(
-      categories.map(async (item: any) => ({
-        title: item.title,
-      }))
-    );
-    await Layout.create({ type: "Category", categories: categoriesItem });
+  // Handle Category (can append multiple times)
+  else if (type === "Category") {
+    const { title, image } = req.body;
+
+    const existing = await Layout.findOne({ type: "Category" });
+
+    const newCategory = { title, image };
+
+    if (existing) {
+      const duplicate = existing.categories.find(
+        (c) => c.title?.toLowerCase() === title?.toLowerCase()
+      );
+
+      if (duplicate) {
+        throw new AppError("This Category already Exists", 400);
+      }
+
+      existing.categories.push(newCategory);
+      await existing.save();
+    } else {
+      await Layout.create({ type: "Category", categories: [newCategory] });
+    }
   }
 
   return { message: "Layout created successfully" };
@@ -81,7 +152,6 @@ export const EditLayout = async (type: string, req: Request) => {
   if (type === "Banner") {
     // find banner data
     const bannerData: any = await Layout.findOne({ type: "Banner" });
-   
 
     const { image, title, subTitle } = req.body.banner;
 
@@ -99,8 +169,6 @@ export const EditLayout = async (type: string, req: Request) => {
       },
       { new: true }
     );
-
-
   }
 
   //if type is faq then create faq model data

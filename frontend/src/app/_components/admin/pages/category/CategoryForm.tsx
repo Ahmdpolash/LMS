@@ -1,55 +1,24 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Save, Upload } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 
-import {
-  useEditLayoutMutation,
-  useGetAllLayoutByIdQuery,
-} from "@/redux/features/layout/layoutApi";
-import { useParams, useRouter } from "next/navigation";
+import { useCreateLayoutMutation } from "@/redux/features/layout/layoutApi";
 
-const UpdateBannerForm = () => {
-  const params = useParams();
-  const router = useRouter();
-  const [updateBanner, { isLoading }] = useEditLayoutMutation();
-  const { data } = useGetAllLayoutByIdQuery(params.id);
-
-  const [newBanner, setNewBanner] = useState({
+const CategoryForm = () => {
+  const [addCategory, { isLoading }] = useCreateLayoutMutation();
+  const [newCategory, setNewCategory] = useState({
     title: "",
-    subTitle: "",
-    image: null as null | { public_id: string; url: string },
+    image: "",
   });
-
-  useEffect(() => {
-    if (data?.data?.banner) {
-      setNewBanner({
-        title: data.data.banner.title || "",
-        subTitle: data.data.banner.subTitle || "",
-        image: data.data.banner.image || null,
-      });
-      setPreview(data.data.banner.image?.url || null);
-    }
-  }, [data]);
 
   const [preview, setPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setNewBanner((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -63,7 +32,8 @@ const UpdateBannerForm = () => {
       "upload_preset",
       process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET ?? "default_preset"
     );
-    formData.append("folder", "banners");
+
+    formData.append("folder", "categories");
 
     try {
       const res = await axios.post(
@@ -71,13 +41,8 @@ const UpdateBannerForm = () => {
         formData
       );
 
-      const fileObj = {
-        public_id: res.data.public_id,
-        url: res.data.secure_url,
-      };
-
-      setPreview(fileObj.url);
-      setNewBanner((prev) => ({ ...prev, image: fileObj }));
+      setPreview(res.data.secure_url);
+      setNewCategory({ ...newCategory, image: res.data.secure_url });
     } catch (error) {
       console.error("Image upload failed", error);
     } finally {
@@ -88,66 +53,57 @@ const UpdateBannerForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!newBanner.image || !newBanner.title || !newBanner.subTitle) {
+    if (!newCategory.image || !newCategory.title) {
       return toast.error("Please fill all the fields");
     }
 
     const payload = {
-      type: "Banner",
-      banner: {
-        image: newBanner.image,
-        title: newBanner.title,
-        subTitle: newBanner.subTitle,
-      },
+      type: "Category",
+      title: newCategory.title,
+      image: newCategory.image,
     };
 
-    const res = await updateBanner(payload).unwrap();
+    try {
+      await addCategory(payload).unwrap();
+      toast.success("Category Added successfully!");
 
-    if (res?.success) {
-      toast.success("Banner Updated successfully!");
-      router.push("/admin/banner");
-    } else {
-      toast.error("Something went wrong! Please try again or contact support.");
+      setNewCategory({
+        title: "",
+        image: "",
+      });
+      setPreview(null);
+    } catch (error: any) {
+      const message = error?.data.message ?? "Something went wrong.";
+      toast.error(message);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mt-10">
+    <form onSubmit={handleSubmit}>
       <Card>
         <CardHeader>
-          <CardTitle>Update Existing Banner</CardTitle>
+          <CardTitle>Add New Category</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="title">Banner Title</Label>
+                <div className="space-y-2 mb-3">
+                  <Label htmlFor="title">Category Name </Label>
                   <Input
                     id="title"
                     name="title"
-                    placeholder="Enter banner title"
+                    placeholder="Enter Category Title"
                     className="dark:placeholder:text-gray-400"
-                    value={newBanner.title}
-                    onChange={handleInputChange}
+                    value={newCategory.title}
+                    onChange={(e) =>
+                      setNewCategory({ ...newCategory, title: e.target.value })
+                    }
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="subTitle">Banner Subtitle</Label>
-                  <Textarea
-                    id="subTitle"
-                    name="subTitle"
-                    placeholder="Enter banner subtitle"
-                    value={newBanner.subTitle}
-                    className="dark:placeholder:text-gray-400"
-                    onChange={handleInputChange}
-                    rows={4}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="image">Banner Image</Label>
+                  <Label htmlFor="image">Category Image</Label>
                   <div className="flex items-center gap-4">
                     <Button
                       variant="outline"
@@ -164,7 +120,7 @@ const UpdateBannerForm = () => {
                       id="banner-image"
                       type="file"
                       accept="image/*"
-                      className="hidden"
+                      className="hidden border border-slate-700 dark:border-slate-300"
                       onChange={handleImageUpload}
                     />
                   </div>
@@ -176,12 +132,12 @@ const UpdateBannerForm = () => {
 
               <div className="space-y-4">
                 <Label>Preview</Label>
-                <div className="border border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-4 h-[300px] flex items-center justify-center cursor-pointer">
+                <div className="border border-dashed border-gray-600 dark:border-gray-700 rounded-lg p-4 h-[220px] flex items-center justify-center cursor-pointer">
                   {preview ? (
                     <div className="relative w-full h-full">
                       <img
                         src={preview}
-                        alt="Banner preview"
+                        alt="Category preview"
                         className="w-full h-full object-contain rounded-lg"
                       />
                     </div>
@@ -201,7 +157,7 @@ const UpdateBannerForm = () => {
                 className="bg-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/80 text-white cursor-pointer"
               >
                 <Save className="h-4 w-4 mr-2" />
-                {isLoading ? "Updating..." : "Update Banner"}
+                {isLoading ? "Saving..." : "Save Category"}
               </Button>
             </div>
           </div>
@@ -211,4 +167,4 @@ const UpdateBannerForm = () => {
   );
 };
 
-export default UpdateBannerForm;
+export default CategoryForm;

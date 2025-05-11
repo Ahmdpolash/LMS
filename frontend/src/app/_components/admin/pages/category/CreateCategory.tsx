@@ -4,7 +4,14 @@ import type React from "react";
 
 import { format } from "timeago.js";
 
-import { Trash2, Eye, Edit } from "lucide-react";
+import {
+  Trash2,
+  Eye,
+  Edit,
+  Delete,
+  DeleteIcon,
+  LucideDelete,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,9 +26,13 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import BannerForm from "./BannerForm";
+
 import { useGetAllLayoutByTypeQuery } from "@/redux/features/layout/layoutApi";
 import Link from "next/link";
+import BannerForm from "../add-banner/BannerForm";
+import { FiDelete } from "react-icons/fi";
+import CategoryForm from "./CategoryForm";
+import Image from "next/image";
 // import { Switch } from "@/components/ui/switch";
 
 interface Banner {
@@ -33,91 +44,86 @@ interface Banner {
   createdAt: string;
 }
 
-export default function BannersPage() {
-  const { data } = useGetAllLayoutByTypeQuery("Banner");
+export default function CreateCategory() {
+  const { data } = useGetAllLayoutByTypeQuery("Category");
+  console.log(data);
 
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-        Banner Management
+        Category Management
       </h1>
 
       <Tabs defaultValue="all" className="w-full">
         <TabsList className="mb-6">
-          <TabsTrigger value="all">All Banners</TabsTrigger>
+          <TabsTrigger value="all">All Categories</TabsTrigger>
           <TabsTrigger className="" value="add">
-            Add New Banner
+            Add New Category
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="all">
           <Card className="dark:bg-[#020817]">
             <CardHeader>
-              <CardTitle>All Banners</CardTitle>
+              <CardTitle>All Categories</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="w-[100px]">ID</TableHead>
-                      <TableHead>Title</TableHead>
-                      <TableHead className="hidden md:table-cell">
-                        Subtitle
+                      <TableHead className="w-[100px] text-center">
+                        No
                       </TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead className="hidden md:table-cell">
+                      <TableHead className="text-center">Name</TableHead>
+                      <TableHead className="text-center">Image</TableHead>
+
+                      <TableHead className="hidden md:table-cell text-center">
                         Created
                       </TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
+                      <TableHead className="text-center">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     <TableRow>
-                      <TableCell className="font-medium">Banner 1</TableCell>
+                      <TableCell className="font-medium text-center">
+                        Banner 1
+                      </TableCell>
                       <TableCell className="max-w-[200px] truncate">
                         {data?.data?.banner?.title}
                       </TableCell>
-                      <TableCell className="max-w-[300px] truncate hidden md:table-cell">
-                        {data?.data?.banner?.subTitle}
+                      <TableCell className="max-w-[200px] truncate ">
+                        <Image
+                          src={"/avatar.jpeg"}
+                          height={50}
+                          width={50}
+                          alt={"category"}
+                          className="h-[40px] w-[40px] rounded-full mx-auto"
+                        />
                       </TableCell>
-                      <TableCell>
-                        <div className="flex items-center space-x-2">
-                          {/* <Switch
-                              checked={banner.isActive}
-                              onCheckedChange={() =>
-                                toggleBannerStatus(banner.id)
-                              }
-                            /> */}
-                          <Badge
-                            className={
-                              "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                            }
-                          >
-                            Active
-                          </Badge>
-                        </div>
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">
+
+                      <TableCell className="hidden md:table-cell text-center">
                         {format(data?.data?.createdAt)}
                       </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end gap-2">
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="h-8 w-8 p-0"
-                          >
-                            <Eye className="h-4 w-4" />
-                            <span className="sr-only">View</span>
-                          </Button>
+                      <TableCell className="text-center">
+                        <div className="flex justify-center gap-2">
+                          <Link href={`/`}>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-8 w-8 p-0"
+                            >
+                              <Eye className="h-4 w-4" />
+                              <span className="sr-only">View</span>
+                            </Button>
+                          </Link>
                           <Link href={`/admin/banner/edit/${data?.data?._id}`}>
                             <Button
                               size="sm"
                               variant="ghost"
                               className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400 cursor-pointer"
                             >
-                              <Edit className="h-4 w-4" />
+                              <Trash2 className="h-4 w-4" />
                               <span className="sr-only">Edit</span>
                             </Button>
                           </Link>
@@ -132,7 +138,7 @@ export default function BannersPage() {
         </TabsContent>
 
         <TabsContent value="add">
-          <BannerForm />
+          <CategoryForm />
         </TabsContent>
       </Tabs>
     </div>

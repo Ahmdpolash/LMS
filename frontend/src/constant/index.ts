@@ -85,11 +85,11 @@ export const AdminSidebarItem = {
 
         {
           title: "Add Category",
-          url: "/admin/add-category",
+          url: "/admin/category",
         },
         {
           title: "Add FAQ",
-          url: "/admin/add-faq",
+          url: "/admin/faq",
         },
       ],
     },
