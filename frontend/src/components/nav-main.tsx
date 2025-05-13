@@ -33,7 +33,7 @@ export function NavMain({
   }[];
 }) {
   const { isMobile, setOpenMobile } = useSidebar();
-  console.log(isMobile);
+  
 
   return (
     <SidebarGroup>

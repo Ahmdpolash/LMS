@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Edit, Trash2, Search, Plus, Star } from "lucide-react";
+import { Edit, Trash2, Search, Plus, Star, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -29,10 +29,13 @@ interface Course {
   status: "published" | "draft" | "archived";
 }
 
-export default function CourseTable() {
+export default function TransactionTable({
+  isDashboard,
+}: {
+  isDashboard?: boolean;
+}) {
   const { data, isLoading } = useGetAllCoursesQuery({});
   const [deleteCourse, { isSuccess }] = useDeleteCourseMutation();
-  
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -53,8 +56,6 @@ export default function CourseTable() {
     );
   };
 
-
-
   // Function to handle course deletion
   const handleDelete = async (id: string) => {
     const res = await deleteCourse(id);
@@ -66,31 +67,26 @@ export default function CourseTable() {
   };
 
   return (
-    <div className="p-4">
+    <div className={`${isDashboard ? "p-0" : "p-4"}`}>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          All Courses
+          {!isDashboard ? " Invoices" : "Transaction"}
         </h1>
 
-        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-          <div className="relative w-full sm:w-64">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              type="text"
-              placeholder="Search courses..."
-              className="pl-10"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+        {!isDashboard && (
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <div className="relative w-full sm:w-64">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Input
+                type="text"
+                placeholder="Search Invoice..."
+                className="pl-10"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
           </div>
-
-          <Link href="/admin/create-course">
-            <Button className="bg-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/80 text-white cursor-pointer">
-              <Plus className="h-4 w-4 mr-2" />
-              Add Course
-            </Button>
-          </Link>
-        </div>
+        )}
       </div>
 
       <div className="overflow-hidden border-gray-200 dark:border-gray-800 ">
@@ -99,19 +95,19 @@ export default function CourseTable() {
             <TableHeader className="bg-[#363A89] p-4 ">
               <TableRow className="hover:bg-[#363A89]/90 border-b-0 ">
                 <TableHead className="text-white font-medium text-center">
-                  ID
+                  Transaction ID
                 </TableHead>
                 <TableHead className="text-white font-medium text-center">
-                  Course Title
-                </TableHead>
-                <TableHead className="text-white font-medium ">
-                  Rating
+                  Student
                 </TableHead>
                 <TableHead className="text-white font-medium text-center">
-                  Purchased
+                  Course
                 </TableHead>
                 <TableHead className="text-white font-medium text-center">
-                  Created At
+                  Amount
+                </TableHead>
+                <TableHead className="text-white font-medium text-center">
+                  Time
                 </TableHead>
 
                 <TableHead className="text-white font-medium text-center">
@@ -162,7 +158,7 @@ export default function CourseTable() {
                               className="cursor-pointer h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400"
                               onClick={() => handleDelete(course._id)}
                             >
-                              <Trash2 className="h-4 w-4" />
+                              <Download className="h-4 w-4" />
                               <span className="sr-only">Delete</span>
                             </Button>
                           </div>
@@ -172,7 +168,7 @@ export default function CourseTable() {
                   ) : (
                     <TableRow>
                       <TableCell colSpan={7} className="h-24 text-center">
-                        No courses found.
+                        No {!isDashboard ? 'Invoices' : 'Transaction'} found.
                       </TableCell>
                     </TableRow>
                   )}

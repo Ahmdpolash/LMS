@@ -70,6 +70,10 @@ export const AdminSidebarItem = {
           title: "Create Course",
           url: "/admin/create-course",
         },
+        {
+          title: "Schedule",
+          url: "/admin/schedule",
+        },
       ],
     },
     {
@@ -300,3 +304,6 @@ export const courses: ICourse[] = [
     level: "Intermediate",
   },
 ];
+
+
+

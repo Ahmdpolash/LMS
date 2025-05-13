@@ -41,17 +41,17 @@ const UserAnalytics = ({ isDashboard }: Props) => {
       ) : (
         <div
           className={`${
-            !isDashboard ? "" : " dark:bg-[#111C43] shadow-sm pb-5 rounded-sm"
+            !isDashboard ? "dark:bg-[#101828] p-4 rounded-md" : " dark:bg-[#101828] shadow-sm pb-5 rounded-sm"
           }`}
         >
           <div className={`${isDashboard ? "!ml-8 mb-5" : ""}`}>
-            <h1
+            <h3
               className={`${
-                isDashboard ? "!text-[20px]" : ""
-              } px-5 !text-start`}
+                isDashboard ? "!text-[20px] pt-5 px-0" : "px-5"
+              }  !text-start`}
             >
               Users Analytics
-            </h1>
+            </h3>
             {!isDashboard && (
               <p className="px-5">Last 12 months analytics data</p>
             )}
@@ -59,7 +59,7 @@ const UserAnalytics = ({ isDashboard }: Props) => {
 
           <div
             className={`w-full ${
-              isDashboard ? "h-[100vh]" : "h-screen"
+              isDashboard ? "h-[50vh]" : "h-screen"
             } flex items-center justify-center`}
           >
             <ResponsiveContainer

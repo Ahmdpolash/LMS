@@ -37,7 +37,7 @@ const OrderAnalytics = ({ isDashboard }: { isDashboard?: boolean }) => {
   return (
     <div>
       {isLoading ? (
-        <CustomLoading />
+        <CustomLoading/>
       ) : (
         <div className="h-screen">
           <div>
