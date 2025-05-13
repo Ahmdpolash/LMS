@@ -18,8 +18,7 @@ import { CourseInfo } from "@/types/course";
 import { toast } from "sonner";
 
 const page = () => {
-  const [createCourse, { isSuccess, error, isLoading, data }] =
-    useCreateCourseMutation();
+  const [createCourse] = useCreateCourseMutation();
 
   const [step, setStep] = useState<number>(1);
 
@@ -45,7 +44,7 @@ const page = () => {
       title: "",
       description: "",
       videoSection: "Untitled Section",
-      videoLength: '',
+      videoLength: "",
       links: [
         {
           title: "",

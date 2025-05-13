@@ -99,6 +99,27 @@ export const getAllModelCount = catchAsync(async (req, res) => {
   const studentCount = await User.countDocuments({ role: "user" });
   const courseCount = await Course.countDocuments({});
   const orderCount = await Order.countDocuments({});
+
+  // find the price of specific course
+  const course = await Course.find({}).select("price");
+
+  const orders = await Order.find();
+  const findOrderCoursePrice = orders.map((orderCourse: any) => {
+    const findCourse = course.find(
+      (c: any) => c?._id.toString() === orderCourse.courseId
+    );
+
+    const totalPrice = findCourse?.price || 0;
+
+    return {
+      totalPrice,
+    };
+  });
+
+  const totalAmount = findOrderCoursePrice.reduce((acc: any, item: any) => {
+    return acc + item.totalPrice;
+  }, 0);
+
   // const revenue = await Order.aggregate([
   //   {
   //     $group: {
@@ -111,7 +132,7 @@ export const getAllModelCount = catchAsync(async (req, res) => {
   res.status(200).json({
     success: true,
     message: "Model Count fetched successfully",
-    data: { studentCount, courseCount, orderCount },
+    data: { studentCount, courseCount, orderCount, totalAmount },
   });
 });
 

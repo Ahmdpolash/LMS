@@ -159,30 +159,25 @@ export default function TransactionTable({
                         </TableCell>
 
                         <TableCell className="flex justify-center gap-2">
-                         
-                            <a
-                              href={`mailto:${item?.userEmail}`}
-                              target="_blank"
-                            >
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                className="h-8 w-8 p-0 cursor-pointer"
-                              >
-                                <Mail className="h-4 w-4" />
-                                <span className="sr-only">Edit</span>
-                              </Button>
-                            </a>
-
+                          <a href={`mailto:${item?.userEmail}`} target="_blank">
                             <Button
                               size="sm"
                               variant="ghost"
-                              className="cursor-pointer h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400"
+                              className="h-8 w-8 p-0 cursor-pointer"
                             >
-                              <Download className="h-4 w-4" />
-                              <span className="sr-only">Delete</span>
+                              <Mail className="h-4 w-4" />
+                              <span className="sr-only">Edit</span>
                             </Button>
-                     
+                          </a>
+
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="cursor-pointer h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400"
+                          >
+                            <Download className="h-4 w-4" />
+                            <span className="sr-only">Delete</span>
+                          </Button>
                         </TableCell>
                       </TableRow>
                     ))

@@ -11,7 +11,7 @@ const StatisticsBox = () => {
       chartIcon: BarChart3,
       title: data?.data?.orderCount,
       description: "Sales Obtained",
-      percentage: data?.data?.orderCount > 0 ? "+100.00%" : "0.00%", 
+      percentage: data?.data?.orderCount > 0 ? "+100.00%" : "0.00%",
     },
     {
       id: 2,
@@ -30,9 +30,9 @@ const StatisticsBox = () => {
     {
       id: 4,
       chartIcon: DollarSign,
-      title: data?.data?.revenue || '0',
+      title: data?.data?.totalAmount || "0",
       description: "Total Revenue",
-      percentage: data?.data?.revenue > 0 ? "+100.00%" : "0.00%",
+      percentage: data?.data?.totalAmount > 0 ? "+100.00%" : "0.00%",
     },
   ];
 
@@ -62,12 +62,16 @@ const StatisticsBox = () => {
                 percent={Number(item?.percentage)}
                 trailColor="#D9D9D9"
                 strokeWidth={4}
-                strokeColor= {Number(item?.percentage.replace('%', '')) > 0 ? "#05DF72" : "#e24d52"}
+                strokeColor={
+                  Number(item?.percentage.replace("%", "")) > 0
+                    ? "#05DF72"
+                    : "#e24d52"
+                }
                 className=" h-10 w-10 text-center mx-auto mb-2"
               />
               <div className="">
-                <span className= "text-green-400 text-sm font-medium">
-                {item?.percentage}
+                <span className="text-green-400 text-sm font-medium">
+                  {item?.percentage}
                 </span>
               </div>
             </div>
