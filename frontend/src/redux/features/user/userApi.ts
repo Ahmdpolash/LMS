@@ -83,6 +83,13 @@ export const UserApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.user],
     }),
+    getModelCount: builder.query({
+      query: () => ({
+        method: "GET",
+        url: "/user/count",
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
@@ -92,4 +99,5 @@ export const {
   useGetAllUsersQuery,
   useDeleteUserMutation,
   useChangeUserRoleMutation,
+  useGetModelCountQuery,
 } = UserApi;

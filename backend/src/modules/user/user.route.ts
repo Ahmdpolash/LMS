@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { UserControllers } from "./user.controller";
+import { getAllModelCount, UserControllers } from "./user.controller";
 import { auth } from "../../middleware/auth";
 import { USER_ROLE } from "./user.constant";
 
@@ -36,5 +36,8 @@ router.patch(
 // DELETE USER ROUTE
 
 router.delete("/:id", auth(USER_ROLE.admin), UserControllers.deleteUser);
+
+// GET ALL MODEL COUNT
+router.get("/count", auth(USER_ROLE.admin), getAllModelCount);
 
 export const UserRoutes = router;

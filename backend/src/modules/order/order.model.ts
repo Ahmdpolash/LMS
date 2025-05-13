@@ -21,4 +21,6 @@ const OrderSchema = new Schema<TOrder>(
   }
 );
 
+// need to add trxId field on this model
+
 export const Order = model<TOrder>("Order", OrderSchema);

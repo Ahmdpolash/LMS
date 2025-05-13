@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Edit, Trash2, Search, Plus, Star, Download } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Edit, Trash2, Search, Plus, Star, Download, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -19,6 +19,8 @@ import {
   useGetAllCoursesQuery,
 } from "@/redux/features/course/courseApi";
 import { toast } from "sonner";
+import { useGetAllUsersQuery } from "@/redux/features/user/userApi";
+import { useGetAllOrdersQuery } from "@/redux/features/order/orderApi";
 
 interface Course {
   id: string;
@@ -35,7 +37,37 @@ export default function TransactionTable({
   isDashboard?: boolean;
 }) {
   const { data, isLoading } = useGetAllCoursesQuery({});
-  const [deleteCourse, { isSuccess }] = useDeleteCourseMutation();
+  const { data: userInfo } = useGetAllUsersQuery({});
+  const { data: orderInfo } = useGetAllOrdersQuery({});
+
+  // console.log(data, "course");
+  // console.log(userInfo, "userInfo");
+  // console.log(orderInfo, "orderInfo");
+
+  const [orderData, setOrderData] = useState<any>([]);
+
+  useEffect(() => {
+    if (orderInfo) {
+      const temp = orderInfo?.data?.map((item: any) => {
+        const user = userInfo?.data?.find(
+          (user: any) => user._id == item.userId
+        );
+        const course = data?.data?.find(
+          (course: any) => course._id == item.courseId
+        );
+        return {
+          ...item,
+          userName: user?.name,
+          userEmail: user?.email,
+          title: course?.name,
+          price: "$" + course?.price,
+        };
+      });
+      setOrderData(temp);
+    }
+  }, [data, userInfo, orderInfo]);
+
+  // search
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -46,30 +78,14 @@ export default function TransactionTable({
   //       course.id.toLowerCase().includes(searchQuery.toLowerCase())
   //   );
 
-  // Function to render stars based on rating
-  const renderStars = (rating: number) => {
-    return (
-      <div className="flex items-center">
-        <span className="font-medium mr-1">{rating}</span>
-        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-      </div>
-    );
-  };
-
-  // Function to handle course deletion
-  const handleDelete = async (id: string) => {
-    const res = await deleteCourse(id);
-    if (res?.data?.success) {
-      toast.success("Course deleted successfully!");
-    } else {
-      toast.error("Failed to delete course. Please try again.");
-    }
-  };
-
   return (
     <div className={`${isDashboard ? "p-0" : "p-4"}`}>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
-        <h1 className={`${isDashboard ? 'text-xl font-semibold' : 'text-2xl font-bold '} text-gray-900 dark:text-white`}>
+        <h1
+          className={`${
+            isDashboard ? "text-xl font-semibold" : "text-2xl font-bold "
+          } text-gray-900 dark:text-white`}
+        >
           {!isDashboard ? " Invoices" : "Last Transaction"}
         </h1>
 
@@ -118,41 +134,55 @@ export default function TransactionTable({
             <TableBody className="bg-white dark:bg-[#1B2537] divide-y divide-gray-200 dark:divide-gray-700 ">
               {!isLoading ? (
                 <>
-                  {data?.data?.length > 0 ? (
-                    data?.data?.map((course: any) => (
+                  {orderData?.length > 0 ? (
+                    orderData?.map((item: any, index: number) => (
                       <TableRow
-                        key={course._id}
+                        key={index}
                         className=" hover:bg-gray-50  dark:hover:bg-gray-800/50"
                       >
                         <TableCell className="font-medium text-center">
-                          {course._id}
+                          {item?.courseId}
                         </TableCell>
                         <TableCell className=" truncate text-center">
-                          {course?.name}
+                          {item?.userName}
                         </TableCell>
                         <TableCell className="text-center">
-                          {renderStars(course?.ratings)}
+                          {" "}
+                          {item?.title}
                         </TableCell>
                         <TableCell className="text-center">
-                          {course.purchased.toLocaleString()}
+                          {" "}
+                          {item?.price}
                         </TableCell>
                         <TableCell className="text-center hidden md:table-cell">
-                          {format(course?.createdAt)}
+                          {format(item?.createdAt)}
                         </TableCell>
 
-                        <TableCell className="text-righ">
-                          <div className="flex justify-center gap-2">
-                            
+                        <TableCell className="flex justify-center gap-2">
+                         
+                            <a
+                              href={`mailto:${item?.userEmail}`}
+                              target="_blank"
+                            >
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-8 w-8 p-0 cursor-pointer"
+                              >
+                                <Mail className="h-4 w-4" />
+                                <span className="sr-only">Edit</span>
+                              </Button>
+                            </a>
+
                             <Button
                               size="sm"
                               variant="ghost"
                               className="cursor-pointer h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400"
-                              onClick={() => handleDelete(course._id)}
                             >
                               <Download className="h-4 w-4" />
                               <span className="sr-only">Delete</span>
                             </Button>
-                          </div>
+                     
                         </TableCell>
                       </TableRow>
                     ))
@@ -174,13 +204,3 @@ export default function TransactionTable({
     </div>
   );
 }
-
-/* 
-<div className="p-4 border-b border-gray-200 dark:border-gray-800">
-            <div className="flex items-center">
-              <Clock className="h-5 w-5 mr-2 text-gray-500 dark:text-gray-400" />
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Enrollments</h2>
-            </div>
-          </div>
-
-*/

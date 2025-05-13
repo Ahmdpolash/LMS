@@ -1,4 +1,7 @@
 import catchAsync from "../../utils/catchAsync";
+import Course from "../course/course.model";
+import { Order } from "../order/order.model";
+import { User } from "./user.models";
 import { UserServices } from "./user.services";
 import httpStatus from "http-status";
 
@@ -89,6 +92,26 @@ const deleteUser = catchAsync(async (req, res) => {
     success: true,
     message: "user deleted successfull",
     data: null,
+  });
+});
+
+export const getAllModelCount = catchAsync(async (req, res) => {
+  const studentCount = await User.countDocuments({ role: "user" });
+  const courseCount = await Course.countDocuments({});
+  const orderCount = await Order.countDocuments({});
+  // const revenue = await Order.aggregate([
+  //   {
+  //     $group: {
+  //       _id: null,
+  //       totalAmount: { $sum: "$totalPrice" },
+  //     },
+  //   },
+  // ]);
+
+  res.status(200).json({
+    success: true,
+    message: "Model Count fetched successfully",
+    data: { studentCount, courseCount, orderCount },
   });
 });
 
