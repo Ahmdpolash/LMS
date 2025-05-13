@@ -68,9 +68,9 @@ export default function TransactionTable({
 
   return (
     <div className={`${isDashboard ? "p-0" : "p-4"}`}>
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          {!isDashboard ? " Invoices" : "Transaction"}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
+        <h1 className={`${isDashboard ? 'text-xl font-semibold' : 'text-2xl font-bold '} text-gray-900 dark:text-white`}>
+          {!isDashboard ? " Invoices" : "Last Transaction"}
         </h1>
 
         {!isDashboard && (
@@ -142,16 +142,7 @@ export default function TransactionTable({
 
                         <TableCell className="text-righ">
                           <div className="flex justify-center gap-2">
-                            <Link href={`/admin/courses/edit/${course._id}`}>
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                className="h-8 w-8 p-0 cursor-pointer"
-                              >
-                                <Edit className="h-4 w-4" />
-                                <span className="sr-only">Edit</span>
-                              </Button>
-                            </Link>
+                            
                             <Button
                               size="sm"
                               variant="ghost"
@@ -168,13 +159,13 @@ export default function TransactionTable({
                   ) : (
                     <TableRow>
                       <TableCell colSpan={7} className="h-24 text-center">
-                        No {!isDashboard ? 'Invoices' : 'Transaction'} found.
+                        No {!isDashboard ? "Invoices" : "Transaction"} found.
                       </TableCell>
                     </TableRow>
                   )}
                 </>
               ) : (
-                <div className="flex justify-center items-center my-10 w-10 h-10 animate-[spin_1s_linear_infinite] rounded-full border-4 border-r-[#3B9DF8] border-[#3b9df84b]"></div>
+                <div className="flex justify-center  items-center my-10 w-10 h-10 animate-[spin_1s_linear_infinite] rounded-full border-4 border-r-[#3B9DF8] border-[#3b9df84b]"></div>
               )}
             </TableBody>
           </Table>
@@ -183,3 +174,13 @@ export default function TransactionTable({
     </div>
   );
 }
+
+/* 
+<div className="p-4 border-b border-gray-200 dark:border-gray-800">
+            <div className="flex items-center">
+              <Clock className="h-5 w-5 mr-2 text-gray-500 dark:text-gray-400" />
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Enrollments</h2>
+            </div>
+          </div>
+
+*/
