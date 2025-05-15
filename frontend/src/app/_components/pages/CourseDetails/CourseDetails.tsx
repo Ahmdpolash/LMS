@@ -28,7 +28,10 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useGetSingleCourseQuery } from "@/redux/features/course/courseApi";
+import {
+  useGetAllCoursesQuery,
+  useGetSingleCourseQuery,
+} from "@/redux/features/course/courseApi";
 
 import { format } from "timeago.js";
 import { ICourse } from "@/types";
@@ -38,6 +41,8 @@ import { renderStars } from "./RenderStar";
 
 export default function CourseDetails({ slug }: { slug: string }) {
   const { data, isLoading } = useGetSingleCourseQuery(slug);
+  const { data: allCourse } = useGetAllCoursesQuery({});
+
   const [courseInfo, setCurseInfo] = useState<any>();
 
   useEffect(() => {
@@ -128,6 +133,39 @@ export default function CourseDetails({ slug }: { slug: string }) {
                     </Link>
                   </div>
                 </div>
+                <div className=" py-4 text-white max-w-4xl mx-auto">
+                  <h2 className="text-2xl font-semibold mb-2">
+                    Welcome to ELearning Platform
+                  </h2>
+                  <p className="text-sm text-gray-300 mb-4">
+                    Unlock your potential with our expertly crafted courses.
+                    Whether you're just starting out or looking to sharpen your
+                    skills, we've got something for everyone.
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                    <div className="bg-[#1f2937] p-4 rounded-lg">
+                      <h3 className="font-semibold text-lg">
+                        What you'll learn
+                      </h3>
+                      <ul className="list-disc list-inside text-gray-400 mt-2 text-sm">
+                        <li>Set up real-world projects</li>
+                        <li>Understand core concepts of web development</li>
+                        <li>Build responsive UIs</li>
+                        <li>Deploy apps with ease</li>
+                      </ul>
+                    </div>
+                    <div className="bg-[#1f2937] p-4 rounded-lg">
+                      <h3 className="font-semibold text-lg">Why choose us?</h3>
+                      <ul className="list-disc list-inside text-gray-400 mt-2 text-sm">
+                        <li>Expert instructors</li>
+                        <li>Self-paced learning</li>
+                        <li>Lifetime access to courses</li>
+                        <li>Real-world project experience</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Course Preview Card */}
@@ -135,8 +173,8 @@ export default function CourseDetails({ slug }: { slug: string }) {
                 <div className="bg-white dark:bg-[#1a2342] rounded-xl overflow-hidden shadow-xl border border-gray-100 dark:border-gray-800">
                   <div className="relative">
                     <Image
-                      src={courseInfo?.thumbnail?.url || "/logo2.png"}
-                      alt={courseInfo?.name}
+                      src={courseInfo?.thumbnail?.url || "/alt.jpg"}
+                      alt="course image"
                       width={700}
                       height={400}
                       className="w-full h-48 object-cover"
@@ -297,16 +335,16 @@ export default function CourseDetails({ slug }: { slug: string }) {
                   </h3>
 
                   <div className="space-y-4">
-                    {courseData.relatedCourses.map((course) => (
+                    {allCourse?.data?.slice(0, 4)?.map((course: any) => (
                       <Link
-                        key={course.id}
-                        href={`/courses/${course.id}`}
+                        key={course._id}
+                        href={`/courses/${course._id}`}
                         className="block bg-white dark:bg-[#1a2342] rounded-xl overflow-hidden border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow"
                       >
                         <div className="flex">
                           <div className="w-1/3 relative">
                             <Image
-                              src={"/c.jpg"}
+                              src={course?.thumbnail?.url}
                               alt="course image"
                               width={200}
                               height={120}
@@ -315,35 +353,35 @@ export default function CourseDetails({ slug }: { slug: string }) {
                           </div>
                           <div className="w-2/3 p-4">
                             <h4 className="font-medium text-gray-900 dark:text-white text-sm line-clamp-2 mb-1">
-                              {course.title}
+                              {course?.name}
                             </h4>
                             <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                              {course.instructor}
+                              ELearning Instructor
                             </p>
                             <div className="flex items-center mb-2">
                               <div className="flex mr-1">
-                                {renderStars(course.rating)}
+                                {renderStars(course?.ratings)}
                               </div>
                               <span className="text-xs text-[rgb(37,150,190)]">
-                                {course.rating}
+                                {course?.ratings}
                               </span>
                               <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
-                                ({course.reviewCount})
+                                ({course?.reviews.length})
                               </span>
                             </div>
                             <div className="flex items-center">
-                              {course.discountPrice ? (
+                              {course.estimatedPrice ? (
                                 <>
                                   <span className="text-sm font-medium text-[rgb(37,150,190)]">
-                                    ${course.discountPrice}
+                                    ${course.price}
                                   </span>
                                   <span className="text-xs text-gray-500 dark:text-gray-400 line-through ml-1">
-                                    ${course.price}
+                                    ${course?.price}
                                   </span>
                                 </>
                               ) : (
                                 <span className="text-sm font-medium text-[rgb(37,150,190)]">
-                                  ${course.price}
+                                  ${course?.price}
                                 </span>
                               )}
                             </div>

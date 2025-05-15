@@ -85,7 +85,7 @@ export default function FeaturedCourse() {
                       {/* Course Image */}
                       <div className="relative overflow-hidden">
                         <Image
-                          src={course?.thumbnail?.url}
+                          src={course?.thumbnail?.url || "/alt.jpg"}
                           alt={course?.name}
                           width={350}
                           height={200}
