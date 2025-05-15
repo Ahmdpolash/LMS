@@ -21,6 +21,7 @@ import Container from "@/components/shared/Container";
 import { courses } from "@/constant";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import { motion } from "framer-motion";
+import { useGetAllCoursesQuery } from "@/redux/features/course/courseApi";
 interface Course {
   id: number;
   title: string;
@@ -39,6 +40,10 @@ interface Course {
 }
 
 export default function CoursesPage() {
+
+    const { data, isLoading } = useGetAllCoursesQuery({});
+  
+
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
