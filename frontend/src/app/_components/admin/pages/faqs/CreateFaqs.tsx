@@ -71,7 +71,7 @@ export default function CreateFaqs() {
                   </TableHeader>
                   <TableBody>
                     {data?.data?.faq?.map((item: any, index: number) => (
-                      <TableRow>
+                      <TableRow key={index}>
                         <TableCell className="font-medium text-center">
                           {index + 1}
                         </TableCell>

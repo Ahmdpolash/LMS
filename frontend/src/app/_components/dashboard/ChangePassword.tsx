@@ -31,7 +31,7 @@ const ChangePassword = () => {
       persistor.purge();
       router.push("/sign-in");
     }
-  }, [isSuccess]);
+  }, [isSuccess, logOut, router]);
 
   // input handler
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

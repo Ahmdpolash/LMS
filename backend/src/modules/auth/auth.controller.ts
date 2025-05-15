@@ -14,8 +14,8 @@ import httpStatus from "http-status";
 const LoginUser = catchAsync(async (req, res) => {
   const result = await AuthServices.LoginUser(req.body);
   const { refreshToken, accessToken, user } = result;
+
   // const isProduction = process.env.NODE_ENV === "production";
-  const isLocalhost = req.headers.origin?.includes("localhost");
 
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,

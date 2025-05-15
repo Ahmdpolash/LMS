@@ -73,7 +73,7 @@ export default function CreateCategory() {
                   </TableHeader>
                   <TableBody>
                     {data?.data?.categories?.map((item: any, index: number) => (
-                      <TableRow>
+                      <TableRow key={index}>
                         <TableCell className="font-medium text-center">
                           {index + 1}
                         </TableCell>

@@ -2,9 +2,7 @@
 import { TUser } from "@/types";
 import React from "react";
 
-const MyProfile = ({user}:{user:TUser}) => {
-  
-
+const MyProfile = ({ user }: { user: TUser }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div className="space-y-2">

@@ -18,7 +18,8 @@ export const sendToken = async (user: IUser, res: Response) => {
       role: user.role,
     },
     config.jwt.jwt_access_token as string,
-    config.jwt.jwt_access_token_expiresIn as string
+    // config.jwt.jwt_access_token_expiresIn as string
+    '1d'
   );
 
   // 2. Generate Refresh Token

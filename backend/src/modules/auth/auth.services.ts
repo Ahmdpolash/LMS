@@ -152,7 +152,7 @@ const LogOut = async (id: string) => {
       role: user.role,
     },
     config.jwt.jwt_access_token as string,
-    "5m"
+    "20m"
     // config.jwt.jwt_access_token_expiresIn as string
   );
 

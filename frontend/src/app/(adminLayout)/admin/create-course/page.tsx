@@ -11,13 +11,13 @@ import { CourseContent } from "@/app/_components/admin/pages/create-course/Cours
 import CoursePreview from "@/app/_components/admin/pages/create-course/Preview";
 
 import Success from "@/app/_components/admin/pages/create-course/Success";
-import StepperButton from "@/app/_components/admin/pages/create-course/StepperButton";
+
 import { useCreateCourseMutation } from "@/redux/features/course/courseApi";
-import { redirect } from "next/navigation";
+
 import { CourseInfo } from "@/types/course";
 import { toast } from "sonner";
 
-const page = () => {
+const CreateCoursePage = () => {
   const [createCourse] = useCreateCourseMutation();
 
   const [step, setStep] = useState<number>(1);
@@ -174,4 +174,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default CreateCoursePage;

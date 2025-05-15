@@ -13,7 +13,13 @@ import { AiOutlineCamera } from "react-icons/ai";
 import { FiLoader } from "react-icons/fi";
 import { toast } from "sonner";
 
-const UpdateMyProfileForm = ({ user,setOpen }: { user: TUser, setOpen: any }) => {
+const UpdateMyProfileForm = ({
+  user,
+  setOpen,
+}: {
+  user: TUser;
+  setOpen: any;
+}) => {
   const [udpateAvatar, { isSuccess, error, isLoading }] =
     useUpdateAvatarMutation();
 
@@ -55,11 +61,12 @@ const UpdateMyProfileForm = ({ user,setOpen }: { user: TUser, setOpen: any }) =>
       setCurrentUser(true);
       setOpen(false);
       toast.success("Image Updated");
-    }
+    } 
     if (error) {
       console.log(error);
+      toast.error("Something went wrong ! Please try again or change image.");
     }
-  }, [isSuccess, error]);
+  }, [isSuccess, error, setOpen]);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();

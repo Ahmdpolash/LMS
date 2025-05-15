@@ -9,7 +9,6 @@ const router = Router();
 // CREATE COURSE ROUTE
 router.post(
   "/create-course",
-
   auth(USER_ROLE.admin),
   CourseControllers.uploadCourse
 );

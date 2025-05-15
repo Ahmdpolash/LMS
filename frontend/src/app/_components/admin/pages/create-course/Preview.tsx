@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/accordion";
 import { useFormContext } from "react-hook-form";
 import CoursePlayer from "./CoursePlayer";
+import ReactPlayer from "react-player";
 
 type TProps = {
   step: number;
@@ -63,8 +64,16 @@ export default function CoursePreview({
           {/* Main Course Info */}
           <div className="col-span-2 space-y-6">
             <Card className="bg-[#1a2234] border-[#2a3348] text-white overflow-hidden">
-              <div className="w-full h-48 sm:h-64 md:h-80 relative">
-                <CoursePlayer videoUrl={data?.demoUrl} title={data?.title} />
+              <div className="w-full  ">
+                {/* <CoursePlayer videoUrl={data?.demoUrl} title={data?.title} />
+                 */}
+                <ReactPlayer
+                  url={data?.demoUrl}
+                  controls
+                  width="100%"
+                  height="360px"
+                  className="rounded-md"
+                />
               </div>
 
               <CardHeader>

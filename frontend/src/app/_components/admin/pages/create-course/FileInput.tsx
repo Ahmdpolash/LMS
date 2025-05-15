@@ -48,6 +48,9 @@ const FileInput: React.FC<FileInputProps> = ({ value, onChange }) => {
   };
 
   const handleRemove = () => {
+
+    
+
     setPreview(null);
     onChange(null);
   };

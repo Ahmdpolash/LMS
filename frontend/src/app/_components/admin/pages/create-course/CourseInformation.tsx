@@ -17,6 +17,8 @@ import {
 import { toast } from "sonner";
 import { useState } from "react";
 import { useGetAllLayoutByTypeQuery } from "@/redux/features/layout/layoutApi";
+import axios from "axios";
+import { VideoUploader } from "./VideoUploader";
 
 type Props = {
   courseInfo: CourseInfo;
@@ -31,7 +33,53 @@ const CourseInformation = ({
   step,
   setStep,
 }: Props) => {
-  const { data:cate } = useGetAllLayoutByTypeQuery("Category");
+  const { data: cate } = useGetAllLayoutByTypeQuery("Category");
+  const [loading, setLoading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  console.log(courseInfo);
+
+  const handleVideoUpload = async (e: any) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setLoading(true);
+    setUploadProgress(0);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "course_upload_preset");
+    formData.append("resource_type", "video");
+
+    try {
+      const res = await axios.post(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          onUploadProgress: (progressEvent) => {
+            const percentCompleted = Math.round(
+              (progressEvent.loaded * 100) / (progressEvent.total || 1)
+            );
+            setUploadProgress(percentCompleted);
+          },
+        }
+      );
+
+      const data = res.data;
+
+      if (data.secure_url) {
+        setCourseInfo({ ...courseInfo, demoUrl: data.secure_url });
+        toast.success("Video uploaded successfully!");
+      } else {
+        toast.error("Upload failed.");
+      }
+    } catch (error) {
+      console.error("Video upload failed", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -182,11 +230,11 @@ const CourseInformation = ({
 
                 // className="placeholder:text-slate-500 border-slate-600  mb-1"
               >
-                <SelectTrigger className="w-full">
+                <SelectTrigger className="w-full cursor-pointer">
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
-                  {cate?.data?.categories?.map((category:any) => (
+                  {cate?.data?.categories?.map((category: any) => (
                     <SelectItem key={category?._id} value={category?.title}>
                       {category?.title}
                     </SelectItem>
@@ -199,9 +247,15 @@ const CourseInformation = ({
           {/* level and demourl */}
 
           <div className="flex flex-col lg:flex-row gap-5">
-            <div className="w-full flex flex-col space-y-2">
-              <label htmlFor="demoUrl">Demo URL</label>
-              <Input
+            <div className="w-full ">
+              <VideoUploader
+                label="Demo Video"
+                onUpload={(url) =>
+                  setCourseInfo({ ...courseInfo, demoUrl: url })
+                }
+              />
+
+              {/* <Input
                 name="demoUrl"
                 id="demoUrl"
                 required
@@ -211,7 +265,7 @@ const CourseInformation = ({
                   setCourseInfo({ ...courseInfo, demoUrl: e.target.value })
                 }
                 className="placeholder:text-slate-500 border-slate-600  mb-1"
-              />
+              /> */}
             </div>
 
             <div className="w-full flex flex-col space-y-2">

@@ -3,6 +3,7 @@ import { Link, PencilIcon } from "lucide-react";
 import { toast } from "sonner";
 import { AiOutlineDelete, AiOutlinePlusCircle } from "react-icons/ai";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { VideoUploader } from "./VideoUploader";
 
 type TCourseProps = {
   courseContentData: any;
@@ -227,7 +228,7 @@ export const CourseContent = ({
                         />
                       </div>
                       <div className="my- flex flex-col space-y-2">
-                        <label id="videoUrl">Video URL</label>
+                        {/* <label id="videoUrl">Video URL</label>
                         <input
                           type="text"
                           name="videoUrl"
@@ -237,6 +238,15 @@ export const CourseContent = ({
                           onChange={(e) => {
                             const updateData = [...courseContentData];
                             updateData[idx].videoUrl = e.target.value;
+                            setCourseContentData(updateData);
+                          }}
+                        /> */}
+
+                        <VideoUploader
+                          label="Video URL"
+                          onUpload={(url) => {
+                            const updateData = [...courseContentData];
+                            updateData[idx].videoUrl = url;
                             setCourseContentData(updateData);
                           }}
                         />

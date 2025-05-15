@@ -11,7 +11,7 @@ export type CourseInfo = {
   tags: string[];
   level: string;
   demoUrl: string;
-  thumbnail: thubnamil;
+  thumbnail: thubnamil | null;
   category: string;
 };
 export type CourseContent = {

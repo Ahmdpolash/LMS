@@ -63,7 +63,7 @@ export default function Navbar() {
     // if (data === null) {
     //   logOut({});
     // }
-  }, []);
+  }, [data, isSuccess, socialAuth, user]);
 
   return (
     <header
