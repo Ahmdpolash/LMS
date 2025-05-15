@@ -103,7 +103,7 @@ export default function CoursePreview({
                 <p className="text-gray-300 mb-4">{data?.description}</p>
 
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {data?.tags.map((tag: any, idx: number) => (
+                  {data?.tags?.map((tag: any, idx: number) => (
                     <Badge
                       key={idx}
                       variant="outline"
@@ -119,7 +119,7 @@ export default function CoursePreview({
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold">What You'll Learn</h3>
                   <ul className="space-y-2">
-                    {data.benefits.map((benefit: any, index: number) => (
+                    {data?.benefits?.map((benefit: any, index: number) => (
                       <li key={index} className="flex items-start">
                         <Check className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
                         <span>{benefit.title}</span>
@@ -133,7 +133,7 @@ export default function CoursePreview({
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold">Prerequisites</h3>
                   <ul className="space-y-2">
-                    {data.prerequisites.map(
+                    {data?.prerequisites?.map(
                       (prerequisite: any, index: number) => (
                         <li key={index} className="flex items-start">
                           <Check className="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
@@ -155,7 +155,7 @@ export default function CoursePreview({
               </CardHeader>
               <CardContent>
                 <Accordion type="single" collapsible className="w-full">
-                  {data?.courseData.map((item: any, sectionIndex: number) => (
+                  {data?.courseData?.map((item: any, sectionIndex: number) => (
                     <AccordionItem
                       key={sectionIndex}
                       value={`section-${sectionIndex}`}
@@ -182,7 +182,7 @@ export default function CoursePreview({
                               </div>
                               {item?.links?.length > 0 && (
                                 <div className="mt-2 space-y-1 cursor-pointer">
-                                  {item.links.map(
+                                  {item?.links?.map(
                                     (link: any, linkIndex: number) => (
                                       <div
                                         key={linkIndex}

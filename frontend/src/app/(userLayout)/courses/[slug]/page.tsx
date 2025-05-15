@@ -1,10 +1,12 @@
-import CourseDetails from "@/app/_components/pages/CourseDetails";
+import CourseDetails from "@/app/_components/pages/CourseDetails/CourseDetails";
 import Container from "@/components/shared/Container";
 
-const page = () => {
+const page = ({ params }: { params: { slug: string } }) => {
+  const { slug } = params;
+
   return (
     <Container>
-      <CourseDetails />
+      <CourseDetails slug={slug} />
     </Container>
   );
 };

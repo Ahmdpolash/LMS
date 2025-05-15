@@ -59,7 +59,7 @@ const StatisticsBox = () => {
             </div>
             <div>
               <Circle
-                percent={Number(item?.percentage)}
+                percent={parseFloat(item?.percentage.replace("%", "").replace("+", "")) || 0}
                 trailColor="#D9D9D9"
                 strokeWidth={4}
                 strokeColor={

@@ -20,19 +20,9 @@ import {
 } from "@/redux/features/course/courseApi";
 import { toast } from "sonner";
 
-interface Course {
-  id: string;
-  title: string;
-  rating: number;
-  purchased: number;
-  createdAt: string;
-  status: "published" | "draft" | "archived";
-}
-
 export default function CourseTable() {
   const { data, isLoading } = useGetAllCoursesQuery({});
   const [deleteCourse, { isSuccess }] = useDeleteCourseMutation();
-  
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -52,8 +42,6 @@ export default function CourseTable() {
       </div>
     );
   };
-
-
 
   // Function to handle course deletion
   const handleDelete = async (id: string) => {

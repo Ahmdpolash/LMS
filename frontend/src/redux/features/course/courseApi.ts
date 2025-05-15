@@ -30,7 +30,20 @@ export const courseApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.course],
     }),
+
+    getSingleCourse: builder.query({
+      query: (id: string) => ({
+        url: `/course/${id}`,
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
-export const { useCreateCourseMutation, useGetAllCoursesQuery, useDeleteCourseMutation } = courseApi;
+export const {
+  useCreateCourseMutation,
+  useGetAllCoursesQuery,
+  useDeleteCourseMutation,
+  useGetSingleCourseQuery,
+} = courseApi;
