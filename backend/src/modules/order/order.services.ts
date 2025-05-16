@@ -10,10 +10,26 @@ import { sendEmail } from "../../utils/sendMail";
 import { Notification } from "../notification/notification.model";
 import { ICourse } from "../course/course.interface";
 import { IUser } from "../user/user.interface";
+import config from "../../config";
+import redis from "../../redis";
+const stripe = require("stripe")(config.stripe.secretKey);
 
 // CREATE ORDER
 
 const createOrder = async (userInfo: any, payload: TOrder) => {
+  if (payload.payment_info) {
+    if ("id" in payload.payment_info) {
+      const paymentIntentId = payload.payment_info.id;
+      const paymentIntent = await stripe.paymentIntents.retrieve(
+        paymentIntentId
+      );
+
+      if (paymentIntent.status !== "succeeded") {
+        throw new AppError("Payment failed", httpStatus.BAD_REQUEST);
+      }
+    }
+  }
+
   const session = await mongoose.startSession();
 
   try {
@@ -76,6 +92,9 @@ const createOrder = async (userInfo: any, payload: TOrder) => {
     // ✅ Create order record
     payload.userId = user._id;
     const result = await Order.create([payload], { session });
+
+    // update on redis
+    await redis.set(user._id.toString(), JSON.stringify(user));
 
     // ✅ Create notification
     await Notification.create(

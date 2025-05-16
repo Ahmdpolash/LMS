@@ -22,6 +22,10 @@ export default {
     hostName: process.env.HOST,
     port: process.env.PORT,
   },
+  stripe: {
+    secretKey: process.env.STRIPE_SECRET_KEY,
+    publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+  },
 
   cloudinary: {
     cloud_name: process.env.CLOUD_NAME,

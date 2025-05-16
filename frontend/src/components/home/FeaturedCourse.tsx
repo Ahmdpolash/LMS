@@ -15,7 +15,7 @@ import CardSkeleton from "../shared/CardSkeleton";
 import { redirect } from "next/navigation";
 export default function FeaturedCourse() {
   const { data, isLoading } = useGetAllCoursesQuery({});
-
+  console.log(data, "data");
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   // Function to render stars based on rating
@@ -138,7 +138,7 @@ export default function FeaturedCourse() {
                               {course?.estimatedPrice ? (
                                 <div className="flex items-center">
                                   <span className="text-[rgb(37,150,190)] font-bold text-xl">
-                                    ${course.price}
+                                    ${course?.price}
                                   </span>
                                   <span className="text-gray-500 dark:text-gray-400 line-through ml-2">
                                     ${course?.estimatedPrice}
@@ -146,7 +146,7 @@ export default function FeaturedCourse() {
                                 </div>
                               ) : (
                                 <span className="text-[rgb(37,150,190)] font-bold text-xl">
-                                  ${course.price}
+                                  ${course?.price}
                                 </span>
                               )}
                             </div>
@@ -156,7 +156,7 @@ export default function FeaturedCourse() {
                               <div className="flex items-center justify-end text-gray-600 dark:text-gray-300 text-sm">
                                 <Users className="h-4 w-4 mr-1" />
                                 {/* <span>{course.students.toLocaleString()}</span> */}
-                                <span>{course?.purchased}</span>
+                                <span>{course?.purchased ? course?.purchased : '0'}</span>
                               </div>
                               <div className="flex items-center justify-end text-gray-600 dark:text-gray-300 text-sm mt-1">
                                 <BookOpen className="h-4 w-4 mr-1" />

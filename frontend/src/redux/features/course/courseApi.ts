@@ -19,7 +19,7 @@ export const courseApi = baseApi.injectEndpoints({
         method: "GET",
         credentials: "include",
       }),
-      providesTags: [tagTypes.course],
+     
     }),
 
     deleteCourse: builder.mutation({
@@ -37,6 +37,7 @@ export const courseApi = baseApi.injectEndpoints({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: [tagTypes.course],
     }),
   }),
 });

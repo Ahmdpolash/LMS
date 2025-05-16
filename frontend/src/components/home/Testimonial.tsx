@@ -5,8 +5,6 @@ import Container from "../shared/Container";
 import SectionHeaders from "./SectionHeaders";
 import { renderStars } from "@/app/_components/pages/CourseDetails/RenderStar";
 
-
-
 export default function TestimonialsSection() {
   const testimonials: any[] = [
     {
@@ -34,7 +32,6 @@ export default function TestimonialsSection() {
       role: "Full stack developer",
       organization: "Quarter ltd.",
       image: "/u3.avif",
-
 
       text: "Thanks for your amazing programming tutorial channel! Your teaching style is outstanding, and the quality of your tutorials is top-notch. Your ability to break down complex topics into manageable parts, and cover diverse programming languages and topics is truly impressive. The practical applications and real-world examples you incorporate reinforce the theoretical knowledge and provide valuable insights.",
       rating: 5,
@@ -118,7 +115,9 @@ export default function TestimonialsSection() {
                           </p>
                         </div>
                       </div>
-                      <div className="flex">{renderStars(testimonial.rating)}</div>
+                      <div className="flex">
+                        {renderStars(testimonial.rating)}
+                      </div>
                     </div>
 
                     <div className="text-slate-600 dark:text-gray-300 flex-grow">

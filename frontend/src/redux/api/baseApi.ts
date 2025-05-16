@@ -22,7 +22,7 @@ export const baseApi = createApi({
       }),
     }),
     currentUser: builder.query({
-      query: (data) => ({
+      query: () => ({
         url: "/user/me",
         method: "GET",
         credentials: "include",

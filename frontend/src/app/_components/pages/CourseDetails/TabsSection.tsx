@@ -16,7 +16,7 @@ const TabsSection = ({ courseInfo }: any) => {
   const [groupedCourseData, setGroupedCourseData] = useState<any>();
   const [sectionOrder, setSectionOrder] = useState<string[]>([]);
 
-  console.log(groupedCourseData, "groupedCourseData");
+
 
   useEffect(() => {
     if (courseInfo?.courseData) {

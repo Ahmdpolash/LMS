@@ -1,0 +1,91 @@
+import { useCurrentUserQuery } from "@/redux/api/baseApi";
+import { useCreateOrderMutation } from "@/redux/features/order/orderApi";
+import {
+  LinkAuthenticationElement,
+  PaymentElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
+import { redirect } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
+
+type TProps = {
+  setOpen: any;
+  courseInfo: any;
+};
+
+const CheckOutForm = ({ setOpen, courseInfo }: TProps) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  console.log("Stripe:", stripe);
+  console.log("Elements:", elements);
+
+  const [message, setMessage] = useState<string | undefined>(undefined);
+
+  const [createOrder, { data: orderData, error }] = useCreateOrderMutation();
+  const [loadUser, setLoadUser] = useState(false);
+  const {} = useCurrentUserQuery({ skip: loadUser ? false : true });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    if (!stripe || !elements) {
+      return;
+    }
+    setIsLoading(true);
+    const { error, paymentIntent } = await stripe.confirmPayment({
+      elements,
+      redirect: "if_required",
+    });
+    if (error) {
+      setMessage(error.message ?? "An unknown error occurred.");
+      setIsLoading(false);
+    } else if (paymentIntent && paymentIntent.status == "succeeded") {
+      setIsLoading(false);
+      createOrder({ courseId: courseInfo._id, payment_info: paymentIntent });
+    }
+  };
+
+  useEffect(() => {
+    if (orderData) {
+      setLoadUser(true);
+      redirect(`/course-access/$${courseInfo._id}$$`);
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorMessage = error as any;
+        toast.error(errorMessage.data.message);
+      }
+    }
+  }, [orderData, error]);
+
+  return (
+    <div>
+      <form id="payment-form" onSubmit={handleSubmit}>
+        <LinkAuthenticationElement id="link-authentication-element" />
+        <PaymentElement id="payment-element" />
+        <button
+          disabled={isLoading || !stripe || !elements}
+          id="submit "
+          className="mt-3"
+        >
+          <span
+            id="button-text"
+            className={` rounded-md bg-[#2971D9] px-3 py-2`}
+          >
+            {isLoading ? "Paying..." : "Pay now"}
+          </span>
+        </button>
+        {/* Show any error or success messages */}
+        {message && (
+          <div id="payment-message" className="text-[red] font-Poppins pt-2">
+            {message}
+          </div>
+        )}
+      </form>
+    </div>
+  );
+};
+
+export default CheckOutForm;
