@@ -71,9 +71,6 @@ export default function CourseDetails({ slug }: { slug: string }) {
     user?.data?.courses?.find(
       (item: any) => item?.courseId === courseInfo?._id?.toString()
     );
-  console.log(isPurchased, "isPurchased");
-  console.log(courseInfo, "courseInfo");
-  console.log(user, "user");
 
   // payment
 
@@ -298,10 +295,12 @@ export default function CourseDetails({ slug }: { slug: string }) {
                         </p>
 
                         {isPurchased ? (
-                          <Button className="w-full bg-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/80 text-white mb-3 cursor-pointer">
-                            <SquarePlay  className="h-4 w-4 mr-2" />
-                            Enter to Course
-                          </Button>
+                          <Link href={`/course-access/${courseInfo?._id}`}>
+                            <Button className="w-full bg-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/80 text-white mb-3 cursor-pointer">
+                              <SquarePlay className="h-4 w-4 mr-2" />
+                              Enter to Course
+                            </Button>
+                          </Link>
                         ) : (
                           <>
                             <Button
