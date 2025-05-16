@@ -3,6 +3,7 @@ import { Star, Quote, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Container from "../shared/Container";
 import SectionHeaders from "./SectionHeaders";
+import { renderStars } from "@/app/_components/pages/CourseDetails/RenderStar";
 
 
 
@@ -15,37 +16,38 @@ export default function TestimonialsSection() {
       organization: "Cambridge university",
       image: "/u.jpg",
       text: "I had the pleasure of exploring ELearning, a website that provides an extensive range of courses on various tech-related topics. I was thoroughly impressed with my experience, as the website offers a comprehensive selection of courses that cater to different skill levels and interests. If you're looking to enhance your knowledge and skills in the tech industry, I highly recommend checking out ELearning!",
-      rating: 5,
+      rating: 4,
     },
     {
       id: 2,
       name: "Jay Gibbs",
       role: "computer systems engineering student",
       organization: "Zimbabwe",
-      image: "/u.jpg",
+      image: "/u2.avif",
 
       text: "Thanks for your amazing programming tutorial channel! Your teaching style is outstanding, and the quality of your tutorials is top-notch. Your ability to break down complex topics into manageable parts, and cover diverse programming languages and topics is truly impressive. The practical applications and real-world examples you incorporate reinforce the theoretical knowledge.",
-      rating: 5,
+      rating: 4,
     },
     {
       id: 3,
       name: "Verna Santos",
       role: "Full stack developer",
       organization: "Quarter ltd.",
-      image: "/u.jpg",
+      image: "/u3.avif",
+
 
       text: "Thanks for your amazing programming tutorial channel! Your teaching style is outstanding, and the quality of your tutorials is top-notch. Your ability to break down complex topics into manageable parts, and cover diverse programming languages and topics is truly impressive. The practical applications and real-world examples you incorporate reinforce the theoretical knowledge and provide valuable insights.",
       rating: 5,
     },
     {
-      id: 4,
+      id: 4.5,
       name: "Mina Davidson",
       role: "UX Designer",
       organization: "Creative Solutions",
-      image: "/u.jpg",
+      image: "/u4.jpg",
 
       text: "The UI/UX Design Masterclass on this platform completely transformed my career. The instructor's teaching approach made complex design principles easy to understand and apply. Within weeks of completing the course, I was able to create more intuitive and visually appealing interfaces. The community support and feedback system also helped me refine my skills further.",
-      rating: 5,
+      rating: 3.5,
     },
   ];
 
@@ -53,7 +55,7 @@ export default function TestimonialsSection() {
   // const secondRow = testimonials.slice(testimonials.length / 2);
 
   // Function to render stars
-  const renderStars = (count = 5) => {
+  const renderStar = (count = 5) => {
     return Array(count)
       .fill(0)
       .map((_, index) => (
@@ -104,7 +106,7 @@ export default function TestimonialsSection() {
                             alt={testimonial.name}
                             width={60}
                             height={60}
-                            className="h-[55px] w-[55px] rounded-full border-2 border-[rgb(37,150,190)]/30"
+                            className="h-[55px] w-[55px] rounded-full border-2 border-[rgb(37,150,190)]/30 object-cover"
                           />
                         </div>
                         <div>
@@ -116,7 +118,7 @@ export default function TestimonialsSection() {
                           </p>
                         </div>
                       </div>
-                      <div className="flex">{renderStars()}</div>
+                      <div className="flex">{renderStars(testimonial.rating)}</div>
                     </div>
 
                     <div className="text-slate-600 dark:text-gray-300 flex-grow">

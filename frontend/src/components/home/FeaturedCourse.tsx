@@ -78,7 +78,7 @@ export default function FeaturedCourse() {
                 data?.data?.map((course: any) => (
                   <Link key={course._id} href={`/courses/${course._id}`}>
                     <motion.div
-                      className="cursor-pointer bg-white dark:bg-[#1a2342] rounded-xl overflow-hidden shadow-sm border border-gray-300 dark:border-gray-800 hover:shadow-lg transition-all duration-300 flex flex-col lg:h-[460px]"
+                      className="cursor-pointer bg-white dark:bg-[#1a2342] rounded-xl overflow-hidden shadow-sm border border-gray-300 dark:border-gray-800 hover:shadow-lg transition-all duration-300 flex flex-col lg:h-[440px]"
                       onMouseEnter={() => setHoveredCard(course._id)}
                       onMouseLeave={() => setHoveredCard(null)}
                     >

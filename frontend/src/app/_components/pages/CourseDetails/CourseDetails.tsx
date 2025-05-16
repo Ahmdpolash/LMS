@@ -38,6 +38,7 @@ import { ICourse } from "@/types";
 import { courseData } from "@/constant/coursemockdata";
 import TabsSection from "./TabsSection";
 import { renderStars } from "./RenderStar";
+import HeroVideoDialog from "@/components/magicui/hero-video-dialog";
 
 export default function CourseDetails({ slug }: { slug: string }) {
   const { data, isLoading } = useGetSingleCourseQuery(slug);
@@ -73,44 +74,44 @@ export default function CourseDetails({ slug }: { slug: string }) {
                   </Badge>
                   <Badge
                     variant="outline"
-                    className="text-white border-gray-500"
+                    className="dark:text-white border-gray-500"
                   >
                     {courseInfo?.level}
                   </Badge>
                 </div>
 
-                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4">
+                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold dark:text-white mb-4">
                   {courseInfo?.name}
                 </h1>
 
-                <p className="text-gray-300 text-[17px] mb-6">
+                <p className="text-black dark:text-gray-300 text-[17px] mb-6">
                   {courseInfo?.description}
                 </p>
 
                 <div className="flex flex-wrap items-center gap-4 mb-6">
-                  <div className="flex items-center">
+                  <div className="flex items-center *:text-black *:dark:text-white">
                     <div className="flex mr-2">
                       {renderStars(courseInfo?.ratings, "md")}
                     </div>
-                    <span className="text-[rgb(37,150,190)] font-medium">
+                    <span className="dark:text-[rgb(37,150,190)] font-medium">
                       {courseInfo?.ratings}
                     </span>
-                    <span className="text-gray-300 ml-1">
+                    <span className="dark:text-gray-300 ml-1">
                       ({courseInfo?.reviews?.length} reviews)
                     </span>
                   </div>
 
-                  <div className="flex items-center text-gray-300">
+                  <div className="flex items-center dark:text-gray-300">
                     <Users className="h-5 w-5 mr-1" />
                     <span>{courseInfo?.purchased} students</span>
                   </div>
 
-                  <div className="flex items-center text-gray-300">
+                  <div className="flex items-center dark:text-gray-300">
                     <Calendar className="h-5 w-5 mr-1" />
                     <span>Last updated {format(courseInfo?.updatedAt)}</span>
                   </div>
 
-                  <div className="flex items-center text-gray-300">
+                  <div className="flex items-center dark:text-gray-300">
                     <Globe className="h-5 w-5 mr-1" />
                     <span> {courseInfo?.language || "English"}</span>
                   </div>
@@ -122,7 +123,7 @@ export default function CourseDetails({ slug }: { slug: string }) {
                     <AvatarFallback>ELearning</AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="text-white font-medium">Created by</p>
+                    <p className="dark:text-white font-medium">Created by</p>
                     <Link
                       href={`/instructor/${courseData.instructor.name
                         .toLowerCase()
@@ -189,11 +190,27 @@ export default function CourseDetails({ slug }: { slug: string }) {
                       </Button>
                     </div>
                   </div>
+                  {/* <div className="relative ">
+                    <HeroVideoDialog
+                      className="block dark:hidden "
+                      animationStyle="top-in-bottom-out"
+                      videoSrc={courseInfo?.demoUrl}
+                      thumbnailSrc={courseInfo?.thumbnail?.url}
+                      thumbnailAlt="Hero Video"
+                    />
+                    <HeroVideoDialog
+                      className="hidden dark:block"
+                     animationStyle="top-in-bottom-out"
+                      videoSrc={courseInfo?.demoUrl}
+                      thumbnailSrc={courseInfo?.thumbnail?.url}
+                      thumbnailAlt="Hero Video"
+                    />
+                  </div> */}
 
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-baseline">
-                        <span className="text-3xl font-bold text-gray-900 dark:text-white">
+                        <span className="text-3xl font-bold text-slate-900 dark:text-white">
                           ${courseInfo?.price}
                         </span>
                         <span className="text-lg text-gray-500 dark:text-gray-400 line-through ml-2">
@@ -237,7 +254,7 @@ export default function CourseDetails({ slug }: { slug: string }) {
                           Duration:
                         </span>
                         <span className="text-gray-900 dark:text-white font-medium">
-                          {courseData.duration}
+                          N/A
                         </span>
                       </div>
 

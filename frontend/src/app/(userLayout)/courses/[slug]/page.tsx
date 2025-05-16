@@ -1,8 +1,8 @@
 import CourseDetails from "@/app/_components/pages/CourseDetails/CourseDetails";
 import Container from "@/components/shared/Container";
 
-const page = ({ params }: { params: { slug: string } }) => {
-  const { slug } = params;
+const CourseDetailsPage = async ({ params }: { params: { slug: string } }) => {
+  const slug = params.slug;
 
   return (
     <Container>
@@ -11,4 +11,4 @@ const page = ({ params }: { params: { slug: string } }) => {
   );
 };
 
-export default page;
+export default CourseDetailsPage;

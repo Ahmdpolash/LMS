@@ -346,11 +346,7 @@ const TabsSection = ({ courseInfo }: any) => {
                   onClick={() => setShowMore(!showMore)}
                 >
                   {showMore ? "Show Less" : "Show More Reviews"}
-                  <ChevronDown
-                    className={`ml-2 h-4 w-4 transition-transform ${
-                      showMore ? "transform rotate-180" : ""
-                    }`}
-                  />
+                  
                 </Button>
               )}
             </div>
