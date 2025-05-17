@@ -41,7 +41,6 @@ const sendStripePublishableKey = catchAsync(async (req, res) => {
 // new payment
 
 const newPayment = catchAsync(async (req, res) => {
- 
   try {
     const myPayment = await stripe.paymentIntents.create({
       amount: req.body.amount,

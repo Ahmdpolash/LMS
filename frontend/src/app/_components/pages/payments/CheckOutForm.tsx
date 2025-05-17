@@ -18,8 +18,6 @@ type TProps = {
 const CheckOutForm = ({ setOpen, courseInfo }: TProps) => {
   const stripe = useStripe();
   const elements = useElements();
-  console.log("Stripe:", stripe);
-  console.log("Elements:", elements);
 
   const [message, setMessage] = useState<string | undefined>(undefined);
 
@@ -28,29 +26,76 @@ const CheckOutForm = ({ setOpen, courseInfo }: TProps) => {
   const {} = useCurrentUserQuery({ skip: loadUser ? false : true });
   const [isLoading, setIsLoading] = useState(false);
 
+  // const handleSubmit = async (e: any) => {
+  //   e.preventDefault();
+  //   if (!stripe || !elements) {
+  //     return;
+  //   }
+  //   setIsLoading(true);
+  //   const { error, paymentIntent } = await stripe.confirmPayment({
+  //     elements,
+  //     redirect: "if_required",
+  //   });
+  //   if (error) {
+  //     setMessage(error.message ?? "An unknown error occurred.");
+  //     setIsLoading(false);
+  //   } else if (paymentIntent && paymentIntent.status == "succeeded") {
+  //     setIsLoading(false);
+  //     createOrder({ courseId: courseInfo._id, payment_info: paymentIntent });
+  //   }
+  // };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (!stripe || !elements) {
       return;
     }
     setIsLoading(true);
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      redirect: "if_required",
-    });
-    if (error) {
-      setMessage(error.message ?? "An unknown error occurred.");
+    try {
+      const { error: stripeError, paymentIntent } = await stripe.confirmPayment(
+        {
+          elements,
+          redirect: "if_required",
+        }
+      );
+
+      if (stripeError) {
+        setMessage(
+          stripeError.message ?? "An unknown error occurred during payment."
+        );
+        setIsLoading(false);
+        return;
+      }
+
+      if (paymentIntent && paymentIntent.status === "succeeded") {
+        const orderResult = await createOrder({
+          courseId: courseInfo._id,
+          payment_info: paymentIntent,
+        }).unwrap();
+
+        // If createOrder is successful, redirect
+        if (orderResult) {
+          toast.success("Order created successfully!");
+          setIsLoading(false);
+          redirect(`/course-access/${courseInfo._id}`);
+        }
+      }
+    } catch (orderError: any) {
+      // Handle errors from createOrder mutation
       setIsLoading(false);
-    } else if (paymentIntent && paymentIntent.status == "succeeded") {
+      if ("data" in orderError) {
+        toast.error(orderError.data.message ?? "An unknown error occurred.");
+        setMessage(orderError.data.message);
+      }
+    } finally {
       setIsLoading(false);
-      createOrder({ courseId: courseInfo._id, payment_info: paymentIntent });
     }
   };
 
   useEffect(() => {
     if (orderData) {
       setLoadUser(true);
-      redirect(`/course-access/$${courseInfo._id}$$`);
+      redirect(`/course-access/${courseInfo._id}`);
     }
     if (error) {
       if ("data" in error) {
@@ -72,7 +117,7 @@ const CheckOutForm = ({ setOpen, courseInfo }: TProps) => {
         >
           <span
             id="button-text"
-            className={` rounded-md bg-[#2971D9] px-3 py-2`}
+            className={` rounded-md bg-[#2971D9] px-3 py-2 cursor-pointer`}
           >
             {isLoading ? "Paying..." : "Pay now"}
           </span>

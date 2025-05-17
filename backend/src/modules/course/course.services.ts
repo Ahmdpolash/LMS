@@ -45,11 +45,9 @@ const uploadCourse = async (payload: ICourse) => {
 // GET ALL COURSE
 const getAllCourse = async () => {
   // check first in redis if course is already available
-  const isCourseExists = await redis.get("allCourses");
-
-  if (isCourseExists) {
-    const result = JSON.parse(isCourseExists);
-    return result;
+  const cachedCourses = await redis.get("allCourses");
+  if (cachedCourses) {
+    return JSON.parse(cachedCourses);
   }
 
   const result = await Course.find()
@@ -60,7 +58,7 @@ const getAllCourse = async () => {
     .lean();
 
   // set the data on redis now
-  await redis.set("allCourses", JSON.stringify(result), "EX", 604800);
+  await redis.set("allCourses", JSON.stringify(result), "EX", 3600);
 
   return result;
 };
