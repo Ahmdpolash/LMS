@@ -34,11 +34,11 @@ const CourseContentMedia = ({
   activeVideo,
   setActiveVideo,
 }: TProps) => {
+  console.log(activeVideo, "activeVideo");
   return (
     <div className="w-full ">
-      <div></div>
       {allContent && allContent[activeVideo]?.videoUrl ? (
-        <div className=" mb-4 rounded-md overflow-hidden">
+        <div className=" mb-3 rounded-md overflow-hidden">
           <ReactPlayer
             url={allContent[activeVideo]?.videoUrl}
             controls
@@ -52,20 +52,6 @@ const CourseContentMedia = ({
           No video selected.
         </div>
       )}
-
-      {/* You might want to display a simplified list of videos here or move the module/video list to the sidebar */}
-      {/* <div>
-        {sectionOrder.map((sectionName) => (
-          <div key={sectionName}>
-            <h3>{sectionName}</h3>
-            <ul>
-              {groupedData[sectionName]?.map((video: any) => (
-                <li key={video._id}>{video.title}</li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div> */}
     </div>
   );
 };

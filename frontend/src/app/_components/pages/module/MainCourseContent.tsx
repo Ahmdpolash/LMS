@@ -4,12 +4,16 @@ import CustomLoading from "../../CustomLoading";
 import CourseContentMedia from "./CourseContentMedia";
 import Container from "@/components/shared/Container";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import { Bookmark, BookmarkCheck, FileSliders, Notebook } from "lucide-react";
+import { toast } from "sonner";
+import ModuleBottomTabs from "./ModuleBottomTabs";
+import ModuleSidebar from "./ModuleSidebar";
 
 const MainCourseContent = ({ id }: { id: string }) => {
   const { data: courseContent, isLoading } = useGetCourseContentQuery(id);
   const allContent = courseContent?.data;
   const [activeVideo, setActiveVideo] = useState(0);
-
+  const [mark, setMark] = useState(false);
   // grouping the video
   const [groupedCourseData, setGroupedCourseData] = useState({});
   const [sectionOrder, setSectionOrder] = useState<string[]>([]);
@@ -44,60 +48,92 @@ const MainCourseContent = ({ id }: { id: string }) => {
     }
   };
 
+  const handleBookMark = () => {
+    setMark(!mark);
+    toast.success("Added to bookmark");
+  };
+
+  const handleRemoveBookmark = () => {
+    setMark(!mark);
+    toast.success("Removed from bookmark");
+  };
+
   return (
     <Container>
       {isLoading ? (
         <CustomLoading />
       ) : (
-        <div className=" grid grid-cols-10 gap-4 py-16">
-          <div className="col-span-10 lg:col-span-7">
-            <CourseContentMedia
-              groupedData={groupedCourseData}
-              sectionOrder={sectionOrder}
-              allContent={allContent}
-              activeVideo={activeVideo}
-              setActiveVideo={setActiveVideo}
-            />
+        <>
+          <div className="pb-3 mt-4 lg:mt-6 border-b w-full border-gray-700 flex justify-between items-center ">
+            <h3 className="text-[21px]  bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
+              {activeVideo + 1}-{allContent?.length} :{" "}
+              {allContent[activeVideo]?.title}
+            </h3>
+            <div className="flex items-center gap-5">
+              <FileSliders
+                onClick={() =>
+                  toast.error("Note Feature Not Available Right Now !")
+                }
+                className="cursor-pointer"
+              />
+              {mark ? (
+                <BookmarkCheck
+                  onClick={handleRemoveBookmark}
+                  className="cursor-pointer"
+                />
+              ) : (
+                <Bookmark className="cursor-pointer" onClick={handleBookMark} />
+              )}
+            </div>
+          </div>
+          <div className=" grid grid-cols-10 gap-4 py-5 ">
+            <div className="col-span-10 lg:col-span-7">
+              <CourseContentMedia
+                groupedData={groupedCourseData}
+                sectionOrder={sectionOrder}
+                allContent={allContent}
+                activeVideo={activeVideo}
+                setActiveVideo={setActiveVideo}
+              />
+              {/* prev and next button */}
+              <div className="w-full flex items-center justify-between my-3">
+                <div
+                  className={`bg-[#3084FF] flex items-center gap-2 rounded-full !min-h-[40px] !w-[unset] py-2 px-4 cursor-pointer ${
+                    activeVideo === 0 && "!cursor-no-drop opacity-[.8]"
+                  }`}
+                  onClick={goToPreviousVideo}
+                >
+                  <AiOutlineArrowLeft className="mr-" />
+                  Previous
+                </div>
+                <div
+                  className={`bg-[#3084FF] flex items-center gap- rounded-full !min-h-[40px] !w-[unset] py-2 px-4 cursor-pointer ${
+                    allContent?.length - 1 === activeVideo &&
+                    "!cursor-no-drop opacity-[.8]"
+                  }`}
+                  onClick={goToNextVideo}
+                >
+                  Next
+                  <AiOutlineArrowRight className="ml-2" />
+                </div>
+              </div>
 
-            <div className="w-full flex items-center justify-between my-3">
-              <div
-                className={`bg-[#3084FF] flex items-center gap-2 rounded-full !min-h-[40px] !w-[unset] py-2 px-4 cursor-pointer ${
-                  activeVideo === 0 && "!cursor-no-drop opacity-[.8]"
-                }`}
-                onClick={goToPreviousVideo}
-              >
-                <AiOutlineArrowLeft className="mr-" />
-                Previous
-              </div>
-              <div
-                className={`bg-[#3084FF] flex items-center gap- rounded-full !min-h-[40px] !w-[unset] py-2 px-4 cursor-pointer ${
-                  allContent?.length - 1 === activeVideo &&
-                  "!cursor-no-drop opacity-[.8]"
-                }`}
-                onClick={goToNextVideo}
-              >
-                Next
-                <AiOutlineArrowRight className="ml-2" />
-              </div>
+              {/* tabs section */}
+              <ModuleBottomTabs />
             </div>
 
-            {/* <CourseContentMedia
-              data={data}
-              id={id}
-              activeVideo={activeVideo}
-              setActiveVideo={setActiveVideo}
-            /> */}
+            <div className="col-span-10 lg:col-span-3">
+              <ModuleSidebar
+                groupedData={groupedCourseData}
+                sectionOrder={sectionOrder}
+                allContent={allContent}
+                activeVideo={activeVideo}
+                setActiveVideo={setActiveVideo}
+              />
+              
+            </div>
           </div>
-
-          <div className="col-span-10 lg:col-span-3">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi,
-            pariatur eos labore iste necessitatibus amet debitis eius qui
-            blanditiis non, cupiditate dolor placeat animi ex veritatis totam
-            tenetur soluta, nam recusandae magnam fugiat ipsum delectus.
-            Pariatur omnis doloribus nihil doloremque itaque corrupti, ipsam,
-            minima praesentium est voluptatem ducimus vel error!
-          </div>
-        </div>
+        </>
       )}
     </Container>
   );

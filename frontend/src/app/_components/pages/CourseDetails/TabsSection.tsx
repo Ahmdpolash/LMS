@@ -16,8 +16,6 @@ const TabsSection = ({ courseInfo }: any) => {
   const [groupedCourseData, setGroupedCourseData] = useState<any>();
   const [sectionOrder, setSectionOrder] = useState<string[]>([]);
 
-
-
   useEffect(() => {
     if (courseInfo?.courseData) {
       const sections: { [key: string]: any[] } = {};
@@ -346,7 +344,6 @@ const TabsSection = ({ courseInfo }: any) => {
                   onClick={() => setShowMore(!showMore)}
                 >
                   {showMore ? "Show Less" : "Show More Reviews"}
-                  
                 </Button>
               )}
             </div>
