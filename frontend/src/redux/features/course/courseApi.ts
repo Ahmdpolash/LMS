@@ -19,7 +19,6 @@ export const courseApi = baseApi.injectEndpoints({
         method: "GET",
         credentials: "include",
       }),
-     
     }),
 
     deleteCourse: builder.mutation({
@@ -39,6 +38,14 @@ export const courseApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.course],
     }),
+
+    getCourseContent: builder.query({
+      query: (id: string) => ({
+        url: `/course/course-content/${id}`,
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
@@ -47,4 +54,5 @@ export const {
   useGetAllCoursesQuery,
   useDeleteCourseMutation,
   useGetSingleCourseQuery,
+  useGetCourseContentQuery,
 } = courseApi;

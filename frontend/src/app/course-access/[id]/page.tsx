@@ -21,7 +21,7 @@ const CourseAccessPage = ({ params }: Props) => {
       return;
     }
 
-    if (!isLoading &&  data?.data?.courses) {
+    if (!isLoading && data?.data?.courses) {
       const isPurchased = data?.data?.courses?.find(
         (item: any) => item.courseId === id
       );
@@ -30,19 +30,6 @@ const CourseAccessPage = ({ params }: Props) => {
         redirect("/");
       }
     }
-
-    // if (data) {
-    //   const isPurchased = data?.data?.courses?.find(
-    //     (item: any) => item.courseId === id
-    //   );
-    //   console.log(isPurchased, "isPurchased");
-    //   if (!isPurchased) {
-    //     redirect("/");
-    //   }
-    //   if (error) {
-    //     redirect("/");
-    //   }
-    // }
   }, [data, isLoading, error, id]);
 
   return (
