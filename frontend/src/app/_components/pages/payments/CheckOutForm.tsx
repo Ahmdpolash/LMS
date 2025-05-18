@@ -18,7 +18,7 @@ type TProps = {
 const CheckOutForm = ({ setOpen, courseInfo }: TProps) => {
   const stripe = useStripe();
   const elements = useElements();
-
+  console.log(elements,'ee')
   const [message, setMessage] = useState<string | undefined>(undefined);
 
   const [createOrder, { data: orderData, error }] = useCreateOrderMutation();
@@ -113,11 +113,11 @@ const CheckOutForm = ({ setOpen, courseInfo }: TProps) => {
         <button
           disabled={isLoading || !stripe || !elements}
           id="submit "
-          className="mt-3"
+          className="my-3"
         >
           <span
             id="button-text"
-            className={` rounded-md bg-[#2971D9] px-3 py-2 cursor-pointer`}
+            className={` rounded-md bg-[#2971D9] dark:text-white text-black px-3 py-2 cursor-pointer`}
           >
             {isLoading ? "Paying..." : "Pay now"}
           </span>

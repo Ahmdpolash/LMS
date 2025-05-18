@@ -51,6 +51,14 @@ import CheckOutForm from "../payments/CheckOutForm";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { useCurrentUserQuery } from "@/redux/api/baseApi";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function CourseDetails({ slug }: { slug: string }) {
   const { data, isLoading } = useGetSingleCourseQuery(slug);
@@ -106,7 +114,7 @@ export default function CourseDetails({ slug }: { slug: string }) {
   };
 
   return (
-    <>
+    <div>
       {isLoading ? (
         <CustomLoading />
       ) : (
@@ -303,13 +311,44 @@ export default function CourseDetails({ slug }: { slug: string }) {
                           </Link>
                         ) : (
                           <>
-                            <Button
-                              onClick={handleOrder}
-                              className="w-full bg-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/80 text-white mb-3 cursor-pointer"
-                            >
-                              <ShoppingCart className="h-4 w-4 mr-2" />
-                              Enroll Now
-                            </Button>
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <Button className="w-full bg-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/80 text-white mb-3 cursor-pointer">
+                                  <ShoppingCart className="h-4 w-4 mr-2" />
+                                  Enroll Now
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="bg-white text-black sm:max-w-[425px] lg:max-w-[500px] overflow-y-auto">
+                                <DialogHeader>
+                                  <DialogTitle>
+                                    Complete Your Purchase
+                                  </DialogTitle>
+                                </DialogHeader>
+                                <div className="">
+                                  {stripePromise && clientSecret && (
+                                    <Elements
+                                      stripe={stripePromise}
+                                      options={{
+                                        clientSecret,
+
+                                        appearance: {
+                                          theme: "stripe",
+                                          variables: {
+                                            fontFamily: "inherit",
+                                            colorPrimary: "#007bff",
+                                          },
+                                        },
+                                      }}
+                                    >
+                                      <CheckOutForm
+                                        setOpen={setOpen}
+                                        courseInfo={courseInfo}
+                                      />
+                                    </Elements>
+                                  )}
+                                </div>
+                              </DialogContent>
+                            </Dialog>
 
                             <Button
                               variant="outline"
@@ -497,9 +536,10 @@ export default function CourseDetails({ slug }: { slug: string }) {
         </div>
       )}
 
+      {/* 
       {open && (
-        <div className="px-7 lg:px-0 w-full h-screen bg-[#00000036] fixed top-0 left-0 z-50 flex items-center justify-center">
-          <div className="w-[500px] min-h-[530px] bg-white rounded-xl shadow p-3">
+        <div className="px-7 lg:px-0 w-full min-h-screen bg-[#00000036] fixed top-0 left-0 z-50 flex items-center justify-center">
+          <div className="w-[500px] min-h-[480px] max-h-[90vh] overflow-y-auto bg-white rounded-xl shadow p-3">
             <div className="w-full flex justify-end">
               <IoMdCloseCircleOutline
                 size={40}
@@ -510,14 +550,27 @@ export default function CourseDetails({ slug }: { slug: string }) {
 
             <div className="w-full">
               {stripePromise && clientSecret && (
-                <Elements stripe={stripePromise} options={{ clientSecret }}>
+                <Elements
+                  stripe={stripePromise}
+                  options={{
+                    clientSecret,
+
+                    appearance: {
+                      theme: "stripe",
+                      variables: {
+                        fontFamily: "inherit",
+                        colorPrimary: "#007bff",
+                      },
+                    },
+                  }}
+                >
                   <CheckOutForm setOpen={setOpen} courseInfo={courseInfo} />
                 </Elements>
               )}
             </div>
           </div>
         </div>
-      )}
-    </>
+      )} */}
+    </div>
   );
 }
