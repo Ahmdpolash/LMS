@@ -47,7 +47,7 @@ const getAllCourse = catchAsync(async (req, res) => {
 const getCourseContentByUser = catchAsync(async (req, res) => {
   const courseList = req.user?.courses;
   const courseId = req.params.id;
-  console.log(courseList,'courselist')
+ 
 
   const result = await CourseServices.getCourseContentByUser(
     courseId,

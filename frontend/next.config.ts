@@ -12,13 +12,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  videos: {
-    remotePatterns: [
-      {
-        hostname: "res.cloudinary.com",
-      },
-    ],
-  },
+ 
 };
 
 export default nextConfig;
