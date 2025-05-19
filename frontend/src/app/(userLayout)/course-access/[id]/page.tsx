@@ -10,8 +10,7 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
-
-// disbale console/ right click feature 
+// disbale console/ right click feature
 
 const CourseAccessPage = ({ params }: Props) => {
   const { id } = React.use(params);
@@ -41,7 +40,7 @@ const CourseAccessPage = ({ params }: Props) => {
         <CustomLoading />
       ) : (
         <div>
-          <MainCourseContent id={id} />
+          <MainCourseContent id={id} data={data} />
         </div>
       )}
     </div>

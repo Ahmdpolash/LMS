@@ -31,7 +31,7 @@ const ModuleSidebar = ({
   };
 
   return (
-    <div>
+    <div className="sticky top-20 ">
       {/* {sectionOrder.map((sectionName) => (
         <div key={sectionName}>
           <h3>{sectionName}</h3>
@@ -43,7 +43,7 @@ const ModuleSidebar = ({
         </div>
       ))} */}
 
-      <div className="space-y-4 bg-gray-200 shadow-m dark:bg-[#131320] p-4 rounded-md">
+      <div className="space-y-4 bg-gray-200 shadow-m dark:bg-[#131320] p-4 rounded-md ">
         {sectionOrder.map((sectionName, sectionIndex) => (
           <div
             key={sectionIndex} // Use sectionName as the key

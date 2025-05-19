@@ -4,19 +4,27 @@ import CustomLoading from "../../CustomLoading";
 import CourseContentMedia from "./CourseContentMedia";
 import Container from "@/components/shared/Container";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
-import { Bookmark, BookmarkCheck, FileSliders, Notebook } from "lucide-react";
+import {
+  Bookmark,
+  BookmarkCheck,
+  CircleArrowLeft,
+  FileSliders,
+  Notebook,
+} from "lucide-react";
 import { toast } from "sonner";
 import ModuleBottomTabs from "./ModuleBottomTabs";
 import ModuleSidebar from "./ModuleSidebar";
 import Loading from "@/app/(userLayout)/course-access/[id]/loading";
 
-const MainCourseContent = ({ id }: { id: string }) => {
+const MainCourseContent = ({ id, data }: { id: string; data: any }) => {
   const { data: courseContent, isLoading } = useGetCourseContentQuery(id);
   const allContent = courseContent?.data;
   const [activeVideo, setActiveVideo] = useState(0);
   const [mark, setMark] = useState(false);
   // grouping the video
-  const [groupedCourseData, setGroupedCourseData] = useState({});
+  const [groupedCourseData, setGroupedCourseData] = useState<{
+    [key: string]: any[];
+  }>({});
   const [sectionOrder, setSectionOrder] = useState<string[]>([]);
 
   useEffect(() => {
@@ -68,11 +76,20 @@ const MainCourseContent = ({ id }: { id: string }) => {
       ) : (
         // <CustomLoading />
         <>
-          <div className="pb-3 mt-4 lg:mt-6 border-b w-full border-gray-700 flex justify-between items-center ">
-            <h3 className="text-[21px]  bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
-              {activeVideo + 1}-{allContent?.length} :{" "}
-              {allContent[activeVideo]?.title}
-            </h3>
+          <div className="pb-3 mt-4 lg:mt-6 border-b w-full border-gray-400 dark:border-gray-700 flex justify-between items-center ">
+            <div className="flex items-center gap-2">
+              <button className="cursor-pointer" onClick={goToPreviousVideo}>
+                <CircleArrowLeft className="text-blue-500" />
+              </button>
+              <h3 className="text-[21px]  bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
+                {activeVideo + 1}-
+                {
+                  groupedCourseData[allContent[activeVideo]?.videoSection]
+                    ?.length
+                }{" "}
+                : {allContent[activeVideo]?.title}
+              </h3>
+            </div>
             <div className="flex items-center gap-5">
               <FileSliders
                 onClick={() =>
@@ -90,7 +107,7 @@ const MainCourseContent = ({ id }: { id: string }) => {
               )}
             </div>
           </div>
-          <div className=" grid grid-cols-11 gap-4 py-5 ">
+          <div className=" grid grid-cols-11 gap-4 py-5 relative">
             <div className="col-span-11 lg:col-span-7">
               <CourseContentMedia
                 groupedData={groupedCourseData}
@@ -124,14 +141,16 @@ const MainCourseContent = ({ id }: { id: string }) => {
 
               <div className="hidden lg:block">
                 <ModuleBottomTabs
-                  groupedData={groupedCourseData}
-                  sectionOrder={sectionOrder}
+                 
+                  activeVideo={activeVideo}
+                  allContent={allContent}
+                  data={data}
                 />
               </div>
               {/* tabs section */}
             </div>
 
-            <div className="col-span-11 lg:col-span-4">
+            <div className="col-span-11 lg:col-span-4  ">
               <ModuleSidebar
                 groupedData={groupedCourseData}
                 sectionOrder={sectionOrder}

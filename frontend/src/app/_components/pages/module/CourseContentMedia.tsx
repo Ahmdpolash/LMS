@@ -37,12 +37,12 @@ const CourseContentMedia = ({
   return (
     <div className="w-full ">
       {allContent && allContent[activeVideo]?.videoUrl ? (
-        <div className=" mb-3 rounded-md overflow-hidden">
+        <div className=" mb-3 rounded-md overflow-hidden border">
           <ReactPlayer
             url={allContent[activeVideo]?.videoUrl}
             controls
             width="100%"
-            height="100%"
+            height="430px"
             className="rounded-md"
           />
         </div>
