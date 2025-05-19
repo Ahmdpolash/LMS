@@ -3,13 +3,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useState } from "react";
+import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 
 const ModuleBottomTabs = ({ activeVideo, allContent, data }: any) => {
   const { data: session } = useSession();
   const customUser = data || session?.user || null;
   const [activeTab, setActiveTab] = useState("overview");
-
   const [question, setQuestion] = useState("");
+  const [rating, setRating] = useState(0);
+
+  const isReviewExists = allContent?.reviews?.find(
+    (item: any): any => item?.user === data?._id
+  );
+
+  // console.log(allContent, 'isReviewExists');
 
   return (
     <div>
@@ -129,10 +136,9 @@ const ModuleBottomTabs = ({ activeVideo, allContent, data }: any) => {
           <div></div>
         </TabsContent>
 
-
         {/* reviews tab */}
         <TabsContent value="reviews">
-          <div className="flex w-full mt-3">
+          <div className="flex w-full mt-3 gap-3">
             <Image
               src={
                 customUser
@@ -144,17 +150,43 @@ const ModuleBottomTabs = ({ activeVideo, allContent, data }: any) => {
               alt="user"
               className="w-[50px] h-[50px] rounded-full object-cover"
             />
+            <div className="flex flex-col space-y-2 w-full">
+              <div className="">
+                <h5>Give a Rating</h5>
+                <div className="flex items-center">
+                  {[1, 2, 3, 4, 5].map((i) =>
+                    rating >= i ? (
+                      <AiFillStar
+                        key={i}
+                        className="mr-1 cursor-pointer"
+                        color="rgb(246,186,0)"
+                        size={25}
+                        onClick={() => setRating(i)}
+                      />
+                    ) : (
+                      <AiOutlineStar
+                        key={i}
+                        className="mr-1 cursor-pointer"
+                        color="rgb(246,186,0)"
+                        size={25}
+                        onClick={() => setRating(i)}
+                      />
+                    )
+                  )}
+                </div>
+              </div>
 
-            <textarea
-              name=""
-              value={question}
-              onChange={(e: any) => setQuestion(e.target.value)}
-              id=""
-              cols={15}
-              rows={4}
-              placeholder="Write your question..."
-              className="outline-none bg-transparent ml-3 border border-[#ffffff57] lg:w-full p-2 rounded w-[90%] lg:text-[18px] font-Poppins"
-            ></textarea>
+              <textarea
+                name=""
+                value={question}
+                onChange={(e: any) => setQuestion(e.target.value)}
+                id=""
+                cols={15}
+                rows={4}
+                placeholder="Write your review..."
+                className="outline-none bg-transparent mt-2 border border-[#ffffff57] lg:w-full p-2 rounded w-[90%] lg:text-[18px] font-Poppins"
+              ></textarea>
+            </div>
           </div>
           <div className="w-full flex justify-end cursor-pointer">
             <div

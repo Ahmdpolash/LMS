@@ -44,7 +44,6 @@ const MainCourseContent = ({ id, data }: { id: string; data: any }) => {
     }
   }, [allContent]);
 
-  console.log(groupedCourseData);
 
   // button handler
   const goToPreviousVideo = () => {
