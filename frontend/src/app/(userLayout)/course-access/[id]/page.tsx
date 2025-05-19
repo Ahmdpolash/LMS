@@ -10,6 +10,9 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
+
+// disbale console/ right click feature 
+
 const CourseAccessPage = ({ params }: Props) => {
   const { id } = React.use(params);
 

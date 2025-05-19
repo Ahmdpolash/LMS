@@ -34,7 +34,6 @@ const CourseContentMedia = ({
   activeVideo,
   setActiveVideo,
 }: TProps) => {
-  console.log(activeVideo, "activeVideo");
   return (
     <div className="w-full ">
       {allContent && allContent[activeVideo]?.videoUrl ? (

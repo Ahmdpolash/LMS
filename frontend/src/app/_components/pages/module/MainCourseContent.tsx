@@ -8,6 +8,7 @@ import { Bookmark, BookmarkCheck, FileSliders, Notebook } from "lucide-react";
 import { toast } from "sonner";
 import ModuleBottomTabs from "./ModuleBottomTabs";
 import ModuleSidebar from "./ModuleSidebar";
+import Loading from "@/app/(userLayout)/course-access/[id]/loading";
 
 const MainCourseContent = ({ id }: { id: string }) => {
   const { data: courseContent, isLoading } = useGetCourseContentQuery(id);
@@ -35,6 +36,8 @@ const MainCourseContent = ({ id }: { id: string }) => {
     }
   }, [allContent]);
 
+  console.log(groupedCourseData);
+
   // button handler
   const goToPreviousVideo = () => {
     if (activeVideo > 0) {
@@ -61,8 +64,9 @@ const MainCourseContent = ({ id }: { id: string }) => {
   return (
     <Container>
       {isLoading ? (
-        <CustomLoading />
+        <Loading />
       ) : (
+        // <CustomLoading />
         <>
           <div className="pb-3 mt-4 lg:mt-6 border-b w-full border-gray-700 flex justify-between items-center ">
             <h3 className="text-[21px]  bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
@@ -86,8 +90,8 @@ const MainCourseContent = ({ id }: { id: string }) => {
               )}
             </div>
           </div>
-          <div className=" grid grid-cols-10 gap-4 py-5 ">
-            <div className="col-span-10 lg:col-span-7">
+          <div className=" grid grid-cols-11 gap-4 py-5 ">
+            <div className="col-span-11 lg:col-span-7">
               <CourseContentMedia
                 groupedData={groupedCourseData}
                 sectionOrder={sectionOrder}
@@ -118,11 +122,16 @@ const MainCourseContent = ({ id }: { id: string }) => {
                 </div>
               </div>
 
+              <div className="hidden lg:block">
+                <ModuleBottomTabs
+                  groupedData={groupedCourseData}
+                  sectionOrder={sectionOrder}
+                />
+              </div>
               {/* tabs section */}
-              <ModuleBottomTabs />
             </div>
 
-            <div className="col-span-10 lg:col-span-3">
+            <div className="col-span-11 lg:col-span-4">
               <ModuleSidebar
                 groupedData={groupedCourseData}
                 sectionOrder={sectionOrder}
@@ -130,7 +139,6 @@ const MainCourseContent = ({ id }: { id: string }) => {
                 activeVideo={activeVideo}
                 setActiveVideo={setActiveVideo}
               />
-              
             </div>
           </div>
         </>
