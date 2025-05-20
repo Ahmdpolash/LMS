@@ -98,7 +98,13 @@ const getCourseContentByUser = async (courseId: string, courseList: any) => {
   }
 
   // if exists then fetch from Course
-  const course = await Course.findById(courseId);
+  const course = await Course.findById(courseId).populate({
+    path: "courseData",
+    populate: {
+      path: "questions.user",
+      select: "name avatar.url",
+    },
+  });
   const content = course?.courseData;
 
   return content;
@@ -159,7 +165,7 @@ const addQuestion = async (user: any, payload: IQuestionData) => {
   }
 
   const newQuestion: any = {
-    userId: user?._id,
+    user: user?._id,
     question: payload.question,
     questionReplies: [],
   };

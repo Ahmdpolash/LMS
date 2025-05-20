@@ -19,6 +19,7 @@ export const courseApi = baseApi.injectEndpoints({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: [tagTypes.course],
     }),
 
     deleteCourse: builder.mutation({
@@ -45,6 +46,18 @@ export const courseApi = baseApi.injectEndpoints({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: (result, error, id) => [{ type: tagTypes.course, id }],
+    }),
+    addQuestion: builder.mutation({
+      query: (data) => ({
+        url: "/course/add-question",
+        method: "PUT",
+        body: data,
+        credentials: "include",
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: tagTypes.course, id: arg.courseId },
+      ],
     }),
   }),
 });
@@ -55,4 +68,5 @@ export const {
   useDeleteCourseMutation,
   useGetSingleCourseQuery,
   useGetCourseContentQuery,
+  useAddQuestionMutation,
 } = courseApi;

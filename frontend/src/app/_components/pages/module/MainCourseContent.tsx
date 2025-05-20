@@ -31,7 +31,7 @@ const MainCourseContent = ({ id, data }: { id: string; data: any }) => {
     if (allContent) {
       const sections: { [key: string]: any[] } = {};
       const order: string[] = [];
-      allContent.forEach((video: any) => {
+      allContent?.forEach((video: any) => {
         if (sections[video.videoSection]) {
           sections[video.videoSection].push(video);
         } else {
@@ -43,7 +43,6 @@ const MainCourseContent = ({ id, data }: { id: string; data: any }) => {
       setSectionOrder(order);
     }
   }, [allContent]);
-
 
   // button handler
   const goToPreviousVideo = () => {
@@ -73,7 +72,6 @@ const MainCourseContent = ({ id, data }: { id: string; data: any }) => {
       {isLoading ? (
         <Loading />
       ) : (
-        // <CustomLoading />
         <>
           <div className="pb-3 mt-4 lg:mt-6 border-b w-full border-gray-400 dark:border-gray-700 flex justify-between items-center ">
             <div className="flex items-center gap-2">
@@ -140,7 +138,7 @@ const MainCourseContent = ({ id, data }: { id: string; data: any }) => {
 
               <div className="hidden lg:block">
                 <ModuleBottomTabs
-                 
+                  id={id}
                   activeVideo={activeVideo}
                   allContent={allContent}
                   data={data}

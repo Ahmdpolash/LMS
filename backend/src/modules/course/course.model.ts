@@ -1,5 +1,6 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
 import { IUser } from "../user/user.interface";
+import { IQuestionData } from "./course.interface";
 
 interface IComment extends Document {
   user: IUser;
@@ -52,34 +53,43 @@ interface ICourse extends Document {
   isDeleted?: boolean;
 }
 
-const reviewSchema = new Schema<IReview>({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+const reviewSchema = new Schema<IReview>(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    rating: {
+      type: Number,
+      default: 0,
+    },
+    comment: String,
+    commentReplies: [Object],
   },
-  rating: {
-    type: Number,
-    default: 0,
-  },
-  comment: String,
-  commentReplies: [Object],
-});
+  {
+    timestamps: true,
+  }
+);
 
 const linkSchema = new Schema<ILink>({
   title: String,
   url: String,
 });
 
-const commentSchema = new Schema<IComment>({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+const commentSchema = new Schema<IComment>(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+    },
+    question: String,
+    questionReplies: [Object],
   },
-  question: String,
-  questionReplies: [Object],
-});
+  {
+    timestamps: true,
+  }
+);
 
 const courseDataSchema = new Schema<ICourseData>({
   videoUrl: String,
