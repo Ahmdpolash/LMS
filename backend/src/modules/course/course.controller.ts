@@ -78,7 +78,6 @@ const editCourse = catchAsync(async (req, res) => {
 // ADD QUESTION IN COURSE
 const addQuestion = catchAsync(async (req, res) => {
   const user = req?.user;
-
   const result = await CourseServices.addQuestion(user, req.body);
 
   res.status(200).json({

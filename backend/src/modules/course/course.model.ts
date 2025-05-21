@@ -10,7 +10,7 @@ interface IComment extends Document {
 }
 
 interface IReview extends Document {
-  user: object;
+  user: IUser;
   rating: number;
   comment: string;
   commentReplies?: IComment[];
@@ -63,7 +63,7 @@ const reviewSchema = new Schema<IReview>(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Users",
       required: true,
     },
     rating: {

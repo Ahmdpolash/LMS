@@ -64,26 +64,53 @@ const getAllCourse = async () => {
 };
 
 // GET SINGLE COURSE
+// const getSingleCourse = async (id: string) => {
+//   // check first in redis if course is already available
+//   const isCourseExists = await redis.get(id);
+
+//   if (isCourseExists) {
+//     const result = JSON.parse(isCourseExists);
+//     return result;
+//   }
+
+//   // find from mongodb
+//   const result = await Course.findById(id)
+//     .select(
+//       "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links "
+//     )
+//     .populate({
+//       path: "reviews.user",
+//       select: "name avatar.url role",
+//     });
+
+//   console.log("result", result);
+//   // set the data on redis now
+//   await redis.set(id, JSON.stringify(result), "EX", 604800);
+
+//   return result;
+// };
+
 const getSingleCourse = async (id: string) => {
-  // check first in redis if course is already available
-  const isCourseExists = await redis.get(id);
+  try {
+    const result = await Course.findById(id)
+      .select(
+        "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+      )
+      .populate({
+        path: "reviews.user",
+        select: "name avatar.url role",
+      });
 
-  if (isCourseExists) {
-    const result = JSON.parse(isCourseExists);
+    if (!result) {
+      throw new Error("Course not found");
+    }
+
+    await redis.set(id, JSON.stringify(result), "EX", 604800);
     return result;
+  } catch (error) {
+    console.error("Error fetching course:", error);
+    throw error;
   }
-
-  // find from mongodb
-  const result = await Course.findById(id)
-    .select(
-      "-courseData.videoUrl -courseData.suggestion  -courseData.questions -courseData.links "
-    )
-    .lean();
-
-  // set the data on redis now
-  await redis.set(id, JSON.stringify(result), "EX", 604800);
-
-  return result;
 };
 
 // GET COURSE CONTENT-- 0NLY FOR VALID USER
@@ -101,10 +128,11 @@ const getCourseContentByUser = async (courseId: string, courseList: any) => {
   const course = await Course.findById(courseId).populate({
     path: "courseData",
     populate: {
-      path: "questions.user questions.questionReplies.userId",
-      select: "name avatar.url",
+      path: "questions.user questions.questionReplies.userId ",
+      select: "name avatar.url role",
     },
   });
+
   const content = course?.courseData;
 
   return content;
@@ -269,7 +297,7 @@ const addReviews = async (req: Request, payload: IReview) => {
 
   // find the course of the user
   const isCourseExists = userCourseList?.some(
-    (course: any) => course._id.toString() === courseId.toString()
+    (course: any) => course.courseId.toString() === courseId.toString()
   );
 
   if (!isCourseExists) {
@@ -277,6 +305,14 @@ const addReviews = async (req: Request, payload: IReview) => {
   }
 
   const course = await Course.findById(courseId);
+
+  const existingReview = course?.reviews.find(
+    (rev: any) => rev.user.toString() === req.user?._id
+  );
+
+  if (existingReview) {
+    throw new AppError("You have already reviewed on this course", 400);
+  }
 
   const review: any = {
     user: req.user._id,
@@ -298,13 +334,15 @@ const addReviews = async (req: Request, payload: IReview) => {
 
   await course?.save();
 
+  await redis.del(courseId);
+  // redis.del("courseId");
+  // redis.set(courseId, JSON.stringify(course));
+
   await Notification.create({
     userId: req.user._id,
     title: "New Review Received",
     message: `${req.user?.name} has given a review in ${course?.name}`,
   });
-
-  //todo: create notification
 
   return course;
 };

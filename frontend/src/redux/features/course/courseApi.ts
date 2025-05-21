@@ -73,9 +73,10 @@ export const courseApi = baseApi.injectEndpoints({
     }),
 
     addReview: builder.mutation({
-      query: (id) => ({
-        url: `/add-review/${id}`,
+      query: ({ courseId, ...body }) => ({
+        url: `/course/add-review/${courseId}`,
         method: "PUT",
+        body: body,
         credentials: "include",
       }),
       invalidatesTags: (result, error, arg) => [

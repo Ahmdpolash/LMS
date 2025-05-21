@@ -2,13 +2,12 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   useAddQuestionMutation,
+  useAddReviewMutation,
+  useGetSingleCourseQuery,
   useReplyQuestionMutation,
 } from "@/redux/features/course/courseApi";
-import {
-  MessageCircleMore,
-  MessageSquareMore,
-  VerifiedIcon,
-} from "lucide-react";
+import { useGetAllUsersQuery } from "@/redux/features/user/userApi";
+import { MessageSquareMore, VerifiedIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -19,6 +18,11 @@ import { format } from "timeago.js";
 const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
   const [addQuestion, { isLoading }] = useAddQuestionMutation();
   const [addReply, { isLoading: replyLoading }] = useReplyQuestionMutation();
+  const [addReview, { isLoading: reviewLoading, error }] =
+    useAddReviewMutation();
+  const { data: courseData,refetch } = useGetSingleCourseQuery(id);
+  const course = courseData?.data;
+  console.log(course, "course");
   const { data: session } = useSession();
   const customUser = data || session?.user || null;
   const [activeTab, setActiveTab] = useState("overview");
@@ -28,10 +32,6 @@ const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
   // question & reply state
   const [answer, setAnswer] = useState("");
   const [questionId, setQuestionId] = useState("");
-
-  const isReviewExists = allContent?.reviews?.find(
-    (item: any): any => item?.user === data?._id
-  );
 
   // question submit
   const handleQuestionSubmit = async () => {
@@ -46,7 +46,6 @@ const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
         courseId: id,
         contentId: allContent[activeVideo]?._id, // activeVideo?._id,
       });
-      console.log(res);
 
       if (res?.data?.success) {
         setQuestion("");
@@ -80,6 +79,37 @@ const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
     } catch (error) {
       toast.error("Something went wrong! Please try again or contact support.");
       console.log(error);
+    }
+  };
+
+  // add review
+  const handleReviewSubmit = async () => {
+    if (review.length === 0) {
+      toast.error("Review Cannot be Empty");
+      return;
+    }
+
+    try {
+      const res = await addReview({
+        comment: review,
+        courseId: id,
+        rating,
+      });
+
+      if (res?.data?.success) {
+        refetch();
+        setReview("");
+        toast.success("Review added successfully!");
+      } else {
+        if (error) {
+          if ("data" in error) {
+            const errorMessage = error as any;
+            toast.error(errorMessage.data.message);
+          }
+        }
+      }
+    } catch (error) {
+      toast.error("Something went wrong! Please try again or contact support.");
     }
   };
 
@@ -270,24 +300,65 @@ const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
           </div>
           <div className="w-full flex justify-end cursor-pointer">
             <div
-              className="!w-[120px] rounded-full flex justify-center items-center bg-[#3084FF] !h-[40px] text-[18px] mt-5"
+              className={`!w-[120px] rounded-full flex justify-center items-center bg-[#3084FF] !h-[40px] text-[18px] mt-5 ${
+                reviewLoading ? "cursor-not-allowed" : "cursor-pointer"
+              }`}
               // onClick={isLoading ? null: handleCommentSubmit)
+              onClick={reviewLoading ? () => {} : handleReviewSubmit}
             >
               Submit
             </div>
           </div>
 
-          {/* question and reply section */}
-          <div></div>
+          <br />
 
-          {/* reviews tab */}
+          <div className="w-full h-[1px] bg-[#ffffff3b]"></div>
+          <div className="w-full">
+            {(course?.reviews && [...course?.reviews].reverse())?.map(
+              (item: any, index: number) => (
+                <div key={index} className="w-full my-5">
+                  <div className="w-full flex">
+                    <div>
+                      {item?.user?.avatar ? (
+                        <Image
+                          src={item?.user?.avatar?.url || "/avatar.jpeg"}
+                          height={50}
+                          width={50}
+                          alt="user"
+                          className="w-[50px] h-[50px] rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full mr-3 bg-gray-300 dark:bg-gray-600 flex items-center justify-center text-gray-700 dark:text-gray-300">
+                          {item?.user?.name
+                            ? item?.user?.name.charAt(0).toUpperCase()
+                            : "R"}
+                        </div>
+                      )}
+                    </div>
+                    <div className="ml-2">
+                      <h1 className="text-[18px]">{item?.user?.name}</h1>
+                      {/* <Ratings rating={item.rating} /> */}
+                      <span className="ml-auto text-yellow-500">
+                        {"⭐".repeat(item?.rating)}
+                      </span>
+                      <p>{item?.comment}</p>
+                      <small className="text-[#ffffff83]">
+                        {format(item?.createdAt)}.
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              )
+            )}
+          </div>
+
+          {/* review   and reply section */}
+          <div></div>
         </TabsContent>
       </Tabs>
     </div>
   );
 };
-
-export default ModuleBottomTabs;
 
 const CommentReply = ({
   activeVideo,
@@ -326,7 +397,7 @@ const CommentItem = ({
   replyLoading,
 }: any) => {
   const [isReplyActive, setIsReplyActive] = useState(false);
-  console.log(item, "item");
+
   return (
     <>
       <div className="my-4">
@@ -391,8 +462,10 @@ const CommentItem = ({
                 </div>
                 <div className="pl-2">
                   <div className="flex items-center gap-2">
-                    <h5 className="text-[20px]">{item?.userId?.name}</h5>{" "}
-                    <VerifiedIcon className="text-[#50c750] text-[16px]" />
+                    <h5 className="text-[17px]">{item?.userId?.name}</h5>{" "}
+                    {item?.userId?.role === "admin" && (
+                      <VerifiedIcon size={18} className="text-[#50c750] " />
+                    )}
                   </div>
                   <p>{item?.answer}</p>
                   <small className="text-[#ffffff83]">
@@ -412,9 +485,11 @@ const CommentItem = ({
               />
               <button
                 type="submit"
-                className={`absolute right-0 bottom-1 cursor-pointer ${replyLoading ? 'cursor-no-drop' : ''}`}
+                className={`absolute right-0 bottom-1 cursor-pointer ${
+                  replyLoading && "cursor-no-drop"
+                }`}
                 onClick={handleAnswerSubmit}
-                disabled={answer === ""}
+                disabled={answer === "" || replyLoading}
               >
                 {replyLoading ? "Submitting..." : "Submit"}
               </button>
@@ -426,3 +501,5 @@ const CommentItem = ({
     </>
   );
 };
+
+export default ModuleBottomTabs;
