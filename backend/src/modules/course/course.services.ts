@@ -101,7 +101,7 @@ const getCourseContentByUser = async (courseId: string, courseList: any) => {
   const course = await Course.findById(courseId).populate({
     path: "courseData",
     populate: {
-      path: "questions.user",
+      path: "questions.user questions.questionReplies.userId",
       select: "name avatar.url",
     },
   });
@@ -224,7 +224,10 @@ const replieQuestionAnswer = async (
 
   // find question owner by id from user
   const questionOwner = await User.findById(question.user);
-  console.log("owner", questionOwner);
+
+  if (!questionOwner) {
+    throw new AppError("User not found", 404);
+  }
 
   // === Notification / Email Logic ===
   if (user?._id === question?.user?._id) {

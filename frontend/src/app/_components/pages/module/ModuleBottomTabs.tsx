@@ -4,7 +4,11 @@ import {
   useAddQuestionMutation,
   useReplyQuestionMutation,
 } from "@/redux/features/course/courseApi";
-import { MessageCircleMore, MessageSquareMore, VerifiedIcon } from "lucide-react";
+import {
+  MessageCircleMore,
+  MessageSquareMore,
+  VerifiedIcon,
+} from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -205,6 +209,7 @@ const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
               setAnswer={setAnswer}
               setQuestionId={setQuestionId}
               handleAnswerSubmit={handleAnswerSubmit}
+              replyLoading={replyLoading}
             />
           </div>
         </TabsContent>
@@ -291,6 +296,7 @@ const CommentReply = ({
   setAnswer,
   setQuestionId,
   handleAnswerSubmit,
+  replyLoading,
 }: any) => {
   return (
     <>
@@ -300,11 +306,10 @@ const CommentReply = ({
             key={index}
             item={item}
             answer={answer}
+            setAnswer={setAnswer}
             setQuestionId={setQuestionId}
-            index={index}
             handleAnswerSubmit={handleAnswerSubmit}
-            activeVideo={activeVideo}
-            allContent={allContent}
+            replyLoading={replyLoading}
           />
         ))}
       </div>
@@ -318,11 +323,10 @@ const CommentItem = ({
   setAnswer,
   setQuestionId,
   handleAnswerSubmit,
-  activeVideo,
-  allContent,
+  replyLoading,
 }: any) => {
   const [isReplyActive, setIsReplyActive] = useState(false);
-
+  console.log(item, "item");
   return (
     <>
       <div className="my-4">
@@ -371,11 +375,14 @@ const CommentItem = ({
         </div>
         {isReplyActive && (
           <>
-            {item.questionReplies.map((item: any) => (
-              <div className="w-full flex 800px:ml-16 my-5 text-black dark:text-white">
+            {item?.questionReplies?.map((item: any, idx: number) => (
+              <div
+                key={idx}
+                className="w-full flex lg:ml-16 my-5 text-black dark:text-white"
+              >
                 <div>
                   <Image
-                    src={item?.user?.avatar?.url || "/avatar.jpeg"}
+                    src={item?.userId?.avatar?.url || "/avatar.jpeg"}
                     width={50}
                     height={50}
                     alt=""
@@ -384,8 +391,8 @@ const CommentItem = ({
                 </div>
                 <div className="pl-2">
                   <div className="flex items-center gap-2">
-                    <h5 className="text-[20px]">{item?.user?.name}</h5>{" "}
-                    <VerifiedIcon className="text-[#50c750] text-[20px]" />
+                    <h5 className="text-[20px]">{item?.userId?.name}</h5>{" "}
+                    <VerifiedIcon className="text-[#50c750] text-[16px]" />
                   </div>
                   <p>{item?.answer}</p>
                   <small className="text-[#ffffff83]">
@@ -405,11 +412,11 @@ const CommentItem = ({
               />
               <button
                 type="submit"
-                className="absolute right-0 bottom-1 cursor-pointer"
+                className={`absolute right-0 bottom-1 cursor-pointer ${replyLoading ? 'cursor-no-drop' : ''}`}
                 onClick={handleAnswerSubmit}
                 disabled={answer === ""}
               >
-                Submit
+                {replyLoading ? "Submitting..." : "Submit"}
               </button>
             </div>
             <br />

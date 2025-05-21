@@ -53,6 +53,12 @@ interface ICourse extends Document {
   isDeleted?: boolean;
 }
 
+// Update your IComment interface to reflect this
+interface IQuestionReply extends Document {
+  userId: IUser; 
+  answer: string;
+}
+
 const reviewSchema = new Schema<IReview>(
   {
     user: {
@@ -77,6 +83,22 @@ const linkSchema = new Schema<ILink>({
   url: String,
 });
 
+const questionReplySchema = new Schema<IQuestionReply>(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+      required: true,
+    },
+    answer: {
+      type: String,
+      required: true,
+    },
+    
+  },
+  { timestamps: true }
+); 
+
 const commentSchema = new Schema<IComment>(
   {
     user: {
@@ -84,7 +106,7 @@ const commentSchema = new Schema<IComment>(
       ref: "Users",
     },
     question: String,
-    questionReplies: [Object],
+    questionReplies: [questionReplySchema],
   },
   {
     timestamps: true,
