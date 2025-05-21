@@ -59,6 +59,29 @@ export const courseApi = baseApi.injectEndpoints({
         { type: tagTypes.course, id: arg.courseId },
       ],
     }),
+
+    replyQuestion: builder.mutation({
+      query: (data) => ({
+        url: "/course/reply-question",
+        method: "PUT",
+        body: data,
+        credentials: "include",
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: tagTypes.course, id: arg.courseId },
+      ],
+    }),
+
+    addReview: builder.mutation({
+      query: (id) => ({
+        url: `/add-review/${id}`,
+        method: "PUT",
+        credentials: "include",
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: tagTypes.course, id: arg.courseId },
+      ],
+    }),
   }),
 });
 
@@ -69,4 +92,6 @@ export const {
   useGetSingleCourseQuery,
   useGetCourseContentQuery,
   useAddQuestionMutation,
+  useReplyQuestionMutation,
+  useAddReviewMutation,
 } = courseApi;

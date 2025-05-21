@@ -18,8 +18,8 @@ const NotificationSchema = new Schema<TNotification>(
     },
     userId: {
       type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
+      ref: "Users",
+      // required: true,
       // unique: true,
     },
   },

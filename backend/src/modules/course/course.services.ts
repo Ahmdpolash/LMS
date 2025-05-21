@@ -295,10 +295,11 @@ const addReviews = async (req: Request, payload: IReview) => {
 
   await course?.save();
 
-  const notification = {
+  await Notification.create({
+    userId: req.user._id,
     title: "New Review Received",
     message: `${req.user?.name} has given a review in ${course?.name}`,
-  };
+  });
 
   //todo: create notification
 

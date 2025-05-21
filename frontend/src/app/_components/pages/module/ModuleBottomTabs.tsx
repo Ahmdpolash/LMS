@@ -1,6 +1,10 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useAddQuestionMutation } from "@/redux/features/course/courseApi";
+import {
+  useAddQuestionMutation,
+  useReplyQuestionMutation,
+} from "@/redux/features/course/courseApi";
+import { MessageCircleMore, MessageSquareMore, VerifiedIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -10,6 +14,7 @@ import { format } from "timeago.js";
 
 const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
   const [addQuestion, { isLoading }] = useAddQuestionMutation();
+  const [addReply, { isLoading: replyLoading }] = useReplyQuestionMutation();
   const { data: session } = useSession();
   const customUser = data || session?.user || null;
   const [activeTab, setActiveTab] = useState("overview");
@@ -18,14 +23,11 @@ const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
   const [rating, setRating] = useState(1);
   // question & reply state
   const [answer, setAnswer] = useState("");
-  const [answerId, setAnswerId] = useState("");
+  const [questionId, setQuestionId] = useState("");
 
   const isReviewExists = allContent?.reviews?.find(
     (item: any): any => item?.user === data?._id
   );
-
-  console.log("data:", data);
-  console.log("data?.avatar?.url:", data?.avatar?.url);
 
   // question submit
   const handleQuestionSubmit = async () => {
@@ -51,8 +53,30 @@ const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
     }
   };
 
-  const handleAnswerSubmit = () => {
-    console.log(" handleAnswerSubmit");
+  // reply question
+
+  const handleAnswerSubmit = async () => {
+    if (answer.length === 0) {
+      toast.error("Answer Cannot be Empty");
+      return;
+    }
+
+    try {
+      const res = await addReply({
+        answer,
+        questionId: questionId,
+        courseId: id,
+        contentId: allContent[activeVideo]?._id,
+      });
+
+      if (res?.data?.success) {
+        setAnswer("");
+        toast.success("Answer added successfully!");
+      }
+    } catch (error) {
+      toast.error("Something went wrong! Please try again or contact support.");
+      console.log(error);
+    }
   };
 
   return (
@@ -159,7 +183,7 @@ const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
               cols={15}
               rows={4}
               placeholder="Write your question..."
-              className="outline-none bg-transparent ml-3 border border-[#ffffff57] lg:w-full p-2 rounded w-[90%] lg:text-[18px] font-Poppins"
+              className="outline-none bg-transparent ml-3 border  border-gray-500 dark:border-[#ffffff57] lg:w-full p-2 rounded w-[90%] lg:text-[18px] font-Poppins"
             ></textarea>
           </div>
           <div className="w-full flex justify-end cursor-pointer">
@@ -179,7 +203,7 @@ const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
               allContent={allContent}
               answer={answer}
               setAnswer={setAnswer}
-              setAnswerId={setAnswerId}
+              setQuestionId={setQuestionId}
               handleAnswerSubmit={handleAnswerSubmit}
             />
           </div>
@@ -235,7 +259,7 @@ const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
                 cols={15}
                 rows={4}
                 placeholder="Write your review..."
-                className="outline-none bg-transparent mt-2 border border-[#ffffff57] lg:w-full p-2 rounded w-[90%] lg:text-[18px] font-Poppins"
+                className="outline-none bg-transparent mt-2 border border-gray-500 dark:border-[#ffffff57] lg:w-full p-2 rounded w-[90%] lg:text-[18px] font-Poppins"
               ></textarea>
             </div>
           </div>
@@ -265,7 +289,7 @@ const CommentReply = ({
   allContent,
   answer,
   setAnswer,
-  setAnswerId,
+  setQuestionId,
   handleAnswerSubmit,
 }: any) => {
   return (
@@ -276,7 +300,7 @@ const CommentReply = ({
             key={index}
             item={item}
             answer={answer}
-            setAnswer={setAnswer}
+            setQuestionId={setQuestionId}
             index={index}
             handleAnswerSubmit={handleAnswerSubmit}
             activeVideo={activeVideo}
@@ -292,11 +316,13 @@ const CommentItem = ({
   item,
   answer,
   setAnswer,
-  index,
+  setQuestionId,
   handleAnswerSubmit,
   activeVideo,
   allContent,
 }: any) => {
+  const [isReplyActive, setIsReplyActive] = useState(false);
+
   return (
     <>
       <div className="my-4">
@@ -310,12 +336,85 @@ const CommentItem = ({
           />
           <div className="pl-3">
             <h5 className="text-[18px]">{item?.user?.name}</h5>
-            <p className="text-[16px]">{item?.question}</p>
-            <small className="text-[#ffffff83]">
+            <p className="text-[16px] text-black dark:text-slate-300">
+              {item?.question}
+            </p>
+            <small className="text-black dark:text-[#ffffff83]">
               {format(item?.createdAt)}{" "}
             </small>
           </div>
         </div>
+
+        <div className="w-full flex items-center">
+          <span
+            className="lg:pl-16 text-black dark:text-[#ffffff83] cursor-pointer mr-2"
+            onClick={() => {
+              setIsReplyActive(!isReplyActive);
+              setQuestionId(item?._id);
+            }}
+          >
+            {!isReplyActive
+              ? item.questionReplies.length != 0
+                ? "All Replies"
+                : "Add Reply"
+              : "Hide Replies"}
+          </span>
+          <div className="flex items-center">
+            <MessageSquareMore
+              size={18}
+              className="cursor-pointer text-gray-500 dark:text-gray-400"
+            />
+            <span className="pl-1 text-black dark:text-[#ffffff83] cursor-pointer ">
+              {item.questionReplies.length}
+            </span>
+          </div>
+        </div>
+        {isReplyActive && (
+          <>
+            {item.questionReplies.map((item: any) => (
+              <div className="w-full flex 800px:ml-16 my-5 text-black dark:text-white">
+                <div>
+                  <Image
+                    src={item?.user?.avatar?.url || "/avatar.jpeg"}
+                    width={50}
+                    height={50}
+                    alt=""
+                    className="w-[50px] h-[50px] rounded-full object-cover"
+                  />
+                </div>
+                <div className="pl-2">
+                  <div className="flex items-center gap-2">
+                    <h5 className="text-[20px]">{item?.user?.name}</h5>{" "}
+                    <VerifiedIcon className="text-[#50c750] text-[20px]" />
+                  </div>
+                  <p>{item?.answer}</p>
+                  <small className="text-[#ffffff83]">
+                    {format(item?.createdAt)}.
+                  </small>
+                </div>
+              </div>
+            ))}
+
+            <div className="w-full flex relative">
+              <input
+                type="text"
+                placeholder="Enter your answer..."
+                value={answer}
+                onChange={(e: any) => setAnswer(e.target.value)}
+                className="block lg:ml-12 mt-2 outline-none bg-transparent border-b border-gray-400 dark:text-white text-black  dark:border-[#fff] p-[5px] w-[95%]"
+              />
+              <button
+                type="submit"
+                className="absolute right-0 bottom-1 cursor-pointer"
+                onClick={handleAnswerSubmit}
+                disabled={answer === ""}
+              >
+                Submit
+              </button>
+            </div>
+            <br />
+          </>
+        )}
       </div>
     </>
   );
