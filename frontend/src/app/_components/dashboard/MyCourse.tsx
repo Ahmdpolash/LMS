@@ -23,57 +23,15 @@ type Course = {
 export default function MyCourses() {
   const { data } = useCurrentUserQuery({});
   const courseInfo = data?.data;
-  console.log(courseInfo);
 
-  // Sample course data
-  const [courses, setCourses] = useState<Course[]>([
-    {
-      id: "1",
-      title: "Complete Web Development Course",
-      instructor: "John Smith",
-      thumbnail: "/placeholder.svg?height=200&width=320",
-      progress: 75,
-      totalLessons: 48,
-      completedLessons: 36,
-      category: "Web Development",
-      purchaseDate: "March 15, 2025",
-    },
-    {
-      id: "2",
-      title: "Advanced JavaScript Masterclass",
-      instructor: "Sarah Johnson",
-      thumbnail: "/placeholder.svg?height=200&width=320",
-      progress: 100,
-      totalLessons: 36,
-      completedLessons: 11,
-      category: "JavaScript",
-      purchaseDate: "April 2, 2025",
-    },
-  ]);
+
 
   const [filter, setFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Filter courses based on selected filter and search query
-  const filteredCourses = courses.filter((course) => {
-    const matchesFilter =
-      filter === "all" ||
-      (filter === "completed" && course.progress === 100) ||
-      (filter === "in-progress" &&
-        course.progress < 100 &&
-        course.progress > 0) ||
-      (filter === "not-started" && course.progress === 0);
-
-    const matchesSearch =
-      course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      course.instructor.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      course.category.toLowerCase().includes(searchQuery.toLowerCase());
-
-    return matchesFilter && matchesSearch;
-  });
 
   return (
-    <div className="  bg-gray-300/50 dark:bg-[#151d33] shadow-md dark:shadow-xl border border-slate-400 dark:border-slate-700 rounded-lg text-white p-4 md:p-6  mx-auto">
+    <div className="  bg-gray-300/50 dark:bg-[#151d33] shadow-md dark:shadow-xl border border-slate-400 dark:border-slate-700 rounded-lg text-white p-4 md:p-6  mx-auto min-h-[calc(100vh-260px)]">
       <div className="space-y-6">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -113,7 +71,7 @@ export default function MyCourses() {
 
         {/* Courses Grid */}
         {courseInfo?.courses?.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
             {courseInfo.courses?.map((course: any, idx: number) => (
               <div
                 key={idx}
@@ -141,7 +99,7 @@ export default function MyCourses() {
 
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span>0 lessons</span>
+                     
                       <span>50% complete</span>
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-1.5">

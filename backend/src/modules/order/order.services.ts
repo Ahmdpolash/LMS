@@ -133,7 +133,7 @@ const createOrder = async (userInfo: any, payload: TOrder) => {
     }
 
     const isCourseExists = user?.courses.some(
-      (course: any) => course._id.toString() === payload.courseId
+      (course: any) => course?.courseId.toString() === payload.courseId
     );
     if (isCourseExists) {
       throw new AppError(

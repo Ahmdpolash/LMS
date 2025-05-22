@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+
 import {
   Award,
   Calendar,
@@ -40,8 +40,7 @@ import { renderStars } from "./RenderStar";
 import { motion } from "framer-motion";
 import CustomLoading from "../../CustomLoading";
 import ReactPlayer from "react-player";
-import { useAppSelector } from "@/redux/hooks";
-import { IoMdCloseCircleOutline } from "react-icons/io";
+
 import {
   useCreateStripePaymentIntentMutation,
   useGetStripePublishableKeyQuery,
@@ -59,6 +58,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { toast } from "sonner";
 
 export default function CourseDetails({ slug }: { slug: string }) {
   const { data, isLoading } = useGetSingleCourseQuery(slug);
@@ -77,7 +77,7 @@ export default function CourseDetails({ slug }: { slug: string }) {
   const isPurchased =
     user &&
     user?.data?.courses?.find(
-      (item: any) => item?.courseId === courseInfo?._id?.toString()
+      (item: any) => item?.courseId?._id === courseInfo?._id?.toString()
     );
 
   // payment

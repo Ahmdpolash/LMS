@@ -1,13 +1,16 @@
 {
   "name": "lms",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/server.js",
+  "type": "commonjs",
   "scripts": {
     "dev": "nodemon ./dist/server.js",
     "watch": "tsc --w",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false"
   },
-  "keywords": [],
+  "keywords": ["lms", "learning-management-system", "lms-website"],
   "author": "Polash Ahmed",
   "license": "ISC",
   "description": "",

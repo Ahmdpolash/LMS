@@ -12,7 +12,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
- 
+
+  // experimental: {
+  //   reactRoot: true,
+  //   suspressHydrationWarning: true,
+  // },
 };
 
 export default nextConfig;

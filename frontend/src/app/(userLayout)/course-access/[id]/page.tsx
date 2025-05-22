@@ -25,7 +25,7 @@ const CourseAccessPage = ({ params }: Props) => {
 
     if (!isLoading && data?.data?.courses) {
       const isPurchased = data?.data?.courses?.find(
-        (item: any) => item.courseId === id
+        (item: any) => item.courseId?._id === id
       );
 
       if (!isPurchased) {

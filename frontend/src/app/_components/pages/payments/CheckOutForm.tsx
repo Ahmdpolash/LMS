@@ -18,32 +18,13 @@ type TProps = {
 const CheckOutForm = ({ setOpen, courseInfo }: TProps) => {
   const stripe = useStripe();
   const elements = useElements();
-  console.log(elements,'ee')
+  console.log(elements, "ee");
   const [message, setMessage] = useState<string | undefined>(undefined);
 
   const [createOrder, { data: orderData, error }] = useCreateOrderMutation();
   const [loadUser, setLoadUser] = useState(false);
   const {} = useCurrentUserQuery({ skip: loadUser ? false : true });
   const [isLoading, setIsLoading] = useState(false);
-
-  // const handleSubmit = async (e: any) => {
-  //   e.preventDefault();
-  //   if (!stripe || !elements) {
-  //     return;
-  //   }
-  //   setIsLoading(true);
-  //   const { error, paymentIntent } = await stripe.confirmPayment({
-  //     elements,
-  //     redirect: "if_required",
-  //   });
-  //   if (error) {
-  //     setMessage(error.message ?? "An unknown error occurred.");
-  //     setIsLoading(false);
-  //   } else if (paymentIntent && paymentIntent.status == "succeeded") {
-  //     setIsLoading(false);
-  //     createOrder({ courseId: courseInfo._id, payment_info: paymentIntent });
-  //   }
-  // };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -79,6 +60,9 @@ const CheckOutForm = ({ setOpen, courseInfo }: TProps) => {
           setIsLoading(false);
           redirect(`/course-access/${courseInfo._id}`);
         }
+      } else {
+        toast.error("Payment failed. Please try again.");
+        setIsLoading(false);
       }
     } catch (orderError: any) {
       // Handle errors from createOrder mutation

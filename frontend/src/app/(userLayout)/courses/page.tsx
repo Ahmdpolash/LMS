@@ -22,6 +22,8 @@ import { courses } from "@/constant";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import { motion } from "framer-motion";
 import { useGetAllCoursesQuery } from "@/redux/features/course/courseApi";
+import Link from "next/link";
+import CardSkeleton from "@/components/shared/CardSkeleton";
 interface Course {
   id: number;
   title: string;
@@ -352,128 +354,134 @@ export default function CoursesPage() {
             </div>
 
             {/* Course Grid */}
-            {allCourses?.length > 0 ? (
+
+            {isLoading ? (
+              <CardSkeleton />
+            ) : (
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5 }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-5 cursor-pointer"
               >
-                {allCourses?.map((course: any, idx: number) => (
-                  <motion.div
-                    key={idx}
-                    className="bg-white dark:bg-[#1a2342] rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-all duration-300 flex flex-col lg:h-[440px]"
-                  >
-                    {/* Course Image */}
-                    <div className="relative overflow-hidden">
-                      <BlurFade key={idx} delay={0.25 + 1 * 0.05} inView>
-                        <Image
-                          src={course?.thumbnail?.url}
-                          alt={course.name || "Course Image"}
-                          width={350}
-                          height={200}
-                          className="w-full h-48 object-cover transition-transform duration-500 hover:scale-105"
-                        />
-                      </BlurFade>
-                      <div className="absolute top-3 left-3">
-                        <Badge className="bg-[rgb(37,150,190)] text-white">
-                          {course?.category}
-                        </Badge>
+                {allCourses?.length > 0 ? (
+                  allCourses?.map((course: any, idx: number) => (
+                    <motion.div
+                      key={idx}
+                      className="bg-white dark:bg-[#1a2342] rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-all duration-300 flex flex-col lg:h-[440px]"
+                    >
+                      {/* Course Image */}
+                      <div className="relative overflow-hidden">
+                        <BlurFade key={idx} delay={0.25 + 1 * 0.05} inView>
+                          <Image
+                            src={course?.thumbnail?.url}
+                            alt={course.name || "Course Image"}
+                            width={350}
+                            height={200}
+                            className="w-full h-48 object-cover transition-transform duration-500 hover:scale-105"
+                          />
+                        </BlurFade>
+                        <div className="absolute top-3 left-3">
+                          <Badge className="bg-[rgb(37,150,190)] text-white">
+                            {course?.category}
+                          </Badge>
+                        </div>
+                        <div className="absolute top-3 right-3">
+                          <Badge className="bg-gray-900/80 text-white">
+                            {course?.level}
+                          </Badge>
+                        </div>
                       </div>
-                      <div className="absolute top-3 right-3">
-                        <Badge className="bg-gray-900/80 text-white">
-                          {course?.level}
-                        </Badge>
-                      </div>
-                    </div>
 
-                    {/* Course Content */}
-                    <div className="p-5 flex flex-col flex-1 justify-between">
-                      <h3 className="font-semibold text-lg text-gray-900 dark:text-white mb-2 line-clamp-2">
-                        {course?.name}
-                      </h3>
+                      {/* Course Content */}
+                      <div className="p-5 flex flex-col flex-1 justify-between">
+                        <h3 className="font-semibold text-lg text-gray-900 dark:text-white mb-2 line-clamp-2">
+                          {course?.name}
+                        </h3>
 
-                      {/* Instructor */}
-                      <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">
-                        By ELearning
-                      </p>
+                        {/* Instructor */}
+                        <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">
+                          By ELearning
+                        </p>
 
-                      {/* Description */}
-                      {/* <p className="text-gray-700 dark:text-gray-300 text-sm mb-4 line-clamp-2">
+                        {/* Description */}
+                        {/* <p className="text-gray-700 dark:text-gray-300 text-sm mb-4 line-clamp-2">
                         {course.lectures}
                       </p> */}
 
-                      {/* Rating */}
-                      <div className="flex items-center mb-4">
-                        <div className="flex mr-2">
-                          {renderStars(course?.ratings)}
+                        {/* Rating */}
+                        <div className="flex items-center mb-4">
+                          <div className="flex mr-2">
+                            {renderStars(course?.ratings)}
+                          </div>
+                          <span className="text-[rgb(37,150,190)] font-medium">
+                            {course?.ratings ? course?.ratings.toFixed(1) : ''}
+                          </span>
+                          <span className="text-gray-500 dark:text-gray-400 text-sm ml-1">
+                            ({course?.reviews?.length} reviews)
+                          </span>
                         </div>
-                        <span className="text-[rgb(37,150,190)] font-medium">
-                          {course?.ratings}
-                        </span>
-                        <span className="text-gray-500 dark:text-gray-400 text-sm ml-1">
-                          ({course?.reviews?.length} reviews)
-                        </span>
-                      </div>
 
-                      {/* Price and Stats */}
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between mb-4">
-                          <div>
-                            {course?.estimatedPrice ? (
-                              <div className="flex items-center">
+                        {/* Price and Stats */}
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between mb-4">
+                            <div>
+                              {course?.estimatedPrice ? (
+                                <div className="flex items-center">
+                                  <span className="text-[rgb(37,150,190)] font-bold text-xl">
+                                    ${course?.price}
+                                  </span>
+                                  <span className="text-gray-500 dark:text-gray-400 line-through ml-2">
+                                    ${course?.estimatedPrice}
+                                  </span>
+                                </div>
+                              ) : (
                                 <span className="text-[rgb(37,150,190)] font-bold text-xl">
-                                  ${course?.estimatedPrice}
-                                </span>
-                                <span className="text-gray-500 dark:text-gray-400 line-through ml-2">
                                   ${course?.price}
                                 </span>
-                              </div>
-                            ) : (
-                              <span className="text-[rgb(37,150,190)] font-bold text-xl">
-                                ${course.price}
-                              </span>
-                            )}
-                          </div>
-
-                          {/* Students & Lectures */}
-                          <div className="text-right">
-                            <div className="flex items-center justify-end text-gray-600 dark:text-gray-300 text-sm">
-                              <Users className="h-4 w-4 mr-1" />
-                              {/* <span>{course.students.toLocaleString()}</span> */}
+                              )}
                             </div>
-                            <div className="flex items-center justify-end text-gray-600 dark:text-gray-300 text-sm mt-1">
-                              <BookOpen className="h-4 w-4 mr-1" />
-                              <span>{course.lectures} lectures</span>
+
+                            {/* Students & Lectures */}
+                            <div className="text-right">
+                              <div className="flex items-center justify-end text-gray-600 dark:text-gray-300 text-sm">
+                                <Users className="h-4 w-4 mr-1" />
+                                {/* <span>{course.students.toLocaleString()}</span> */}
+                                {course?.purchased}
+                              </div>
+                              <div className="flex items-center justify-end text-gray-600 dark:text-gray-300 text-sm mt-1">
+                                <BookOpen className="h-4 w-4 mr-1" />
+                                <span> {course?.courseData?.length} lectures</span>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
 
-                      {/* Button */}
-                      <div className="mt-4">
-                        <Button className="w-full bg-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/80 text-white">
-                          Enroll Now
-                        </Button>
+                        {/* Button */}
+                        <div className="mt-4">
+                          <Link href={`/courses/${course?._id}`}>
+                            <Button className="cursor-pointer w-full bg-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/80 text-white">
+                              View Details
+                            </Button>
+                          </Link>
+                        </div>
                       </div>
+                    </motion.div>
+                  ))
+                ) : (
+                  <>
+                    <div className="text-center py-16">
+                      <div className="bg-gray-100 dark:bg-[#1a2342]/50 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <Search className="h-8 w-8 text-gray-400" />
+                      </div>
+                      <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2">
+                        No courses found
+                      </h3>
                     </div>
-                  </motion.div>
-                ))}
+                  </>
+                )}
               </motion.div>
-            ) : (
-              <div className="text-center py-16">
-                <div className="bg-gray-100 dark:bg-[#1a2342]/50 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <Search className="h-8 w-8 text-gray-400" />
-                </div>
-                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2">
-                  No courses found
-                </h3>
-                
-               
-              </div>
             )}
-
-           
           </main>
         </Container>
 

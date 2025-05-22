@@ -28,10 +28,13 @@ const refreshTokenExpireDays =
 // Access Token Cookie Options
 export const accessTokenOptions: ITokenOptions = {
   expires: new Date(Date.now() + accessTokenExpireDays * 24 * 60 * 60 * 1000), // 24 BAD JABE
-  maxAge: accessTokenExpireDays * 24 * 60 * 60 * 1000,
+  maxAge: accessTokenExpireDays * 24 * 60 * 60 * 1000, // 24 BAD JABE
   httpOnly: true,
   secure: config.node_env === "production",
   sameSite: "lax",
+  //for deployment
+  // sameSite: "none",
+  //secure: true
 };
 
 // Refresh Token Cookie Options
@@ -41,4 +44,8 @@ export const refreshTokenOptions: ITokenOptions = {
   httpOnly: true,
   secure: config.node_env === "production",
   sameSite: "lax",
+
+  //for deployment
+  // sameSite: "none",
+  //secure: true
 };
