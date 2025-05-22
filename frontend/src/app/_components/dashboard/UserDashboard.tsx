@@ -22,39 +22,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useCurrentUserQuery } from "@/redux/features/auth/authApi";
+import Link from "next/link";
+import { format } from "timeago.js";
+import { toast } from "sonner";
 
 export default function StudentDashboard() {
-  // Simulate fetching purchased courses
-  // In a real app, this would be an API call
-  const purchasedCourses = [
-    {
-      id: "WEB-1234",
-      name: "Complete Web Development Bootcamp",
-      date: "May 2, 2025",
-      price: 84.99,
-      transactionId: "TXN-98765432",
-      status: "Completed",
-    },
-    {
-      id: "DS-5678",
-      name: "Data Science & Machine Learning",
-      date: "April 15, 2025",
-      price: 89.99,
-      transactionId: "TXN-87654321",
-      status: "Active",
-    },
-  ];
+  const { data } = useCurrentUserQuery({});
+  const courseInfo = data?.data;
+  console.log(courseInfo);
 
-  // Mock data for the dashboard stats
-  const studentData = {
-    name: "Alex Johnson",
-    enrolledCourses: 5,
-    completedCourses: 3,
-    totalHoursLearned: 47,
-    certificatesEarned: 2,
-    streak: 15,
-    lastLogin: "2 hours ago",
-  };
+
+  const handleDownload = () => {
+    // const url = `https://drive.google.com/uc?export=download&id=${id}`;
+    // window.location.href = url;
+
+    toast.success('This Feature Will be added soon 🚀');
+
+
+
+  }
 
   return (
     <div className=" p-4 bg-gray-300/50 dark:bg-[#151d33] shadow-md dark:shadow-xl border border-slate-400 dark:border-slate-700 rounded-lg overflow-x-auto lg:overflow-x-hidden">
@@ -63,10 +50,10 @@ export default function StudentDashboard() {
         <div className=" mb-4">
           <div className="flex items-center justify-between ">
             <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
-              Welcome back, {studentData.name}!
+              Welcome back, {courseInfo?.name}
             </h1>
             <p className="text-gray-600 dark:text-gray-400  text-sm">
-              Last login: {studentData.lastLogin}
+              Last login: 5 Minute Ago
             </p>
           </div>
         </div>
@@ -83,7 +70,8 @@ export default function StudentDashboard() {
                   Enrolled Courses
                 </p>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                  {studentData.enrolledCourses}
+                 
+                {  courseInfo?.courses?.length || 0}
                 </h3>
               </div>
             </CardContent>
@@ -99,7 +87,7 @@ export default function StudentDashboard() {
                   Hours Learned
                 </p>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                  {studentData.totalHoursLearned}
+                  0
                 </h3>
               </div>
             </CardContent>
@@ -115,7 +103,7 @@ export default function StudentDashboard() {
                   Certificates
                 </p>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                  {studentData.certificatesEarned}
+                  0
                 </h3>
               </div>
             </CardContent>
@@ -131,7 +119,7 @@ export default function StudentDashboard() {
                   Day Streak
                 </p>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                  {studentData.streak} days
+                  10 days
                 </h3>
               </div>
             </CardContent>
@@ -148,7 +136,7 @@ export default function StudentDashboard() {
         <Card className="bg-white dark:bg-[#1a2342] border-gray-100 dark:border-gray-800">
           <div className="overflow-x-auto">
             <Table className="">
-              {purchasedCourses.length === 0 && (
+              {courseInfo?.courses?.length === 0 && (
                 <TableCaption>
                   No courses purchased yet. Browse our catalog to find courses.
                 </TableCaption>
@@ -161,28 +149,26 @@ export default function StudentDashboard() {
                     Purchase Date
                   </TableHead>
                   <TableHead>Price</TableHead>
-                  <TableHead className="hidden md:table-cell">
-                    Transaction ID
-                  </TableHead>
+
                   <TableHead>Status</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {purchasedCourses.length > 0 ? (
-                  purchasedCourses.map((course) => (
-                    <TableRow key={course.id}>
-                      <TableCell className="font-medium">{course.id}</TableCell>
+                {courseInfo?.courses?.length > 0 ? (
+                  courseInfo.courses?.map((course: any, idx: number) => (
+                    <TableRow key={idx}>
                       <TableCell className="font-medium">
-                        {course.name}
+                        {course?.courseId._id.slice(0, 8)}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {course.courseId.name}
                       </TableCell>
                       <TableCell className="hidden sm:table-cell">
-                        {course.date}
+                        {format(course?.purchasedDate || "-")}
                       </TableCell>
-                      <TableCell>${course.price}</TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        {course.transactionId}
-                      </TableCell>
+                      <TableCell>${course?.courseId.price}</TableCell>
+
                       <TableCell>
                         <Badge
                           className={
@@ -191,7 +177,7 @@ export default function StudentDashboard() {
                               : "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400"
                           }
                         >
-                          {course.status}
+                          Active
                         </Badge>
                       </TableCell>
                       <TableCell>
@@ -199,27 +185,22 @@ export default function StudentDashboard() {
                           <Button
                             size="sm"
                             variant="outline"
-                            className="h-8 w-8 p-0"
-                          >
-                            <FileText className="h-4 w-4" />
-                            <span className="sr-only">View Certificate</span>
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="h-8 w-8 p-0"
+                            className="h-8 w-8 p-0 cursor-pointer"
+                            onClick={handleDownload}
                           >
                             <Download className="h-4 w-4" />
                             <span className="sr-only">Download Resources</span>
                           </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="h-8 w-8 p-0"
-                          >
-                            <ExternalLink className="h-4 w-4" />
-                            <span className="sr-only">Go to Course</span>
-                          </Button>
+                          <Link href={`/course-access/${course?.courseId._id}`}>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="h-8 w-8 p-0 cursor-pointer"
+                            >
+                              <ExternalLink className="h-4 w-4" />
+                              <span className="sr-only">Go to Course</span>
+                            </Button>
+                          </Link>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -234,13 +215,12 @@ export default function StudentDashboard() {
                         <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
                           No Courses Purchased
                         </h3>
-                        <p className="text-gray-500 dark:text-gray-400 mb-4 max-w-md mx-auto">
-                          You haven't purchased any courses yet. Browse our
-                          catalog to find courses that interest you.
-                        </p>
-                        <Button className="bg-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/80 text-white">
-                          Browse Courses
-                        </Button>
+
+                        <Link href={"/courses"}>
+                          <Button className="cursor-pointer bg-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/80 text-white">
+                            Browse Courses
+                          </Button>
+                        </Link>
                       </div>
                     </TableCell>
                   </TableRow>

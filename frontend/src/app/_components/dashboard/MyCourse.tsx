@@ -71,11 +71,11 @@ export default function MyCourses() {
 
         {/* Courses Grid */}
         {courseInfo?.courses?.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
             {courseInfo.courses?.map((course: any, idx: number) => (
               <div
                 key={idx}
-                className="bg-[#1a1525] rounded-lg overflow-hidden border border-gray-800 hover:border-purple-500/50 transition-colors flex py-6 px-5 gap-4 cursor-pointer"
+                className="dark:bg-[#1a1525] rounded-lg overflow-hidden border border-gray-800 hover:border-purple-500/50 transition-colors flex py-6 px-5 gap-4 cursor-pointer"
               >
                 <div className="">
                   <Image
@@ -84,37 +84,33 @@ export default function MyCourses() {
                     // fill
                     width={250}
                     height={200}
-                    className="object-cover w-[190px] h-[130px] rounded-lg"
+                    className="object-cover w-[190px] h-[130px] rounded-lg border border-gray-600"
                   />
                 </div>
 
                 <div className=" space-y-2">
-                  <h3 className="font-medium text-[18px] line-clamp-">
+                  <h3 className="text-black dark:text-white font-medium text-[18px] line-clamp-">
                     {course?.courseId?.name}
                   </h3>
 
-                  <div className="flex items-center text-sm text-gray-400">
+                  <div className="flex items-center text-sm text-slate-600 dark:text-gray-400">
                     <span className="font-semibold">ELearning</span>
                   </div>
 
                   <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
+                    <div className="flex justify-between text-sm text-black dark:text-white">
                      
-                      <span>50% complete</span>
+                      <span>0% complete</span>
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-1.5">
                       <div
-                        className={`h-1.5 rounded-full ${
-                          course.progress === 100
-                            ? "bg-green-500"
-                            : "bg-purple-500"
-                        }`}
-                        style={{ width: `${course.progress}%` }}
+                        className={`h-1.5 rounded-full bg-purple-500 transition-all ease-in-out duration-500`}
+                        style={{ width: 0 }}
                       ></div>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between text-xs text-gray-400">
+                  <div className="flex items-center justify-between text-xs text-black dark:text-gray-400">
                     <div className="flex items-center gap-1">
                       <Clock className="h-3 w-3" />
                       <span>
@@ -141,8 +137,8 @@ export default function MyCourses() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-gray-400">
-              No courses found matching your criteria.
+            <p className="text-slate-700 dark:text-gray-400">
+             You have not enrolled in any course
             </p>
           </div>
         )}
