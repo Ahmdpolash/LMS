@@ -32,16 +32,12 @@ export default function StudentDashboard() {
   const courseInfo = data?.data;
   console.log(courseInfo);
 
-
   const handleDownload = () => {
     // const url = `https://drive.google.com/uc?export=download&id=${id}`;
     // window.location.href = url;
 
-    toast.success('This Feature Will be added soon 🚀');
-
-
-
-  }
+    toast.success("This Feature Will be added soon 🚀");
+  };
 
   return (
     <div className=" p-4 bg-gray-300/50 dark:bg-[#151d33] shadow-md dark:shadow-xl border border-slate-400 dark:border-slate-700 rounded-lg overflow-x-auto lg:overflow-x-hidden">
@@ -70,8 +66,7 @@ export default function StudentDashboard() {
                   Enrolled Courses
                 </p>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                 
-                {  courseInfo?.courses?.length || 0}
+                  {courseInfo?.courses?.length || 0}
                 </h3>
               </div>
             </CardContent>

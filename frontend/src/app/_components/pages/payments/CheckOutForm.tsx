@@ -93,7 +93,26 @@ const CheckOutForm = ({ setOpen, courseInfo }: TProps) => {
     <div>
       <form id="payment-form" onSubmit={handleSubmit}>
         <LinkAuthenticationElement id="link-authentication-element" />
+
+        <details className="text-sm my-2">
+          <summary className="cursor-pointer text-blue-600 dark:text-red-400 ">
+            <strong>Click Here </strong> <i>to use test card (copy and paste )</i>
+          </summary>
+          <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded mt-1">
+            <p>
+              <strong>Card Number:</strong> 4242 4242 4242 4242
+            </p>
+            <p>
+              <strong>Expiration Date:</strong> Any future date (e.g., 12/28)
+            </p>
+            <p>
+              <strong>CVC:</strong> Any 3-digit number (e.g., 123)
+            </p>
+          </div>
+        </details>
         <PaymentElement id="payment-element" />
+
+
         <button
           disabled={isLoading || !stripe || !elements}
           id="submit "
