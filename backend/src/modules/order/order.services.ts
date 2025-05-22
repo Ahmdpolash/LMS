@@ -174,10 +174,12 @@ const createOrder = async (userInfo: any, payload: TOrder) => {
 
     user.courses.push({
       courseId: (course._id as mongoose.Types.ObjectId).toString(),
+      purchasedDate: new Date(),
     });
     await user.save({ session });
 
     course.purchased = (course.purchased || 0) + 1;
+
     await course.save({ session });
 
     payload.userId = user._id;

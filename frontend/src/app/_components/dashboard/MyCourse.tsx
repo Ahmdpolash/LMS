@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { Search, Filter, Clock, Award, BookOpen } from "lucide-react";
 import Image from "next/image";
+import { useCurrentUserQuery } from "@/redux/features/auth/authApi";
+import Link from "next/link";
+import { format } from "timeago.js";
 
 // Course type definition
 type Course = {
@@ -18,6 +21,10 @@ type Course = {
 };
 
 export default function MyCourses() {
+  const { data } = useCurrentUserQuery({});
+  const courseInfo = data?.data;
+  console.log(courseInfo);
+
   // Sample course data
   const [courses, setCourses] = useState<Course[]>([
     {
@@ -105,37 +112,37 @@ export default function MyCourses() {
         <div className="h-px bg-gray-700/50" />
 
         {/* Courses Grid */}
-        {filteredCourses.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
-            {filteredCourses.map((course) => (
+        {courseInfo?.courses?.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
+            {courseInfo.courses?.map((course: any, idx: number) => (
               <div
-                key={course.id}
-                className="bg-[#1a1525] rounded-lg overflow-hidden border border-gray-800 hover:border-purple-500/50 transition-colors"
+                key={idx}
+                className="bg-[#1a1525] rounded-lg overflow-hidden border border-gray-800 hover:border-purple-500/50 transition-colors flex py-6 px-5 gap-4 cursor-pointer"
               >
-                <div className="relative h-48">
+                <div className="">
                   <Image
-                    src={"/c.jpg"}
-                    alt={course.title}
-                    fill
-                    className="object-cover"
+                    src={course?.courseId?.thumbnail?.url || "/c.jpg"}
+                    alt={course?.courseId?.name || "course thumbnail"}
+                    // fill
+                    width={250}
+                    height={200}
+                    className="object-cover w-[190px] h-[130px] rounded-lg"
                   />
                 </div>
 
-                <div className="p-4 space-y-3">
-                  <h3 className="font-medium text-lg line-clamp-2">
-                    {course.title}
+                <div className=" space-y-2">
+                  <h3 className="font-medium text-[18px] line-clamp-">
+                    {course?.courseId?.name}
                   </h3>
 
                   <div className="flex items-center text-sm text-gray-400">
-                    <span>Instructor: {course.instructor}</span>
+                    <span className="font-semibold">ELearning</span>
                   </div>
 
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span>
-                        {course.completedLessons}/{course.totalLessons} lessons
-                      </span>
-                      <span>{course.progress}% complete</span>
+                      <span>0 lessons</span>
+                      <span>50% complete</span>
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-1.5">
                       <div
@@ -152,23 +159,23 @@ export default function MyCourses() {
                   <div className="flex items-center justify-between text-xs text-gray-400">
                     <div className="flex items-center gap-1">
                       <Clock className="h-3 w-3" />
-                      <span>Purchased: {course.purchaseDate}</span>
+                      <span>
+                        Purchased: {format(course?.courseId?.purchasedDate)}
+                      </span>
                     </div>
                   </div>
 
                   <div className="pt-2 flex justify-between ">
-                    <button className="cursor-pointer text-sm px-3 py-1.5 bg-purple-600/50 hover:bg-purple-700 rounded-md transition-colors">
-                      {course.progress === 100
-                        ? "Review Course"
-                        : "Continue Learning"}
-                    </button>
+                    <Link href={`/course-access/${course?.courseId?._id}`}>
+                      <button className="cursor-pointer text-sm px-3 py-1.5 bg-purple-600/50 hover:bg-purple-700 rounded-md transition-colors">
+                        Continue Learning
+                      </button>
+                    </Link>
 
-                    {course.progress === 100 && (
-                      <button className="cursor-pointer text-sm px-3 py-1.5 flex items-center gap-1 text-green-400 hover:text-green-300 transition-colors">
+                    {/* <button className="cursor-pointer text-sm px-3 py-1.5 flex items-center gap-1 text-green-400 hover:text-green-300 transition-colors">
                         <Award className="h-4 w-4" />
                         Certificate
-                      </button>
-                    )}
+                      </button> */}
                   </div>
                 </div>
               </div>

@@ -323,13 +323,25 @@ const addReviews = async (req: Request, payload: IReview) => {
 
   course?.reviews.push(review);
 
+  // let avg = 0;
+  // course?.reviews.forEach((rev) => {
+  //   avg += rev.rating;
+  // });
+
+  // if (course) {
+  //   course.ratings = avg / course.reviews.length;
+  // }
+
   let avg = 0;
+
   course?.reviews.forEach((rev) => {
     avg += rev.rating;
   });
 
-  if (course) {
-    course.ratings = avg / course.reviews.length;
+  if (course && course.reviews.length > 0) {
+    course.ratings = parseFloat((avg / course.reviews.length).toFixed(1)); // or .toFixed(2)
+  } else if (course) {
+    course.ratings = 0;
   }
 
   await course?.save();

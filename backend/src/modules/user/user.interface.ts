@@ -20,7 +20,7 @@ export type IUser = {
   age_range?: string;
   internet_type?: string;
   area_type?: string;
-  courses: Array<{ courseId: string }>;
+  courses: Array<{ courseId: string; purchasedDate: Date }>;
   comparePassword: (password: string) => Promise<boolean>;
 };
 

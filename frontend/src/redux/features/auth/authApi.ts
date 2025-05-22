@@ -1,11 +1,6 @@
 import { baseApi } from "@/redux/api/baseApi";
 import { loggedUser, logout, setUser } from "./authSlice";
 
-type RegistrationResponse = {
-  message: string;
-  activationToken: string;
-};
-
 const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation({
@@ -67,7 +62,7 @@ const authApi = baseApi.injectEndpoints({
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         const result = await queryFulfilled;
-        
+
         dispatch(
           loggedUser({
             accessToken: result.data.data.accessToken,

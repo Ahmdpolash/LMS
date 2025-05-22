@@ -20,9 +20,9 @@ const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
   const [addReply, { isLoading: replyLoading }] = useReplyQuestionMutation();
   const [addReview, { isLoading: reviewLoading, error }] =
     useAddReviewMutation();
-  const { data: courseData,refetch } = useGetSingleCourseQuery(id);
+  const { data: courseData, refetch } = useGetSingleCourseQuery(id);
   const course = courseData?.data;
-  console.log(course, "course");
+
   const { data: session } = useSession();
   const customUser = data || session?.user || null;
   const [activeTab, setActiveTab] = useState("overview");

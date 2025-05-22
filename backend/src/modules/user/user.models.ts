@@ -51,6 +51,10 @@ const UserSchema = new Schema<IUser, UserModel>(
       {
         courseId: {
           type: String,
+          ref: "Course",
+        },
+        purchasedDate: {
+          type: Date,
         },
       },
     ],

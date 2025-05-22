@@ -127,7 +127,10 @@ export default function FeaturedCourse() {
                           </div>
 
                           <span className="text-gray-500 dark:text-gray-400 text-sm ml-1">
-                            ({course.ratings} reviews)
+                            {course?.ratings.toFixed(1)} 
+                          </span>
+                          <span className="text-gray-500 dark:text-gray-400 text-sm ml-1">
+                            ({course?.reviews?.length} reviews)
                           </span>
                         </div>
 
@@ -171,8 +174,8 @@ export default function FeaturedCourse() {
                         </div>
 
                         {/* Button - Now in its own container at the bottom */}
-                        <div className="">
-                          <Button className="w-full bg-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/80 text-white">
+                        <div className="cursor-pointer">
+                          <Button className="cursor-pointer w-full bg-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/80 text-white">
                             Enroll Now
                           </Button>
                         </div>

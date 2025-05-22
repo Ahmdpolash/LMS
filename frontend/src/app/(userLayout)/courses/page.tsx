@@ -40,16 +40,11 @@ interface Course {
 }
 
 export default function CoursesPage() {
-
-    const { data, isLoading } = useGetAllCoursesQuery({});
-  
-
+  const { data, isLoading } = useGetAllCoursesQuery({});
+  const allCourses = data?.data;
+  console.log(allCourses);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 200]);
-  const [ratingFilter, setRatingFilter] = useState<number | null>(null);
-  const [showFilters, setShowFilters] = useState(false);
+
   const [sortBy, setSortBy] = useState<string>("popular");
   const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
 
@@ -259,24 +254,6 @@ export default function CoursesPage() {
     },
   ];
 
-  // Toggle category selection
-  const toggleCategory = (category: string) => {
-    if (selectedCategories.includes(category)) {
-      setSelectedCategories(selectedCategories.filter((c) => c !== category));
-    } else {
-      setSelectedCategories([...selectedCategories, category]);
-    }
-  };
-
-  // Toggle level selection
-  const toggleLevel = (level: string) => {
-    if (selectedLevels.includes(level)) {
-      setSelectedLevels(selectedLevels.filter((l) => l !== level));
-    } else {
-      setSelectedLevels([...selectedLevels, level]);
-    }
-  };
-
   // Function to render stars based on rating
   const renderStars = (rating: number) => {
     const stars = [];
@@ -310,12 +287,6 @@ export default function CoursesPage() {
 
     return stars;
   };
-
-  // Get unique categories from courses
-  const categories = [...new Set(courses.map((course) => course.category))];
-
-  // Get unique levels from courses
-  const levels = [...new Set(courses.map((course) => course.level))];
 
   return (
     <div className="min-h-screen font-poppins">
@@ -364,237 +335,41 @@ export default function CoursesPage() {
         <Container>
           <main className="container mx-auto  py-12">
             {/* Filters and Sorting */}
-            <div className="flex flex-col md:flex-row justify-between items-start mb-8">
-              <div className="flex items-center mb-4 md:mb-0">
-                <Button
-                  variant="outline"
-                  className="mr-2 border-gray-300 dark:border-gray-700"
-                  onClick={() => setShowFilters(!showFilters)}
-                >
-                  <Filter className="h-4 w-4 mr-2" />
-                  Filters
-                </Button>
 
-                {/* Selected filters */}
-                <div className="flex flex-wrap gap-2">
-                  {selectedCategories.map((category) => (
-                    <Badge
-                      key={category}
-                      variant="secondary"
-                      className="flex items-center gap-1 px-3 py-1"
-                    >
-                      {category}
-                      <X
-                        className="h-3 w-3 cursor-pointer"
-                        onClick={() => toggleCategory(category)}
-                      />
-                    </Badge>
-                  ))}
-
-                  {selectedLevels.map((level) => (
-                    <Badge
-                      key={level}
-                      variant="secondary"
-                      className="flex items-center gap-1 px-3 py-1"
-                    >
-                      {level}
-                      <X
-                        className="h-3 w-3 cursor-pointer"
-                        onClick={() => toggleLevel(level)}
-                      />
-                    </Badge>
-                  ))}
-
-                  {(selectedCategories.length > 0 ||
-                    selectedLevels.length > 0 ||
-                    ratingFilter ||
-                    priceRange[0] > 0 ||
-                    priceRange[1] < 200) && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-[rgb(37,150,190)] hover:text-[rgb(37,150,190)]/80"
-                    >
-                      Clear All
-                    </Button>
-                  )}
-                </div>
-              </div>
-
-              <div className="flex items-center">
-                <SlidersHorizontal className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
-                <select
-                  className="bg-transparent border-none text-slate-700 dark:text-slate-300 dark:*:text-black focus:outline-none focus:ring-0"
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                >
-                  <option value="popular">Most Popular</option>
-                  <option value="rating">Highest Rated</option>
-                  <option value="newest">Newest</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Filters Panel */}
-            {showFilters && (
-              <div className="bg-white dark:bg-[#1a2342] p-6 rounded-lg shadow-sm border border-gray-100 dark:border-gray-800 mb-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  {/* Categories */}
-                  <div>
-                    <h3 className="font-medium text-gray-900 dark:text-white mb-4">
-                      Categories
-                    </h3>
-                    <div className="space-y-2">
-                      {categories.map((category) => (
-                        <div key={category} className="flex items-center">
-                          <Checkbox
-                            id={`category-${category}`}
-                            checked={selectedCategories.includes(category)}
-                            onCheckedChange={() => toggleCategory(category)}
-                          />
-                          <label
-                            htmlFor={`category-${category}`}
-                            className="ml-2 text-gray-700 dark:text-gray-300 text-sm cursor-pointer"
-                          >
-                            {category}
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Levels */}
-                  <div>
-                    <h3 className="font-medium text-gray-900 dark:text-white mb-4">
-                      Level
-                    </h3>
-                    <div className="space-y-2">
-                      {levels.map((level) => (
-                        <div key={level} className="flex items-center">
-                          <Checkbox
-                            id={`level-${level}`}
-                            checked={selectedLevels.includes(level)}
-                            onCheckedChange={() => toggleLevel(level)}
-                          />
-                          <label
-                            htmlFor={`level-${level}`}
-                            className="ml-2 text-gray-700 dark:text-gray-300 text-sm cursor-pointer"
-                          >
-                            {level}
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Price Range */}
-                  <div>
-                    <h3 className="font-medium text-gray-900 dark:text-white mb-4">
-                      Price Range
-                    </h3>
-                    <div className="px-2">
-                      <Slider
-                        defaultValue={[0, 200]}
-                        max={200}
-                        step={1}
-                        value={priceRange}
-                        onValueChange={(value) =>
-                          setPriceRange(value as [number, number])
-                        }
-                        className="mb-6"
-                      />
-                      <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300">
-                        <span>${priceRange[0]}</span>
-                        <span>${priceRange[1]}</span>
-                      </div>
-                    </div>
-
-                    {/* Rating Filter */}
-                    <h3 className="font-medium text-gray-900 dark:text-white mb-4 mt-8">
-                      Rating
-                    </h3>
-                    <div className="space-y-2">
-                      {[4, 3, 2, 1].map((rating) => (
-                        <div key={rating} className="flex items-center">
-                          <Checkbox
-                            id={`rating-${rating}`}
-                            checked={ratingFilter === rating}
-                            onCheckedChange={() =>
-                              setRatingFilter(
-                                ratingFilter === rating ? null : rating
-                              )
-                            }
-                          />
-                          <label
-                            htmlFor={`rating-${rating}`}
-                            className="ml-2 flex items-center cursor-pointer"
-                          >
-                            <div className="flex mr-1">
-                              {Array(rating)
-                                .fill(0)
-                                .map((_, i) => (
-                                  <Star
-                                    key={i}
-                                    className="h-4 w-4 fill-yellow-400 text-yellow-400"
-                                  />
-                                ))}
-                              {Array(5 - rating)
-                                .fill(0)
-                                .map((_, i) => (
-                                  <Star
-                                    key={i}
-                                    className="h-4 w-4 text-gray-300"
-                                  />
-                                ))}
-                            </div>
-                            <span className="text-gray-700 dark:text-gray-300 text-sm">
-                              & up
-                            </span>
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Results Count */}
-            <div className="mb-6">
-              <p className="text-gray-700 dark:text-gray-300">
-                Showing{" "}
-                <span className="font-medium text-gray-900 dark:text-white">
-                  {filteredCourses.length}
-                </span>{" "}
-                courses
-              </p>
+            <div className="flex items-center">
+              <SlidersHorizontal className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
+              <select
+                className="bg-transparent border-none text-slate-700 dark:text-slate-300 dark:*:text-black focus:outline-none focus:ring-0"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+              >
+                <option value="popular">Most Popular</option>
+                <option value="rating">Highest Rated</option>
+                <option value="newest">Newest</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+              </select>
             </div>
 
             {/* Course Grid */}
-            {courses.length > 0 ? (
+            {allCourses?.length > 0 ? (
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5 }}
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
               >
-                {courses.map((course) => (
+                {allCourses?.map((course: any, idx: number) => (
                   <motion.div
-                    key={course.id}
+                    key={idx}
                     className="bg-white dark:bg-[#1a2342] rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-all duration-300 flex flex-col lg:h-[440px]"
                   >
                     {/* Course Image */}
                     <div className="relative overflow-hidden">
-                      <BlurFade
-                        key={course.image}
-                        delay={0.25 + 1 * 0.05}
-                        inView
-                      >
+                      <BlurFade key={idx} delay={0.25 + 1 * 0.05} inView>
                         <Image
-                          src={course.image}
-                          alt={course.title}
+                          src={course?.thumbnail?.url}
+                          alt={course.name || "Course Image"}
                           width={350}
                           height={200}
                           className="w-full h-48 object-cover transition-transform duration-500 hover:scale-105"
@@ -602,12 +377,12 @@ export default function CoursesPage() {
                       </BlurFade>
                       <div className="absolute top-3 left-3">
                         <Badge className="bg-[rgb(37,150,190)] text-white">
-                          {course.category}
+                          {course?.category}
                         </Badge>
                       </div>
                       <div className="absolute top-3 right-3">
                         <Badge className="bg-gray-900/80 text-white">
-                          {course.level}
+                          {course?.level}
                         </Badge>
                       </div>
                     </div>
@@ -615,12 +390,12 @@ export default function CoursesPage() {
                     {/* Course Content */}
                     <div className="p-5 flex flex-col flex-1 justify-between">
                       <h3 className="font-semibold text-lg text-gray-900 dark:text-white mb-2 line-clamp-2">
-                        {course.title}
+                        {course?.name}
                       </h3>
 
                       {/* Instructor */}
                       <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">
-                        By {course.instructor}
+                        By ELearning
                       </p>
 
                       {/* Description */}
@@ -631,13 +406,13 @@ export default function CoursesPage() {
                       {/* Rating */}
                       <div className="flex items-center mb-4">
                         <div className="flex mr-2">
-                          {renderStars(course.rating)}
+                          {renderStars(course?.ratings)}
                         </div>
                         <span className="text-[rgb(37,150,190)] font-medium">
-                          {course.rating}
+                          {course?.ratings}
                         </span>
                         <span className="text-gray-500 dark:text-gray-400 text-sm ml-1">
-                          ({course.reviewCount} reviews)
+                          ({course?.reviews?.length} reviews)
                         </span>
                       </div>
 
@@ -645,18 +420,18 @@ export default function CoursesPage() {
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-4">
                           <div>
-                            {course.discountPrice ? (
+                            {course?.estimatedPrice ? (
                               <div className="flex items-center">
                                 <span className="text-[rgb(37,150,190)] font-bold text-xl">
-                                  ${course.discountPrice}
+                                  ${course?.estimatedPrice}
                                 </span>
                                 <span className="text-gray-500 dark:text-gray-400 line-through ml-2">
-                                  ${course.originalPrice}
+                                  ${course?.price}
                                 </span>
                               </div>
                             ) : (
                               <span className="text-[rgb(37,150,190)] font-bold text-xl">
-                                ${course.originalPrice}
+                                ${course.price}
                               </span>
                             )}
                           </div>
@@ -665,7 +440,7 @@ export default function CoursesPage() {
                           <div className="text-right">
                             <div className="flex items-center justify-end text-gray-600 dark:text-gray-300 text-sm">
                               <Users className="h-4 w-4 mr-1" />
-                              <span>{course.students.toLocaleString()}</span>
+                              {/* <span>{course.students.toLocaleString()}</span> */}
                             </div>
                             <div className="flex items-center justify-end text-gray-600 dark:text-gray-300 text-sm mt-1">
                               <BookOpen className="h-4 w-4 mr-1" />
@@ -693,94 +468,12 @@ export default function CoursesPage() {
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2">
                   No courses found
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-6">
-                  Try adjusting your search or filter criteria
-                </p>
-                <Button
-                  variant="outline"
-                  className="border-[rgb(37,150,190)] text-[rgb(37,150,190)]"
-                >
-                  Clear All Filters
-                </Button>
+                
+               
               </div>
             )}
 
-            {/* Pagination */}
-            {filteredCourses.length > 0 && (
-              <div className="flex justify-center mt-12">
-                <div className="flex items-center space-x-2">
-                  <Button variant="outline" size="icon" className="w-8 h-8 p-0">
-                    <span className="sr-only">Go to previous page</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-4 w-4"
-                    >
-                      <path d="M15 18l-6-6 6-6" />
-                    </svg>
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-8 min-w-8 px-3 bg-[rgb(37,150,190)] text-white"
-                  >
-                    1
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-8 min-w-8 px-3"
-                  >
-                    2
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-8 min-w-8 px-3"
-                  >
-                    3
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-8 min-w-8 px-3"
-                  >
-                    ...
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-8 min-w-8 px-3"
-                  >
-                    8
-                  </Button>
-                  <Button variant="outline" size="icon" className="w-8 h-8 p-0">
-                    <span className="sr-only">Go to next page</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-4 w-4"
-                    >
-                      <path d="M9 18l6-6-6-6" />
-                    </svg>
-                  </Button>
-                </div>
-              </div>
-            )}
+           
           </main>
         </Container>
 

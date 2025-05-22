@@ -86,7 +86,10 @@ const GetAllUSers = async () => {
 // GET ME
 
 const getMe = async (id: string) => {
-  const result = await User.findById(id);
+  const result = await User.findById(id).populate({
+    path: "courses.courseId",
+    select: 'thumbnail.url name purchasedDate'
+  });
 
   return result;
 };
