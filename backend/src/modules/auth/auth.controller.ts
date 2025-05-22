@@ -20,16 +20,19 @@ const LoginUser = catchAsync(async (req, res) => {
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     sameSite: "lax",
-    // secure: isProduction,
     secure: false,
-    path: "/",
+    //for deployment
+    // sameSite: "none",
+    //secure: true
   });
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
     sameSite: "lax",
-    // secure: isProduction,
     secure: false,
-    path: "/",
+
+    //for deployment
+    // sameSite: "none",
+    //secure: true
   });
 
   res.status(200).json({

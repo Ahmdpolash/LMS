@@ -8,6 +8,7 @@ import {
   UserCog,
   Users,
 } from "lucide-react";
+
 export const NavItem = [
   {
     name: "Home",
@@ -28,6 +29,10 @@ export const NavItem = [
   {
     name: "FAQ",
     path: "/faq",
+  },
+  {
+    name: "My Courses",
+    path: "/dashboard/my-course",
   },
 ];
 
@@ -304,6 +309,3 @@ export const courses: ICourse[] = [
     level: "Intermediate",
   },
 ];
-
-
-

@@ -302,7 +302,7 @@ export default function CourseDetails({ slug }: { slug: string }) {
                           Sale ends in 20 days!
                         </p>
 
-                        {!isPurchased ? (
+                        {isPurchased ? (
                           <Link href={`/course-access/${courseInfo?._id}`}>
                             <Button className="w-full bg-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/80 text-white mb-3 cursor-pointer">
                               <SquarePlay className="h-4 w-4 mr-2" />

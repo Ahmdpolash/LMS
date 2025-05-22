@@ -18,6 +18,8 @@ import { toast } from "sonner";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 
+
+
 type FormType = "sign-up" | "sign-in";
 
 const authFormSchema = (type: FormType) => {
@@ -73,6 +75,22 @@ const AuthForm = ({ type }: { type: FormType }) => {
 
   const isSignIn = type === "sign-in";
 
+  const handleManualLogin = (role: string) => {
+    if (role === "admin") {
+      form.setValue("email", process.env.NEXT_PUBLIC_ADMIN_EMAIL as string);
+      form.setValue(
+        "password",
+        process.env.NEXT_PUBLIC_ADMIN_PASSWORD as string
+      );
+    } else if (role === "user") {
+      form.setValue("email", process.env.NEXT_PUBLIC_USER_EMAIL as string);
+      form.setValue(
+        "password",
+        process.env.NEXT_PUBLIC_USER_PASSWORD as string
+      );
+    }
+  };
+
   return (
     <div className="grid place-items-center h-screen mx-auto w-full lg:max-w-6xl ">
       <Container>
@@ -89,10 +107,31 @@ const AuthForm = ({ type }: { type: FormType }) => {
                 : "Create an account to get started."}
             </p>
 
+            {isSignIn && (
+              <div className="flex gap-x-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => handleManualLogin("admin")}
+                  className="cursor-pointer"
+                >
+                  Login as Admin
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => handleManualLogin("user")}
+                  className="cursor-pointer"
+                >
+                  Login as User
+                </Button>
+              </div>
+            )}
+
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="w-full space-y-4 mt-4 form"
+                className="w-full space-y-4 mt-1 form"
               >
                 {!isSignIn && (
                   <FormField
@@ -112,7 +151,6 @@ const AuthForm = ({ type }: { type: FormType }) => {
                   placeholder="Your email address"
                   type="email"
                   className="mb-1"
-
                 />
 
                 <FormField
@@ -122,7 +160,6 @@ const AuthForm = ({ type }: { type: FormType }) => {
                   placeholder="Enter your password"
                   type="password"
                   className="mb-1"
-
                 />
 
                 <Button className="btn" type="submit">

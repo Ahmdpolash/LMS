@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useCurrentUserQuery } from "@/redux/features/auth/authApi";
 import Link from "next/link";
 import { format } from "timeago.js";
+import { Button } from "@/components/ui/button";
 
 // Course type definition
 type Course = {
@@ -24,11 +25,8 @@ export default function MyCourses() {
   const { data } = useCurrentUserQuery({});
   const courseInfo = data?.data;
 
-
-
   const [filter, setFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
-
 
   return (
     <div className="  bg-gray-300/50 dark:bg-[#151d33] shadow-md dark:shadow-xl border border-slate-400 dark:border-slate-700 rounded-lg text-white p-4 md:p-6  mx-auto min-h-[calc(100vh-260px)]">
@@ -99,7 +97,6 @@ export default function MyCourses() {
 
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm text-black dark:text-white">
-                     
                       <span>0% complete</span>
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-1.5">
@@ -113,9 +110,7 @@ export default function MyCourses() {
                   <div className="flex items-center justify-between text-xs text-black dark:text-gray-400">
                     <div className="flex items-center gap-1">
                       <Clock className="h-3 w-3" />
-                      <span>
-                        Purchased: {format(course?.courseId?.purchasedDate)}
-                      </span>
+                      <span>Purchased: {format(course?.purchasedDate)}</span>
                     </div>
                   </div>
 
@@ -136,10 +131,21 @@ export default function MyCourses() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <p className="text-slate-700 dark:text-gray-400">
-             You have not enrolled in any course
-            </p>
+          <div className="text-center py-16">
+            <div className="bg-gray-100 dark:bg-[#1a2342]/50 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <Search className="h-8 w-8 text-gray-400" />
+            </div>
+            <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2">
+              You have not enrolled in any Course yet
+            </h3>
+            <Link href={"/courses"}>
+              <Button
+                variant={"outline"}
+                className="mt-3 bg-black dark:bg-blue-700  dark:text-white hover:bg-blue-500 cursor-pointer hover:text-white"
+              >
+                Enroll Now
+              </Button>
+            </Link>
           </div>
         )}
       </div>
