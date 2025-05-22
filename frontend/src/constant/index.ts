@@ -30,10 +30,10 @@ export const NavItem = [
     name: "FAQ",
     path: "/faq",
   },
-  {
-    name: "My Courses",
-    path: "/dashboard/my-course",
-  },
+  // {
+  //   name: "My Courses",
+  //   path: "/dashboard/my-course",
+  // },
 ];
 
 export const AdminSidebarItem = {

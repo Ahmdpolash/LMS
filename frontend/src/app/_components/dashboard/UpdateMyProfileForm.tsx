@@ -115,7 +115,7 @@ const UpdateMyProfileForm = ({
             id="avatar"
             name="avatar"
             onChange={imageHandler}
-            accept="image/png,image/jpeg,image/jpg,image/webp"
+            accept="image/png,image/jpeg,image/jpg,image/webp image/avif"
             className="hidden"
           />
 
