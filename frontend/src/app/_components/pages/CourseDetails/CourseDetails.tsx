@@ -64,8 +64,14 @@ export default function CourseDetails({ slug }: { slug: string }) {
   const { data, isLoading } = useGetSingleCourseQuery(slug);
   const { data: allCourse } = useGetAllCoursesQuery({});
   const [courseInfo, setCurseInfo] = useState<any>();
-  const { data: user } = useCurrentUserQuery({});
+  const { data: userData } = useCurrentUserQuery({});
+  const [user, setUser] = useState<any>();
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setUser(userData?.data);
+  }, [user]);
+
   //set data on state
   useEffect(() => {
     if (data) {
@@ -76,7 +82,7 @@ export default function CourseDetails({ slug }: { slug: string }) {
 
   const isPurchased =
     user &&
-    user?.data?.courses?.find(
+    user?.courses?.find(
       (item: any) => item?.courseId?._id === courseInfo?._id?.toString()
     );
 
@@ -101,7 +107,7 @@ export default function CourseDetails({ slug }: { slug: string }) {
 
       createPayment(amount);
     }
-  }, [config, courseInfo]);
+  }, [config, courseInfo, createPayment]);
 
   useEffect(() => {
     if (paymentInfo) {
@@ -269,7 +275,7 @@ export default function CourseDetails({ slug }: { slug: string }) {
                         url={courseInfo?.demoUrl}
                         controls
                         width="100%"
-                        height="340px"
+                        height="280px"
                         className="rounded-md"
                       />
 
@@ -311,44 +317,52 @@ export default function CourseDetails({ slug }: { slug: string }) {
                           </Link>
                         ) : (
                           <>
-                            <Dialog>
-                              <DialogTrigger asChild>
+                            {user ? (
+                              <Dialog>
+                                <DialogTrigger asChild>
+                                  <Button className="w-full bg-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/80 text-white mb-3 cursor-pointer">
+                                    <ShoppingCart className="h-4 w-4 mr-2" />
+                                    Enroll Now
+                                  </Button>
+                                </DialogTrigger>
+                                <DialogContent className="bg-white text-black sm:max-w-[425px] lg:max-w-[500px] overflow-y-auto">
+                                  <DialogHeader>
+                                    <DialogTitle>
+                                      Complete Your Purchase
+                                    </DialogTitle>
+                                  </DialogHeader>
+                                  <div className="">
+                                    {stripePromise && clientSecret && (
+                                      <Elements
+                                        stripe={stripePromise}
+                                        options={{
+                                          clientSecret,
+                                          appearance: {
+                                            theme: "stripe",
+                                            variables: {
+                                              fontFamily: "inherit",
+                                              colorPrimary: "#007bff",
+                                            },
+                                          },
+                                        }}
+                                      >
+                                        <CheckOutForm
+                                          setOpen={setOpen}
+                                          courseInfo={courseInfo}
+                                        />
+                                      </Elements>
+                                    )}
+                                  </div>
+                                </DialogContent>
+                              </Dialog>
+                            ) : (
+                              <Link href="/sign-in">
                                 <Button className="w-full bg-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/80 text-white mb-3 cursor-pointer">
                                   <ShoppingCart className="h-4 w-4 mr-2" />
                                   Enroll Now
                                 </Button>
-                              </DialogTrigger>
-                              <DialogContent className="bg-white text-black sm:max-w-[425px] lg:max-w-[500px] overflow-y-auto">
-                                <DialogHeader>
-                                  <DialogTitle>
-                                    Complete Your Purchase
-                                  </DialogTitle>
-                                </DialogHeader>
-                                <div className="">
-                                  {stripePromise && clientSecret && (
-                                    <Elements
-                                      stripe={stripePromise}
-                                      options={{
-                                        clientSecret,
-
-                                        appearance: {
-                                          theme: "stripe",
-                                          variables: {
-                                            fontFamily: "inherit",
-                                            colorPrimary: "#007bff",
-                                          },
-                                        },
-                                      }}
-                                    >
-                                      <CheckOutForm
-                                        setOpen={setOpen}
-                                        courseInfo={courseInfo}
-                                      />
-                                    </Elements>
-                                  )}
-                                </div>
-                              </DialogContent>
-                            </Dialog>
+                              </Link>
+                            )}
 
                             <Button
                               variant="outline"

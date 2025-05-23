@@ -7,10 +7,11 @@ export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
     // baseUrl: process.env.NEXT_PUBLIC_API_URL,
-    // baseUrl: 'https://lms-backend-seven-ruddy.vercel.app/api/v1',
+    // baseUrl: 'https://lms-backend-zeta-opal.vercel.app/api/v1',
     baseUrl: "http://localhost:8000/api/v1",
     credentials: "include",
   }),
+
   tagTypes: tagTypesList,
 
   endpoints: (builder) => ({

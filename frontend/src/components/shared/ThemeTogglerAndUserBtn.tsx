@@ -14,24 +14,84 @@ import { usePathname, useRouter } from "next/navigation";
 import { persistor } from "@/redux/store";
 import { signOut, useSession } from "next-auth/react";
 
+
+
 const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
   const pathname = usePathname();
   const { user: customUser } = useAppSelector((state) => state.auth) as {
     user: any | null;
   };
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const user = customUser || session?.user || null;
 
   const router = useRouter();
-  const [logOut] = useLogoutMutation();
+  const [logOut, { isLoading: isBackendLoggingOut }] = useLogoutMutation();
+
+  // const handleLogOut = async () => {
+  //   await logOut({}); // Your backend logout
+  //   await persistor.purge(); // Clear Redux persisted store
+  //   await signOut({ redirect: false }); // Sign out from NextAuth
+  //   router.push("/"); // Redirect after logout
+  //   toast.success("Logged out successfully");
+  // };
 
   const handleLogOut = async () => {
-    await logOut({}); // Your backend logout
-    await persistor.purge(); // Clear Redux persisted store
-    await signOut({ redirect: false }); // Sign out from NextAuth
-    router.push("/"); // Redirect after logout
-    toast.success("Logged out successfully");
+    try {
+      // 1. Clear Redux store immediately
+      await persistor.purge();
+
+      // 2. Backend logout ONLY for custom users
+      if (customUser) {
+        await logOut({}).unwrap();
+      }
+
+      // 3. Sign out from NextAuth and redirect
+      await signOut({ redirect: false }); // 🔥 Critical Fix
+
+      // No need to manually redirect anymore
+      toast.success("Logged out successfully");
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Error logging out.");
+    }
   };
+
+ 
+  //   isLoggingOutFlag = true;
+
+  //   try {
+  //     // 1. Clear Redux persisted store immediately
+  //     await persistor.purge();
+
+  //     // 2. Perform backend logout (if applicable for custom users)
+  //     //    This is crucial: if your backend logout clears a server-side JWT or invalidates sessions,
+  //     //    it should run. If it's purely NextAuth (Google) session, it might not be strictly necessary
+  //     //    to await here if NextAuth handles the primary session.
+  //     if (customUser) {
+  //       // Only call backend logout if it's a custom user
+  //       await logOut({}).unwrap();
+  //     }
+
+  //     // 3. Sign out from NextAuth.js
+  //     //    It's important to await this to ensure the session cookie is cleared
+  //     //    and the client-side session state is updated by NextAuth.js.
+  //     await signOut({ redirect: false });
+
+  //     // 4. Redirect the user only AFTER everything is cleared
+  //     router.push("/");
+  //     toast.success("Logged out successfully");
+  //   } catch (error) {
+  //     console.error("Logout error:", error);
+  //     toast.error("An error occurred during logout.");
+  //     await persistor.purge();
+  //     await signOut({ redirect: false });
+  //   } finally {
+  //     // Small delay before resetting the flag to allow NextAuth cleanup to fully propagate
+  //     setTimeout(() => {
+  //       isLoggingOutFlag = false; // <--- RESET FLAG AFTER A SHORT DELAY
+  //     }, 500); // Adjust delay if needed
+  //   }
+  // };
 
   const [mounted, setMounted] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
@@ -95,9 +155,7 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
                     : ""
                 }`}
                 src={
-                  customUser
-                    ? customUser.avatar?.url || "/avatar.jpeg"
-                    : session?.user?.image || "/avatar.jpeg"
+                  user?.avatar?.url || session?.user?.image || "/avatar.jpeg"
                 }
                 alt="user-profile-image"
               />
@@ -114,11 +172,9 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
                   width={60}
                   height={60}
                   className="cursor-pointer size-16 rounded-full bg-slate-500 object-cover duration-500 hover:scale-x-[98%] hover:opacity-80"
-                  src={
-                    customUser
-                      ? customUser.avatar?.url || "/avatar.jpeg"
-                      : session?.user?.image || "/avatar.jpeg"
-                  }
+                   src={
+                  user?.avatar?.url || session?.user?.image || "/avatar.jpeg"
+                }
                   alt="user-profile"
                 />
 
@@ -171,6 +227,7 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
 
                 <Button
                   onClick={handleLogOut}
+                  disabled={isBackendLoggingOut || status === "loading"}
                   className="cursor-pointer text-white  dark:bg-gradient-to-r from-purple-500 to-blue-500"
                 >
                   Log Out

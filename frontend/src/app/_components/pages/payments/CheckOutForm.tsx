@@ -18,7 +18,7 @@ type TProps = {
 const CheckOutForm = ({ setOpen, courseInfo }: TProps) => {
   const stripe = useStripe();
   const elements = useElements();
-  console.log(elements, "ee");
+  
   const [message, setMessage] = useState<string | undefined>(undefined);
 
   const [createOrder, { data: orderData, error }] = useCreateOrderMutation();
@@ -87,7 +87,7 @@ const CheckOutForm = ({ setOpen, courseInfo }: TProps) => {
         toast.error(errorMessage.data.message);
       }
     }
-  }, [orderData, error]);
+  }, [orderData, error,courseInfo._id]);
 
   return (
     <div>

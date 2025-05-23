@@ -15,7 +15,7 @@ const DesktopMenu = () => {
 
   if (user && user?.role !== "admin") {
     navItems.push({
-      name: "My Class",
+      name: "My Classes",
       path: "/dashboard/my-course",
     });
   }

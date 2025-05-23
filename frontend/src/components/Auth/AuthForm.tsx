@@ -188,7 +188,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
               }}
               variant="outline"
               className="cursor-pointer w-full flex items-center justify-center gap-2"
-              // disabled={loading} // Disable the button while loading
+              disabled={isGoogleLoading || isLoading} // Disable the button while loading
             >
               {isGoogleLoading ? (
                 <div className="w-6 h-6 border-4 border-t-4 border-transparent border-t-blue-500 rounded-full animate-spin"></div>

@@ -3,18 +3,19 @@
 import CustomLoading from "@/app/_components/CustomLoading";
 import MainCourseContent from "@/app/_components/pages/module/MainCourseContent";
 import { useCurrentUserQuery } from "@/redux/api/baseApi";
-import { redirect } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import React, { useEffect } from "react";
 
-type Props = {
-  params: Promise<{ id: string }>;
-};
+// type Props = {
+//   params: { id: string };
+// };
 
 // disbale console/ right click feature
 
-const CourseAccessPage = ({ params }: Props) => {
-  const { id } = React.use(params);
-
+const CourseAccessPage = () => {
+  const params = useParams();
+  const id = params?.id as string;
+  
   const { data, isLoading, error } = useCurrentUserQuery(undefined, {});
 
   useEffect(() => {

@@ -19,7 +19,6 @@ type verifyNumber = {
 
 export default function Otp() {
   const { token } = useAppSelector((state) => state.auth);
-  console.log("Redux token:", token);
 
   const [activation, { data, isSuccess }] = useActivationMutation();
   const router = useRouter();

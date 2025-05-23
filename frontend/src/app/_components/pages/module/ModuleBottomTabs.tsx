@@ -240,6 +240,7 @@ const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
               setQuestionId={setQuestionId}
               handleAnswerSubmit={handleAnswerSubmit}
               replyLoading={replyLoading}
+              session={session}
             />
           </div>
         </TabsContent>
@@ -321,7 +322,11 @@ const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
                     <div>
                       {item?.user?.avatar ? (
                         <Image
-                          src={item?.user?.avatar?.url || "/avatar.jpeg"}
+                          src={
+                            item?.user?.avatar?.url ||
+                            session?.user?.image ||
+                            "/avatar.jpeg"
+                          }
                           height={50}
                           width={50}
                           alt="user"
@@ -368,6 +373,7 @@ const CommentReply = ({
   setQuestionId,
   handleAnswerSubmit,
   replyLoading,
+  session,
 }: any) => {
   return (
     <>
@@ -381,6 +387,7 @@ const CommentReply = ({
             setQuestionId={setQuestionId}
             handleAnswerSubmit={handleAnswerSubmit}
             replyLoading={replyLoading}
+            session={session}
           />
         ))}
       </div>
@@ -395,6 +402,7 @@ const CommentItem = ({
   setQuestionId,
   handleAnswerSubmit,
   replyLoading,
+  session,
 }: any) => {
   const [isReplyActive, setIsReplyActive] = useState(false);
 
@@ -403,7 +411,10 @@ const CommentItem = ({
       <div className="my-4">
         <div className="flex mb-2">
           <Image
-            src={item?.user?.avatar?.url || "/avatar.jpeg"}
+            // src={item?.user?.avatar?.url || "/avatar.jpeg"}
+            src={
+              item?.user?.avatar?.url || session?.user?.image || "/avatar.jpeg"
+            }
             height={50}
             width={50}
             alt="user"

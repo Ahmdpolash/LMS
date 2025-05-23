@@ -41,29 +41,54 @@ export default function Navbar() {
   const { user } = useAppSelector((state) => state.auth) as {
     user: TUser | null;
   };
-  const [socialAuth, { isSuccess }] = useSocialLoginMutation();
+  const [socialAuth, { isSuccess, isLoading: isSocialAuthLoading }] =
+    useSocialLoginMutation();
 
-  const { data } = useSession();
+  const { data: session, status } = useSession();
 
   useEffect(() => {
-    if (!user) {
-      if (data) {
-        socialAuth({
-          name: data?.user?.name,
-          email: data?.user?.email,
-          avatar: data?.user?.image,
-        });
-      }
+    // Only attempt social login if:
+    // 1. NextAuth session data is available (user logged in via Google)
+    // 2. Your custom Redux user state is empty (meaning they haven't been processed by your backend yet)
+    // 3. The NextAuth session status is 'authenticated' (ensures it's a stable, active session)
+    // 4. We are not currently in the process of a social login
+    if (
+      session?.user &&
+      !user &&
+      status === "authenticated" &&
+      !isSocialAuthLoading
+    ) {
+      socialAuth({
+        name: session.user.name,
+        email: session.user.email,
+        avatar: session.user.image,
+      });
     }
 
-    if (isSuccess) {
-      toast.success("Login Successfully");
-    }
-
-    // if (data === null) {
-    //   logOut({});
+    // if (isSuccess) {
+    //   toast.success("Login Successfully");
     // }
-  }, [data, isSuccess, socialAuth, user]);
+  }, [session, socialAuth, user, status, isSocialAuthLoading]); // Added session, status, isSocialAuthLoading to dependencies
+
+  // useEffect(() => {
+  //   if (!user) {
+  //     if (data) {
+  //       socialAuth({
+  //         name: data?.user?.name,
+  //         email: data?.user?.email,
+  //         avatar: data?.user?.image,
+  //       });
+  //     }
+  //   }
+
+  //   if (isSuccess) {
+  //     toast.success("Login Successfully");
+  //   }
+
+  //   // if (data === null) {
+  //   //   logOut({});
+  //   // }
+  // }, [data, isSuccess, socialAuth, user]);
 
   return (
     <header

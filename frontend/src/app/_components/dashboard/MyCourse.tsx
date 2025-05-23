@@ -22,7 +22,7 @@ type Course = {
 };
 
 export default function MyCourses() {
-  const { data } = useCurrentUserQuery({});
+  const { data, isLoading } = useCurrentUserQuery({});
   const courseInfo = data?.data;
 
   const [filter, setFilter] = useState("all");
@@ -68,6 +68,15 @@ export default function MyCourses() {
         <div className="h-px bg-gray-700/50" />
 
         {/* Courses Grid */}
+
+        {
+          isLoading && (
+            <div className="flex justify-center items-center ">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+            </div>
+          )
+        }
+
         {courseInfo?.courses?.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
             {courseInfo.courses?.map((course: any, idx: number) => (

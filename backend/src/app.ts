@@ -9,14 +9,10 @@ import router from "./routes";
 
 const app: Application = express();
 
-
 // cors origin
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://elearning-seven-kappa.vercel.app",
-    ],
+    origin: ["http://localhost:3000", "https://elearning-two-black.vercel.app"],
     credentials: true,
   })
 );
@@ -25,8 +21,7 @@ app.use(express.json());
 app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
 
-
-// api limiter 
+// api limiter
 // const limiter = rateLimit({
 //   windowMs: 15 * 60 * 1000, // 15 minutes
 //   limit: 100,

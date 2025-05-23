@@ -23,7 +23,7 @@ const LoginUser = catchAsync(async (req, res) => {
     secure: false,
     //for deployment
     // sameSite: "none",
-    //secure: true
+    // secure: true
   });
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
@@ -32,7 +32,7 @@ const LoginUser = catchAsync(async (req, res) => {
 
     //for deployment
     // sameSite: "none",
-    //secure: true
+    // secure: true
   });
 
   res.status(200).json({
