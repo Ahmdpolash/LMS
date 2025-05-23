@@ -2,6 +2,7 @@ import "../globals.css";
 
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/home/Footer";
+import ScrollToTop from "@/components/ScrollToTop";
 // import SmoothFollower from "@/hooks/use-mouse";
 
 export default function UserLayout({
@@ -17,6 +18,7 @@ export default function UserLayout({
         <Navbar />
         {children}
         <Footer />
+        <ScrollToTop />
         {/* <SmoothFollower/> */}
       </div>
     </>
