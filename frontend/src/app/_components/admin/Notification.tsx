@@ -6,11 +6,47 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  useGetNotificationsQuery,
+  useUpdateNotificationStatusMutation,
+} from "@/redux/features/notification/notificationApi";
 import { Bell } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+import socketIO from "socket.io-client";
+import { format } from "timeago.js";
+const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_API_URL_LOCAL || "";
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 const Notification = () => {
+  const [notification, setNotification] = useState<any>([]);
+  const [audio] = useState(
+    new Audio(
+      "https://res.cloudinary.com/dylvitw9y/video/upload/v1748031862/odhpfqthe2nkmoclnbka.wav"
+    )
+  );
+  const { data, refetch } = useGetNotificationsQuery({});
+
+  const [updateNotificationStatus] = useUpdateNotificationStatusMutation();
+  console.log(notification);
+
+  const playerNotificationSound = () => {
+    audio.play();
+  };
+
+  useEffect(() => {
+    socketId.on("newNotification", (data: any) => {
+      playerNotificationSound();
+      refetch();
+      setNotification(data);
+    });
+  }, []);
+
+  const handleNotificationStatusChange = async (id: string) => {
+    await updateNotificationStatus(id);
+  };
+
   const [notifications, setNotifications] = useState([
     {
       id: 1,
@@ -76,10 +112,10 @@ const Notification = () => {
             )}
           </div>
           <div className="max-h-[300px] overflow-y-auto">
-            {notifications.length > 0 ? (
-              notifications.map((notification) => (
+            {data?.data?.length > 0 ? (
+              data?.data?.map((notification: any, idx: number) => (
                 <div
-                  key={notification.id}
+                  key={idx}
                   className={`p-4 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 ${
                     !notification.read
                       ? "bg-blue-50/50 dark:bg-blue-900/10"
@@ -89,7 +125,7 @@ const Notification = () => {
                 >
                   <div className="flex justify-between items-start mb-1">
                     <h4 className="font-medium text-sm">
-                      {notification.title}
+                      {notification?.title}
                     </h4>
                     {!notification.read && (
                       <Badge className="bg-[rgb(37,150,190)] text-white text-[10px] px-1.5">
@@ -98,16 +134,16 @@ const Notification = () => {
                     )}
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {notification.message}
+                    {notification?.message}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
-                    {notification.time}
+                    {format(notification?.createdAt)}
                   </p>
                 </div>
               ))
             ) : (
               <div className="p-4 text-center text-gray-500 dark:text-gray-400">
-                No notifications
+                No notifications Yet
               </div>
             )}
           </div>

@@ -15,6 +15,11 @@ import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { toast } from "sonner";
 import { format } from "timeago.js";
 
+// socket io
+import socketIO from "socket.io-client";
+const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_API_URL_LOCAL || "";
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
+
 const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
   const [addQuestion, { isLoading }] = useAddQuestionMutation();
   const [addReply, { isLoading: replyLoading }] = useReplyQuestionMutation();
@@ -50,6 +55,12 @@ const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
       if (res?.data?.success) {
         setQuestion("");
         toast.success("Question added successfully!");
+
+        socketId.emit("notification", {
+          title: "New Question Received",
+          message: `You have a new question in ${allContent[activeVideo]?.title}`,
+          userId: data?.data?._id,
+        });
       }
     } catch (error) {
       toast.error("Something went wrong! Please try again or contact support.");
@@ -75,6 +86,14 @@ const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
       if (res?.data?.success) {
         setAnswer("");
         toast.success("Answer added successfully!");
+
+        if (data?.data?.role !== "admin") {
+          socketId.emit("notification", {
+            title: "New Reply Received",
+            message: `You have a new question reply in ${allContent[activeVideo]?.title}`,
+            userId: data?.data?._id,
+          });
+        }
       }
     } catch (error) {
       toast.error("Something went wrong! Please try again or contact support.");
@@ -100,6 +119,12 @@ const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
         refetch();
         setReview("");
         toast.success("Review added successfully!");
+
+        socketId.emit("notification", {
+          title: "New Review Received",
+          message: `You have a new review in ${allContent[activeVideo]?.title}`,
+          userId: data?.data?._id,
+        });
       } else {
         if (error) {
           if ("data" in error) {
@@ -197,11 +222,9 @@ const ModuleBottomTabs = ({ activeVideo, allContent, data, id }: any) => {
           <div className="flex w-full mt-3">
             <Image
               src={
-                customUser
-                  ? customUser?.data?.avatar?.url ||
-                    customUser?.user?.image ||
-                    "/avatar.jpeg" // Check customUser for avatar.url then image
-                  : "/avatar.jpeg"
+                data?.data?.avatar?.url ||
+                session?.user?.image ||
+                "/avatar.jpeg"
               }
               height={50}
               width={50}

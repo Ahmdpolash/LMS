@@ -10,15 +10,21 @@ import { redirect } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
+// socket io 
+import socketIO from "socket.io-client";
+const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_API_URL_LOCAL || "";
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
+
 type TProps = {
   setOpen: any;
   courseInfo: any;
+  user: any;
 };
 
-const CheckOutForm = ({ setOpen, courseInfo }: TProps) => {
+const CheckOutForm = ({ setOpen, courseInfo, user }: TProps) => {
   const stripe = useStripe();
   const elements = useElements();
-  
+
   const [message, setMessage] = useState<string | undefined>(undefined);
 
   const [createOrder, { data: orderData, error }] = useCreateOrderMutation();
@@ -79,6 +85,13 @@ const CheckOutForm = ({ setOpen, courseInfo }: TProps) => {
   useEffect(() => {
     if (orderData) {
       setLoadUser(true);
+
+      socketId.emit("notification", {
+        title: "New Order",
+        message: `You have a new order from ${orderData?.data?.name}`,
+        userId: user._id,
+      });
+
       redirect(`/course-access/${courseInfo._id}`);
     }
     if (error) {
@@ -87,7 +100,7 @@ const CheckOutForm = ({ setOpen, courseInfo }: TProps) => {
         toast.error(errorMessage.data.message);
       }
     }
-  }, [orderData, error,courseInfo._id]);
+  }, [orderData, error, courseInfo._id]);
 
   return (
     <div>
@@ -96,7 +109,8 @@ const CheckOutForm = ({ setOpen, courseInfo }: TProps) => {
 
         <details className="text-sm my-2">
           <summary className="cursor-pointer text-blue-600 dark:text-red-400 ">
-            <strong>Click Here </strong> <i>to use test card (copy and paste )</i>
+            <strong>Click Here </strong>{" "}
+            <i>to use test card (copy and paste )</i>
           </summary>
           <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded mt-1">
             <p>
@@ -111,7 +125,6 @@ const CheckOutForm = ({ setOpen, courseInfo }: TProps) => {
           </div>
         </details>
         <PaymentElement id="payment-element" />
-
 
         <button
           disabled={isLoading || !stripe || !elements}

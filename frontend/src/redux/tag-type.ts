@@ -3,6 +3,13 @@ export enum tagTypes {
   user = "user",
   layout = "layout",
   order = "order",
+  notification = "notification",
 }
 
-export const tagTypesList = [tagTypes.course, tagTypes.user, tagTypes.layout, tagTypes.order];
+export const tagTypesList = [
+  tagTypes.course,
+  tagTypes.user,
+  tagTypes.layout,
+  tagTypes.order,
+  tagTypes.notification,
+];

@@ -350,7 +350,8 @@ export default function CourseDetails({ slug }: { slug: string }) {
                                       >
                                         <CheckOutForm
                                           setOpen={setOpen}
-                                          courseInfo={courseInfo}
+                                              courseInfo={courseInfo}
+                                              user={user}
                                         />
                                       </Elements>
                                     )}
