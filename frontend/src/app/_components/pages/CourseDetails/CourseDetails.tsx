@@ -68,9 +68,11 @@ export default function CourseDetails({ slug }: { slug: string }) {
   const [user, setUser] = useState<any>();
   const [open, setOpen] = useState(false);
 
+
+
   useEffect(() => {
     setUser(userData?.data);
-  }, [user]);
+  }, [userData]);
 
   //set data on state
   useEffect(() => {
