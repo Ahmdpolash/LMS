@@ -25,16 +25,24 @@ import { useGetAllCoursesQuery } from "@/redux/features/course/courseApi";
 import Link from "next/link";
 import CardSkeleton from "@/components/shared/CardSkeleton";
 import { useGetAllLayoutByTypeQuery } from "@/redux/features/layout/layoutApi";
+import { useSearchParams } from "next/navigation";
 
 export default function CoursesPage() {
   const { data, isLoading } = useGetAllCoursesQuery({});
   const { data: categoriesData } = useGetAllLayoutByTypeQuery("Category", {});
-  const [category, setCategory] = useState("All");
-
   const categories = categoriesData?.data?.categories;
+  const [category, setCategory] = useState("All");
+  const searchParams = useSearchParams();
+  const categoryQuery = searchParams.get("Category");
   const [searchQuery, setSearchQuery] = useState("");
-
   const [sortBy, setSortBy] = useState<string>("popular");
+  console.log(categoryQuery, 'categoryQuery');
+  console.log(category, 'category');
+  useEffect(() => {
+    if (categoryQuery) {
+      setCategory(categoryQuery);
+    }
+  }, [categoryQuery]);
 
   // search and filtering
   const filteredAndSortedCourses = data?.data
@@ -188,7 +196,7 @@ export default function CoursesPage() {
 
             {filteredAndSortedCourses?.length === 0 && (
               <div>
-                <div className="text-center py-10 mx-auto flex justify-center items-center">
+                <div className="text-center py-16 mt-5 mx-auto flex justify-center items-center">
                   <div>
                     <div className="bg-gray-100 dark:bg-[#1a2342]/50 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                       <Search className="h-8 w-8 text-gray-400" />
