@@ -11,10 +11,11 @@ export default {
   redis_url: process.env.REDIS_URL,
   jwt: {
     jwt_access_token: process.env.JWT_ACCESS_SECRET,
-    jwt_access_token_expiresIn: process.env.JWT_ACCESS_SECRET_EXPIRES_IN,
+    jwt_access_token_expiresIn: "1m",
     jwt_refresh_token: process.env.JWT_REFRESH_SECRET,
-    jwt_refresh_token_expiresIn: process.env.JWT_REFRESH_SECRET_EXPIRES_IN,
+    jwt_refresh_token_expiresIn: "2m",
     activation_token: process.env.ACTIVATION_SECRET,
+    redis_session_expiresIn_seconds: 604800,
   },
   emailSender: {
     email: process.env.EMAIL,

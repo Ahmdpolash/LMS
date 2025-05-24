@@ -18,24 +18,25 @@ export interface ITokenOptions {
   httpOnly: boolean;
   secure?: boolean;
   sameSite?: boolean | "lax" | "strict" | "none";
+  path: string;
 }
 
-const accessTokenExpireDays =
-  Number(config.jwt.jwt_access_token_expiresIn) || 5;
-const refreshTokenExpireDays =
-  Number(config.jwt.jwt_refresh_token_expiresIn) || 30;
+// for testing
+const accessTokenExpireDays = 1 / (24 * 60);
+const refreshTokenExpireDays = 2 / (24 * 60);
+
+// const accessTokenExpireDays = 1;
+// const refreshTokenExpireDays = 30;
 
 // Access Token Cookie Options
 export const accessTokenOptions: ITokenOptions = {
-  expires: new Date(Date.now() + accessTokenExpireDays * 24 * 60 * 60 * 1000), // 24 BAD JABE
-  maxAge: accessTokenExpireDays * 24 * 60 * 60 * 1000, // 24 BAD JABE
+  expires: new Date(Date.now() + accessTokenExpireDays * 24 * 60 * 60 * 1000),
+  maxAge: accessTokenExpireDays * 24 * 60 * 60 * 1000,
   httpOnly: true,
-  // secure: config.node_env === "production",
-  sameSite: "lax",
-  secure: false,
-  //for deployment
-  // sameSite: "none",
-  // secure: true,
+  sameSite: config.node_env === "production" ? "none" : "lax",
+  secure: config.node_env === "production" ? true : false,
+
+  path: "/",
 };
 
 // Refresh Token Cookie Options
@@ -43,11 +44,7 @@ export const refreshTokenOptions: ITokenOptions = {
   expires: new Date(Date.now() + refreshTokenExpireDays * 24 * 60 * 60 * 1000),
   maxAge: refreshTokenExpireDays * 24 * 60 * 60 * 1000,
   httpOnly: true,
-  // secure: config.node_env === "production",
-  sameSite: "lax",
-  secure: false,
-
-  //for deployment
-  // sameSite: "none",
-  // secure: true
+  sameSite: config.node_env === "production" ? "none" : "lax",
+  secure: config.node_env === "production" ? true : false,
+  path: "/",
 };

@@ -17,23 +17,8 @@ const LoginUser = catchAsync(async (req, res) => {
 
   // const isProduction = process.env.NODE_ENV === "production";
 
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: false,
-    //for deployment
-    // sameSite: "none",
-    // secure: true
-  });
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: false,
-
-    //for deployment
-    // sameSite: "none",
-    // secure: true
-  });
+  res.cookie("refreshToken", refreshToken, refreshTokenOptions);
+  res.cookie("accessToken", accessToken, accessTokenOptions);
 
   res.status(200).json({
     success: true,
@@ -51,16 +36,10 @@ const LogOut = catchAsync(async (req, res) => {
   const userId = req.user?._id;
 
   const result = await AuthServices.LogOut(userId);
-  const isProduction = process.env.NODE_ENV === "production";
+  // const isProduction = process.env.NODE_ENV === "production";
 
-  res.clearCookie("refreshToken", {
-    httpOnly: true,
-    secure: isProduction,
-  });
-  res.clearCookie("accessToken", {
-    httpOnly: true,
-    secure: isProduction,
-  });
+  res.clearCookie("accessToken");
+  res.clearCookie("refreshToken");
 
   res.status(200).json({
     success: true,

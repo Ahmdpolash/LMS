@@ -11,11 +11,11 @@ import {
   useUpdateNotificationStatusMutation,
 } from "@/redux/features/notification/notificationApi";
 import { Bell } from "lucide-react";
-import Link from "next/link";
+
 import React, { useEffect, useState } from "react";
 
 import socketIO from "socket.io-client";
-import { toast } from "sonner";
+
 import { format } from "timeago.js";
 const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_API_URL_LOCAL || "";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
@@ -24,7 +24,7 @@ const Notification = () => {
   const [notification, setNotification] = useState<any>([]);
   const [audio] = useState(
     new Audio(
-      "https://res.cloudinary.com/dylvitw9y/video/upload/v1748031862/odhpfqthe2nkmoclnbka.wav"
+      "https://res.cloudinary.com/dylvitw9y/video/upload/v1748105002/new-notification-3-323602_hn4fgp.mp3"
     )
   );
   const { data, refetch } = useGetNotificationsQuery({});
@@ -45,9 +45,8 @@ const Notification = () => {
 
   const unreadMessage = data?.data?.filter((n: any) => n?.status === "unread");
 
-
   const handleNotificationStatusChange = async (id: string) => {
-   await updateNotificationStatus(id);
+    await updateNotificationStatus(id);
 
     refetch();
   };
@@ -85,7 +84,7 @@ const Notification = () => {
                 <div
                   key={idx}
                   className={`p-4 border-b cursor-pointer border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 ${
-                    notification?.status === 'unread'
+                    notification?.status === "unread"
                       ? "bg-blue-50/50 dark:bg-blue-900/10"
                       : ""
                   }`}

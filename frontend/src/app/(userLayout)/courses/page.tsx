@@ -36,8 +36,7 @@ export default function CoursesPage() {
   const categoryQuery = searchParams.get("Category");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<string>("popular");
-  console.log(categoryQuery, 'categoryQuery');
-  console.log(category, 'category');
+
   useEffect(() => {
     if (categoryQuery) {
       setCategory(categoryQuery);

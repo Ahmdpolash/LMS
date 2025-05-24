@@ -26,14 +26,12 @@ const LoginUser = async (payload: ILogin) => {
     throw new AppError("user not found", httpStatus.NOT_FOUND);
   }
 
-  // check status of user
-  if (user) {
-    if (user?.status === "blocked") {
-      throw new AppError("User is blocked", httpStatus.FORBIDDEN);
-    }
-    if (user?.isDeleted) {
-      throw new AppError("User is deleted", httpStatus.FORBIDDEN);
-    }
+  // Check user status
+  if (user.status === "blocked" || user.isDeleted) {
+    throw new AppError(
+      user.status === "blocked" ? "User is blocked" : "User is deleted",
+      httpStatus.FORBIDDEN
+    );
   }
 
   // check the password
@@ -53,7 +51,7 @@ const LoginUser = async (payload: ILogin) => {
   const accessToken = jwtHelper.generateJwtToken(
     userData,
     config.jwt.jwt_access_token as string,
-    "3d"
+    config.jwt.jwt_access_token_expiresIn as string
   );
 
   const refreshToken = jwtHelper.generateJwtToken(
@@ -62,7 +60,12 @@ const LoginUser = async (payload: ILogin) => {
     config.jwt.jwt_refresh_token_expiresIn as string
   );
 
-  redis.set(user._id, JSON.stringify(user) as any);
+  await redis.set(
+    user._id.toString(),
+    JSON.stringify(user),
+    "EX",
+    config.jwt.redis_session_expiresIn_seconds || 30 * 24 * 60 * 60
+  );
 
   // storeSession(user);
 
@@ -118,7 +121,7 @@ const LogOut = async (id: string) => {
 //   };
 // };
 
- const UpdateAccessToken = async (token: string) => {
+const UpdateAccessToken = async (token: string) => {
   let decodedData;
 
   try {
