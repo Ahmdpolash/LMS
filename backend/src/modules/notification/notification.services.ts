@@ -5,7 +5,6 @@ import cron from "node-cron";
 
 const getAllNotification = async () => {
   const result = await Notification.find().sort({ createdAt: -1 }).lean();
-
   return result;
 };
 

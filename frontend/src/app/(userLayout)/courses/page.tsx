@@ -162,7 +162,7 @@ export default function CoursesPage() {
                   All
                 </div>
                 {categories &&
-                  categories.map((item: any, index: number) => (
+                  categories?.slice(0,5)?.map((item: any, index: number) => (
                     <div key={index}>
                       <div
                         className={`h-[35px] ${
