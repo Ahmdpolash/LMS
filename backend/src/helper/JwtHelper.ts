@@ -22,11 +22,11 @@ export interface ITokenOptions {
 }
 
 // for testing
-const accessTokenExpireDays = 1 / (24 * 60);
-const refreshTokenExpireDays = 2 / (24 * 60);
+// const accessTokenExpireDays = 1 / (24 * 60);
+// const refreshTokenExpireDays = 2 / (24 * 60);
 
-// const accessTokenExpireDays = 1;
-// const refreshTokenExpireDays = 30;
+const accessTokenExpireDays = 1;
+const refreshTokenExpireDays = 30;
 
 // Access Token Cookie Options
 export const accessTokenOptions: ITokenOptions = {
@@ -35,7 +35,6 @@ export const accessTokenOptions: ITokenOptions = {
   httpOnly: true,
   sameSite: config.node_env === "production" ? "none" : "lax",
   secure: config.node_env === "production" ? true : false,
-
   path: "/",
 };
 
