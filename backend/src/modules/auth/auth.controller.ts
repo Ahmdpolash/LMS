@@ -15,8 +15,6 @@ const LoginUser = catchAsync(async (req, res) => {
   const result = await AuthServices.LoginUser(req.body);
   const { refreshToken, accessToken, user } = result;
 
-  // const isProduction = process.env.NODE_ENV === "production";
-
   res.cookie("refreshToken", refreshToken, refreshTokenOptions);
   res.cookie("accessToken", accessToken, accessTokenOptions);
 

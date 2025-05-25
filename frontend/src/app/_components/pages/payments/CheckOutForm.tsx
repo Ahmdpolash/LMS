@@ -10,10 +10,13 @@ import { redirect } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-// socket io 
+// socket io
 import socketIO from "socket.io-client";
 // const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_API_URL || "";
-const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_API_URL_LOCAL || "";
+const ENDPOINT =
+  process.env.NODE_ENV === "production"
+    ? process.env.NEXT_PUBLIC_SOCKET_API_URL
+    : process.env.NEXT_PUBLIC_SOCKET_API_URL_LOCAL || "";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 type TProps = {

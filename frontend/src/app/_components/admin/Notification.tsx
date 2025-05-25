@@ -18,7 +18,10 @@ import socketIO from "socket.io-client";
 
 import { format } from "timeago.js";
 // const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_API_URL || "";
-const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_API_URL_LOCAL || "";
+const ENDPOINT =
+  process.env.NODE_ENV === "production"
+    ? process.env.NEXT_PUBLIC_SOCKET_API_URL
+    : process.env.NEXT_PUBLIC_SOCKET_API_URL_LOCAL || "";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 const Notification = () => {

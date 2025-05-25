@@ -18,8 +18,6 @@ import { toast } from "sonner";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 
-
-
 type FormType = "sign-up" | "sign-in";
 
 const authFormSchema = (type: FormType) => {
@@ -113,7 +111,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
                   type="button"
                   variant="outline"
                   onClick={() => handleManualLogin("admin")}
-                  className="cursor-pointer"
+                  className="cursor-pointer border border-[#4343bb] "
                 >
                   Login as Admin
                 </Button>
@@ -121,7 +119,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
                   type="button"
                   variant="outline"
                   onClick={() => handleManualLogin("user")}
-                  className="cursor-pointer"
+                  className="cursor-pointer  border-[#4343bb]"
                 >
                   Login as User
                 </Button>

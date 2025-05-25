@@ -6,12 +6,7 @@ import customFetchBaseQuery from "./customFetchBaseQuery";
 // Define a service using a base URL and expected endpoints
 export const baseApi = createApi({
   reducerPath: "baseApi",
-  // baseQuery: fetchBaseQuery({
-  //   // baseUrl: process.env.NEXT_PUBLIC_API_URL,
-  //   // baseUrl: 'https://lms-backend-zeta-opal.vercel.app/api/v1',
-  //   baseUrl: "http://localhost:8000/api/v1",
-  //   credentials: "include",
-  // }),
+
   baseQuery: customFetchBaseQuery,
 
   tagTypes: tagTypesList,

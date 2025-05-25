@@ -11,9 +11,20 @@ import { logout } from "../features/auth/authSlice";
 // Create a mutex to prevent multiple refresh token requests
 const mutex = new Mutex();
 
+const getBaseUrl = () => {
+  // Use the production API URL when deployed, otherwise use the local URL
+  if (process.env.NODE_ENV === "production") {
+    return (
+      process.env.NEXT_PUBLIC_API_URL ||
+      "https://lms-backend-zeta-opal.vercel.app/api/v1"
+    );
+  }
+  return process.env.NEXT_PUBLIC_API_URL_LOCAL;
+};
+
 const baseQuery = fetchBaseQuery({
   // baseUrl: process.env.NEXT_PUBLIC_API_URL,
-  baseUrl: process.env.NEXT_PUBLIC_API_URL_LOCAL,
+  baseUrl: getBaseUrl(),
   credentials: "include",
 });
 
