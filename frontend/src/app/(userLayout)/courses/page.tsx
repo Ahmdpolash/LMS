@@ -155,7 +155,7 @@ export default function CoursesPage() {
                 <div
                   className={`h-[35px] ${
                     category === "All" ? "bg-[crimson]" : "bg-[#5050cb] ]"
-                  } px-3  rounded-[25px] flex items-center justify-center font-Poppins cursor-pointer`}
+                  } px-3  rounded-[25px] flex items-center text-white justify-center font-Poppins cursor-pointer`}
                   onClick={() => setCategory("All")}
                 >
                   All
@@ -168,7 +168,7 @@ export default function CoursesPage() {
                           category === item?.title
                             ? "bg-[crimson]"
                             : "bg-[#5050cb]"
-                        } m- px-3 rounded-[30px] flex items-center justify-center font-Poppins cursor-pointer`}
+                        } m- px-3 rounded-[30px] text-white flex items-center justify-center font-Poppins cursor-pointer`}
                         onClick={() => setCategory(item?.title)}
                       >
                         {item?.title}

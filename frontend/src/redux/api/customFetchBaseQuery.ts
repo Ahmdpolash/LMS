@@ -12,8 +12,9 @@ import { logout } from "../features/auth/authSlice";
 const mutex = new Mutex();
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:8000/api/v1", // Your API URL
-  credentials: "include", // Ensure cookies are sent with requests
+  // baseUrl: process.env.NEXT_PUBLIC_API_URL,
+  baseUrl: process.env.NEXT_PUBLIC_API_URL_LOCAL,
+  credentials: "include",
 });
 
 const customFetchBaseQuery: BaseQueryFn<
@@ -45,8 +46,8 @@ const customFetchBaseQuery: BaseQueryFn<
         } else {
           // Refresh token is invalid or expired; log the user out
           api.dispatch(logout()); // Dispatch a logout action (you'll define this)
-        //   await persistor.purge();
-        //   window.location.href = "/sign-in"; // Redirect to sign-in page
+          //   await persistor.purge();
+          //   window.location.href = "/sign-in"; // Redirect to sign-in page
         }
       } finally {
         release();

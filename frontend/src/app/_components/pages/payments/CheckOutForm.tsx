@@ -12,6 +12,7 @@ import { toast } from "sonner";
 
 // socket io 
 import socketIO from "socket.io-client";
+// const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_API_URL || "";
 const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_API_URL_LOCAL || "";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 

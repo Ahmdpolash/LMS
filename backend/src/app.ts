@@ -45,6 +45,3 @@ app.use(notFound);
 
 export default app;
 
-/*
-https://lms-backend-seven-ruddy.vercel.app/
-*/
