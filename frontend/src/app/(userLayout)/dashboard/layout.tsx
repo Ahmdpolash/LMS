@@ -173,6 +173,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
 
             <div className="flex-1/2 overflow-x-auto">
               <ProtectedRoute>{children}</ProtectedRoute>
+              {/* {children} */}
             </div>
           </div>
         </Container>

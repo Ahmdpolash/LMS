@@ -268,10 +268,10 @@ export default function CoursesPage() {
                           {renderStars(course?.ratings)}
                         </div>
                         <span className="text-[rgb(37,150,190)] font-medium">
-                          {course?.ratings ? course?.ratings.toFixed(1) : ""}
+                          {course?.ratings ? course?.ratings.toFixed(1) : "" }
                         </span>
                         <span className="text-gray-500 dark:text-gray-400 text-sm ml-1">
-                          ({course?.reviews?.length} reviews)
+                          ({course?.reviews?.length || 0} reviews)
                         </span>
                       </div>
 
@@ -300,7 +300,7 @@ export default function CoursesPage() {
                             <div className="flex items-center justify-end text-gray-600 dark:text-gray-300 text-sm">
                               <Users className="h-4 w-4 mr-1" />
                               {/* <span>{course.students.toLocaleString()}</span> */}
-                              {course?.purchased}
+                              {course?.purchased || 0}
                             </div>
                             <div className="flex items-center justify-end text-gray-600 dark:text-gray-300 text-sm mt-1">
                               <BookOpen className="h-4 w-4 mr-1" />

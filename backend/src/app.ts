@@ -12,7 +12,7 @@ const app: Application = express();
 // cors origin
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://elearning-two-black.vercel.app"],
+    origin: ["http://localhost:3000", "https://elearning-academy.vercel.app"],
     credentials: true,
   })
 );

@@ -82,9 +82,9 @@ const LogOut = async (id: string) => {
     throw new AppError("Session not found", httpStatus.NOT_FOUND);
   }
 
-  // delete this user from redis
 
   await redis.del(id);
+  
   return { message: "User logged out successfully" };
 };
 

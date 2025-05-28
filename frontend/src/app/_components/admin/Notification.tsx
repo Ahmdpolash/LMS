@@ -35,8 +35,14 @@ const Notification = () => {
 
   const [updateNotificationStatus] = useUpdateNotificationStatusMutation();
 
+  // const playerNotificationSound = () => {
+  //   audio.play();
+  // };
+
   const playerNotificationSound = () => {
-    audio.play();
+    audio.play().catch((error) => {
+      console.log("Audio play blocked due to autoplay policy:", error);
+    });
   };
 
   useEffect(() => {

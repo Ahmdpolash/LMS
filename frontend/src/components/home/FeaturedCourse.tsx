@@ -75,7 +75,7 @@ export default function FeaturedCourse() {
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
               {data?.data?.length > 0 ? (
-                data?.data?.map((course: any) => (
+                data?.data?.slice(0, 6)?.map((course: any) => (
                   <Link key={course._id} href={`/courses/${course._id}`}>
                     <motion.div
                       className="cursor-pointer bg-white dark:bg-[#1a2342] rounded-xl overflow-hidden shadow-sm border border-gray-300 dark:border-gray-800 hover:shadow-lg transition-all duration-300 flex flex-col lg:h-[440px]"
@@ -127,7 +127,7 @@ export default function FeaturedCourse() {
                           </div>
 
                           <span className="text-gray-500 dark:text-gray-400 text-sm ml-1">
-                            {course?.ratings.toFixed(1)} 
+                            {course?.ratings?.toFixed(1) || "0.0"}{" "}
                           </span>
                           <span className="text-gray-500 dark:text-gray-400 text-sm ml-1">
                             ({course?.reviews?.length} reviews)

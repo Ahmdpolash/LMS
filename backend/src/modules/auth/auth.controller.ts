@@ -34,10 +34,9 @@ const LogOut = catchAsync(async (req, res) => {
   const userId = req.user?._id;
 
   const result = await AuthServices.LogOut(userId);
-  // const isProduction = process.env.NODE_ENV === "production";
 
-  res.clearCookie("accessToken");
-  res.clearCookie("refreshToken");
+  res.clearCookie("accessToken", accessTokenOptions);
+  res.clearCookie("refreshToken", refreshTokenOptions);
 
   res.status(200).json({
     success: true,

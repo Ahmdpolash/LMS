@@ -163,7 +163,7 @@ export default function PolicyPage() {
                   <p className="text-gray-700 dark:text-gray-300 mb-4">
                     Email: privacy@elearning.com
                     <br />
-                    Address: 7011 Vermont Ave, Los Angeles, CA 90044
+                    Address: Kurigram , Rangpur , Bangladesh
                   </p>
                 </div>
               </TabsContent>

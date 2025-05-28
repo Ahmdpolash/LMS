@@ -123,10 +123,10 @@ export default function CourseTable() {
                           {course?.name}
                         </TableCell>
                         <TableCell className="text-center">
-                          {renderStars(course?.ratings)}
+                          {renderStars(course?.ratings || 0)}
                         </TableCell>
                         <TableCell className="text-center">
-                          {course.purchased.toLocaleString()}
+                          {course.purchased?.toLocaleString() || 0}
                         </TableCell>
                         <TableCell className="text-center hidden md:table-cell">
                           {format(course?.createdAt)}

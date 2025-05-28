@@ -14,8 +14,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { persistor } from "@/redux/store";
 import { signOut, useSession } from "next-auth/react";
 
-
-
 const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
   const pathname = usePathname();
   const { user: customUser } = useAppSelector((state) => state.auth) as {
@@ -48,6 +46,9 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
       // 3. Sign out from NextAuth and redirect
       await signOut({ redirect: false }); // 🔥 Critical Fix
 
+      // 4. Navigate to the home page
+      router.push("/");
+
       // No need to manually redirect anymore
       toast.success("Logged out successfully");
     } catch (error) {
@@ -55,43 +56,6 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
       toast.error("Error logging out.");
     }
   };
-
- 
-  //   isLoggingOutFlag = true;
-
-  //   try {
-  //     // 1. Clear Redux persisted store immediately
-  //     await persistor.purge();
-
-  //     // 2. Perform backend logout (if applicable for custom users)
-  //     //    This is crucial: if your backend logout clears a server-side JWT or invalidates sessions,
-  //     //    it should run. If it's purely NextAuth (Google) session, it might not be strictly necessary
-  //     //    to await here if NextAuth handles the primary session.
-  //     if (customUser) {
-  //       // Only call backend logout if it's a custom user
-  //       await logOut({}).unwrap();
-  //     }
-
-  //     // 3. Sign out from NextAuth.js
-  //     //    It's important to await this to ensure the session cookie is cleared
-  //     //    and the client-side session state is updated by NextAuth.js.
-  //     await signOut({ redirect: false });
-
-  //     // 4. Redirect the user only AFTER everything is cleared
-  //     router.push("/");
-  //     toast.success("Logged out successfully");
-  //   } catch (error) {
-  //     console.error("Logout error:", error);
-  //     toast.error("An error occurred during logout.");
-  //     await persistor.purge();
-  //     await signOut({ redirect: false });
-  //   } finally {
-  //     // Small delay before resetting the flag to allow NextAuth cleanup to fully propagate
-  //     setTimeout(() => {
-  //       isLoggingOutFlag = false; // <--- RESET FLAG AFTER A SHORT DELAY
-  //     }, 500); // Adjust delay if needed
-  //   }
-  // };
 
   const [mounted, setMounted] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
@@ -172,9 +136,9 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
                   width={60}
                   height={60}
                   className="cursor-pointer size-16 rounded-full bg-slate-500 object-cover duration-500 hover:scale-x-[98%] hover:opacity-80"
-                   src={
-                  user?.avatar?.url || session?.user?.image || "/avatar.jpeg"
-                }
+                  src={
+                    user?.avatar?.url || session?.user?.image || "/avatar.jpeg"
+                  }
                   alt="user-profile"
                 />
 

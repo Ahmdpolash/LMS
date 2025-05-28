@@ -8,6 +8,7 @@ import { renderStars } from "./RenderStar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
+import { format } from "timeago.js";
 
 const TabsSection = ({ courseInfo }: any) => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -43,14 +44,7 @@ const TabsSection = ({ courseInfo }: any) => {
     }
   };
 
-  // Toggle curriculum section
-  // const toggleSection = (sectionIndex: number) => {
-  //   if (expandedSections.includes(sectionIndex)) {
-  //     setExpandedSections(expandedSections.filter((i) => i !== sectionIndex));
-  //   } else {
-  //     setExpandedSections([...expandedSections, sectionIndex]);
-  //   }
-  // };
+
 
   // Calculate rating distribution
   const ratingDistribution = [85, 10, 3, 1, 1]; // Percentage of 5, 4, 3, 2, 1 star reviews
@@ -251,35 +245,37 @@ const TabsSection = ({ courseInfo }: any) => {
               <div className="flex flex-col md:flex-row gap-6">
                 <div className="md:w-1/3 flex flex-col items-center justify-center">
                   <div className="text-5xl font-bold text-gray-900 dark:text-white mb-2">
-                    {courseData.rating}
+                    {courseInfo?.ratings}
                   </div>
                   <div className="flex mb-2">
-                    {renderStars(courseData.rating, "md")}
+                    {renderStars(courseInfo?.ratings, "md")}
                   </div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">
-                    Course Rating • {courseData.reviewCount} Reviews
+                    Course Rating • {courseInfo?.reviews?.length} Reviews
                   </div>
                 </div>
 
                 <div className="md:w-2/3">
                   <div className="space-y-2">
-                    {[5, 4, 3, 2, 1].map((star) => (
+                    {courseInfo?.reviews?.map((star: any) => (
                       <div key={star} className="flex items-center">
-                        <div className="w-12 text-sm text-gray-600 dark:text-gray-400">
-                          {star} stars
+                        <div className="w-12 text-sm  text-gray-600 dark:text-gray-400">
+                          {star?.rating} stars
                         </div>
                         <div className="w-full mx-3">
                           <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                             <div
                               className="h-full bg-[rgb(37,150,190)]"
                               style={{
-                                width: `${ratingDistribution[5 - star]}%`,
+                                width: `${
+                                  ratingDistribution[5 - star?.rating]
+                                }%`,
                               }}
                             ></div>
                           </div>
                         </div>
-                        <div className="w-12 text-right text-sm text-gray-600 dark:text-gray-400">
-                          {ratingDistribution[5 - star]}%
+                        <div className="w-8 text-right text-sm text-gray-600 dark:text-gray-400">
+                          {ratingDistribution[5 - star?.rating]}%
                         </div>
                       </div>
                     ))}
@@ -295,41 +291,41 @@ const TabsSection = ({ courseInfo }: any) => {
               </h3>
 
               <div className="space-y-6">
-                {courseData.reviews
-                  .slice(0, showMore ? courseData.reviews.length : 3)
-                  .map((review) => (
+                {courseInfo?.reviews
+                  .slice(0, showMore ? courseInfo?.reviews?.length : 3)
+                  .map((review: any, idx: number) => (
                     <div
-                      key={review.id}
+                      key={idx}
                       className="bg-white dark:bg-[#1a2342] rounded-xl p-6 border border-gray-100 dark:border-gray-800"
                     >
                       <div className="flex items-start">
                         <Avatar className="h-10 w-10 mr-4">
                           <AvatarImage
-                            src={courseInfo?.thumbnail?.url}
-                            alt={review.name}
+                            src={review?.user?.avatar?.url || "/avatar.jpeg"}
+                            alt={review?.user?.name}
                           />
                           <AvatarFallback>
-                            {review.name.charAt(0)}
+                            {review?.user?.name.charAt(0)}
                           </AvatarFallback>
                         </Avatar>
                         <div className="flex-1">
                           <div className="flex justify-between items-start">
                             <div>
                               <h4 className="font-medium text-gray-900 dark:text-white">
-                                {review.name}
+                                {review?.user?.name}
                               </h4>
                               <div className="flex items-center mt-1">
                                 <div className="flex mr-2">
-                                  {renderStars(review.rating)}
+                                  {renderStars(review?.rating)}
                                 </div>
                                 <span className="text-sm text-gray-500 dark:text-gray-400">
-                                  {review.date}
+                                  {format(review?.createdAt)}
                                 </span>
                               </div>
                             </div>
                           </div>
                           <p className="mt-3 text-gray-700 dark:text-gray-300">
-                            {review.comment}
+                            {review?.comment}
                           </p>
                         </div>
                       </div>
@@ -337,7 +333,7 @@ const TabsSection = ({ courseInfo }: any) => {
                   ))}
               </div>
 
-              {courseData.reviews.length > 3 && (
+              {courseInfo?.reviews?.length > 3 && (
                 <Button
                   variant="outline"
                   className="mt-6 mx-auto block"

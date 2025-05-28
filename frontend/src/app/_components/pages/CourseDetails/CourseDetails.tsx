@@ -68,8 +68,6 @@ export default function CourseDetails({ slug }: { slug: string }) {
   const [user, setUser] = useState<any>();
   const [open, setOpen] = useState(false);
 
-
-
   useEffect(() => {
     setUser(userData?.data);
   }, [userData]);
@@ -120,6 +118,10 @@ export default function CourseDetails({ slug }: { slug: string }) {
   const handleOrder = () => {
     setOpen(true);
   };
+
+
+  console.log(courseInfo, "allCourse");
+
 
   return (
     <div>
@@ -174,7 +176,7 @@ export default function CourseDetails({ slug }: { slug: string }) {
                           {courseInfo?.ratings}
                         </span>
                         <span className="dark:text-gray-300 ml-1">
-                          ({courseInfo?.reviews?.length} reviews)
+                          ({courseInfo?.reviews?.length || 0} reviews)
                         </span>
                       </div>
 
@@ -350,8 +352,8 @@ export default function CourseDetails({ slug }: { slug: string }) {
                                       >
                                         <CheckOutForm
                                           setOpen={setOpen}
-                                              courseInfo={courseInfo}
-                                              user={user}
+                                          courseInfo={courseInfo}
+                                          user={user}
                                         />
                                       </Elements>
                                     )}
@@ -517,10 +519,10 @@ export default function CourseDetails({ slug }: { slug: string }) {
                                     {renderStars(course?.ratings)}
                                   </div>
                                   <span className="text-xs text-[rgb(37,150,190)]">
-                                    {course?.ratings}
+                                    {course?.ratings || 0}
                                   </span>
                                   <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
-                                    ({course?.reviews.length})
+                                    ({course?.reviews?.length || 0} reviews)
                                   </span>
                                 </div>
                                 <div className="flex items-center">

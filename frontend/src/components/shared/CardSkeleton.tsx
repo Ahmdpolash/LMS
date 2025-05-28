@@ -35,7 +35,7 @@ const CardSkeleton = () => {
                   </div>
                 </div>
               </div>
-              <div className="h-10 bg-gray-200 block"></div>
+              <div className="h-10 bg-gray-200 block rounded-md"></div>
             </div>
           </div>
         </div>

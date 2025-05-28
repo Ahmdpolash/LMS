@@ -7,7 +7,7 @@ export default {
   db_uri: process.env.DATABASE_URI,
   port: process.env.SERVER_PORT,
   origin: process.env.ORIGIN,
-  node_env: process.env.NODE_ENV,
+  node_env: process.env.NODE_ENV || "development",
   redis_url: process.env.REDIS_URL,
   jwt: {
     jwt_access_token: process.env.JWT_ACCESS_SECRET,

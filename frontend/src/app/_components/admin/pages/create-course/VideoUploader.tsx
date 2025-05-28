@@ -19,6 +19,11 @@ export const VideoUploader = ({ label, onUpload }: Props) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (file.size > 100 * 1024 * 1024) {
+      toast.error("File size exceeds 100MB limit.");
+      return;
+    }
+
     setLoading(true);
     setUploadProgress(0);
     setUploadedUrl("");
@@ -34,6 +39,7 @@ export const VideoUploader = ({ label, onUpload }: Props) => {
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
+
           onUploadProgress: (e) => {
             const percent = Math.round((e.loaded * 100) / (e.total || 1));
             setUploadProgress(percent);
@@ -59,7 +65,10 @@ export const VideoUploader = ({ label, onUpload }: Props) => {
 
   return (
     <div className="flex flex-col space-y-2">
-      <label htmlFor="videoUpload" className="flex items-center justify-between">
+      <label
+        htmlFor="videoUpload"
+        className="flex items-center justify-between"
+      >
         {label}{" "}
         {uploadedUrl && (
           <div className="mt-2">

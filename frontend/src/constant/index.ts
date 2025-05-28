@@ -145,13 +145,13 @@ export const footerData = {
   ],
   quickLinks: [
     { name: "Courses", path: "/courses" },
-    { name: "My Account", path: "/my-account" },
-    { name: "Course Dashboard", path: "/course-dashboard" },
+    { name: "My Account", path: "/dashboard/my-profile" },
+    { name: "Course Dashboard", path: "/dashboard/my-course" },
   ],
   socialLinks: [
     {
       name: "Facebook",
-      path: "https://www.facebook.com/polashahmeddev",
+      path: "https://www.facebook.com/dev.polashahmed",
       icon: Youtube,
     },
     {
@@ -168,7 +168,7 @@ export const footerData = {
       value: "Kurigram,Bangladesh",
       icon: MapPin,
     },
-    { label: "Mail", value: "ahmedpolash732@gmail.com", icon: Mail },
+    { label: "Mail", value: "elearning@academy.com", icon: Mail },
   ],
   copyright: "Copyright © 2023 ELearning | All Rights Reserved",
 };

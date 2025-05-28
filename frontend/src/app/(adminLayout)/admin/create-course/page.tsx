@@ -56,7 +56,7 @@ const CreateCoursePage = () => {
   ]);
 
   const [courseData, setCourseData] = useState({});
-  console.log(courseContentData);
+
 
   const handleSubmit = async () => {
     //format benefit array
