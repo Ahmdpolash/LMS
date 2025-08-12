@@ -12,6 +12,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // experimental: {
+  //   typedRoutes: true,
+  // },
 
   // experimental: {
   //   reactRoot: true,

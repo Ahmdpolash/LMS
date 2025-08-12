@@ -171,7 +171,7 @@ const addQuestion = async (user: any, payload: IQuestionData) => {
   // Validate courseId
   if (!mongoose.Types.ObjectId.isValid(payload.courseId)) {
     throw new AppError(`Invalid Course Id: ${payload.courseId}`, 400);
-  }
+  } 
 
   const course = await Course.findById(payload.courseId);
 
@@ -187,6 +187,9 @@ const addQuestion = async (user: any, payload: IQuestionData) => {
   const courseContent = course.courseData.find((item: any) =>
     item._id.equals(payload.contentId)
   );
+
+
+
 
   if (!courseContent) {
     throw new AppError("Course Content not found", 404);

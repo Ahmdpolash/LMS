@@ -1,4 +1,3 @@
-
 import { ThemeProvider } from "@/components/theme-provider";
 import Providers from "@/lib/Providers";
 import React, { ReactNode, Suspense } from "react";
@@ -8,7 +7,6 @@ import Loading from "./(auth)/loading";
 import { Metadata } from "next";
 import { Josefin_Sans, Poppins } from "next/font/google";
 import Custom from "./_components/Custom";
-
 
 
 const poppins = Poppins({
@@ -29,8 +27,6 @@ export const metadata: Metadata = {
 };
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
- 
-
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body

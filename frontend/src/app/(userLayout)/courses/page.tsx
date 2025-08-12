@@ -16,6 +16,8 @@ import {
   ArrowRight,
   X,
   SlidersHorizontal,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import Container from "@/components/shared/Container";
 import { courses } from "@/constant";
@@ -36,6 +38,15 @@ export default function CoursesPage() {
   const categoryQuery = searchParams.get("Category");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<string>("popular");
+  const [currentPage, setCurrentPage] = useState(1);
+  const coursesPerPage = 6;
+
+  useEffect(() => {
+    if (categoryQuery) {
+      setCategory(categoryQuery);
+      setCurrentPage(1); // Reset to first page when category changes
+    }
+  }, [categoryQuery]);
 
   useEffect(() => {
     if (categoryQuery) {
@@ -102,6 +113,24 @@ export default function CoursesPage() {
     return stars;
   };
 
+  // Pagination calculations
+  const totalCourses = filteredAndSortedCourses?.length || 0;
+  const totalPages = Math.ceil(totalCourses / coursesPerPage);
+  const startIndex = (currentPage - 1) * coursesPerPage;
+  const endIndex = startIndex + coursesPerPage;
+  const paginatedCourses = filteredAndSortedCourses?.slice(
+    startIndex,
+    endIndex
+  );
+
+  // Handle page change
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="min-h-screen font-poppins">
       <div className="bg-white dark:bg-[#0C111B] min-h-screen transition-colors duration-200">
@@ -161,7 +190,7 @@ export default function CoursesPage() {
                   All
                 </div>
                 {categories &&
-                  categories?.slice(0,5)?.map((item: any, index: number) => (
+                  categories?.slice(0, 5)?.map((item: any, index: number) => (
                     <div key={index}>
                       <div
                         className={`h-[35px] ${
@@ -210,7 +239,9 @@ export default function CoursesPage() {
 
             {/* Course Grid */}
             {isLoading ? (
-              <CardSkeleton />
+              <div className="mt-4">
+                <CardSkeleton />
+              </div>
             ) : (
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -218,7 +249,7 @@ export default function CoursesPage() {
                 transition={{ duration: 0.8 }}
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8"
               >
-                {filteredAndSortedCourses?.map((course: any, idx: number) => (
+                {paginatedCourses?.map((course: any, idx: number) => (
                   <motion.div
                     key={idx}
                     className="bg-white dark:bg-[#1a2342] rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-all duration-300 flex flex-col lg:h-[440px]"
@@ -268,7 +299,7 @@ export default function CoursesPage() {
                           {renderStars(course?.ratings)}
                         </div>
                         <span className="text-[rgb(37,150,190)] font-medium">
-                          {course?.ratings ? course?.ratings.toFixed(1) : "" }
+                          {course?.ratings ? course?.ratings.toFixed(1) : ""}
                         </span>
                         <span className="text-gray-500 dark:text-gray-400 text-sm ml-1">
                           ({course?.reviews?.length || 0} reviews)
@@ -324,7 +355,55 @@ export default function CoursesPage() {
                     </div>
                   </motion.div>
                 ))}
+
+                {/* Pagination Controls */}
               </motion.div>
+            )}
+            {totalCourses > coursesPerPage && (
+              <div className="mt-8 flex justify-center items-center gap-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  Previous
+                </Button>
+
+                <div className="flex items-center gap-3 cursor-pointer">
+                  {Array.from({ length: totalPages }, (_, index) => (
+                    <Button
+                      key={index}
+                      variant={
+                        currentPage === index + 1 ? "default" : "outline"
+                      }
+                      size="sm"
+                      onClick={() => handlePageChange(index + 1)}
+                      disabled={currentPage === index + 1}
+                      className={
+                        currentPage === index + 1
+                          ? "bg-[rgb(37,150,190)] hover:bg-[rgb(37,150,190)]/80 cursor-pointer"
+                          : " cursor-pointer"
+                      }
+                    >
+                      {index + 1}
+                    </Button>
+                  ))}
+                </div>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  Next
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
             )}
           </main>
         </Container>

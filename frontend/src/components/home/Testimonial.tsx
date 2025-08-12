@@ -6,63 +6,69 @@ import SectionHeaders from "./SectionHeaders";
 import { renderStars } from "@/app/_components/pages/CourseDetails/RenderStar";
 
 export default function TestimonialsSection() {
-  const testimonials: any[] = [
-    {
-      id: 1,
-      name: "Gene Bates",
-      role: "Student",
-      organization: "Cambridge university",
-      image: "/u.jpg",
-      text: "I had the pleasure of exploring ELearning, a website that provides an extensive range of courses on various tech-related topics. I was thoroughly impressed with my experience, as the website offers a comprehensive selection of courses that cater to different skill levels and interests. If you're looking to enhance your knowledge and skills in the tech industry, I highly recommend checking out ELearning!",
-      rating: 4,
-    },
-    {
-      id: 2,
-      name: "Jay Gibbs",
-      role: "computer systems engineering student",
-      organization: "Zimbabwe",
-      image: "/u2.avif",
+const testimonials: any[] = [
+  {
+    id: 1,
+    name: "Gene Bates",
+    role: "Student",
+    organization: "Cambridge university",
+    image: "/u.jpg",
+    text: "I had the pleasure of exploring ELearning, a website that provides an extensive range of courses on various tech-related topics. I was thoroughly impressed with my experience, as the website offers a comprehensive selection of courses that cater to different skill levels and interests.",
+    rating: 4,
+  },
+  {
+    id: 2,
+    name: "Jay Gibbs",
+    role: "computer systems engineering student",
+    organization: "Zimbabwe",
+    image: "/u2.avif",
+    text: "Thanks for your amazing programming tutorial channel! Your teaching style is outstanding, and the quality of your tutorials is top-notch. Your ability to break down complex topics into manageable parts, and cover diverse programming languages and topics is truly impressive.",
+    rating: 4,
+  },
+  {
+    id: 3,
+    name: "Verna Santos",
+    role: "Full stack developer",
+    organization: "Quarter ltd.",
+    image: "/u3.avif",
+    text: "Thanks for your amazing programming tutorial channel! Your teaching style is outstanding, and the quality of your tutorials is top-notch. Your ability to break down complex topics into manageable parts, and cover diverse programming languages and topics is truly impressive. The practical applications and real-world examples you incorporate. ",
+    rating: 5,
+  },
+  {
+    id: 4.5,
+    name: "Mina Davidson",
+    role: "UX Designer",
+    organization: "Creative Solutions",
+    image: "/u4.jpg",
+    text: "The UI/UX Design Masterclass on this platform completely transformed my career. The instructor's teaching approach made complex design principles easy to understand and apply. and cover diverse programming languages and topics is truly impressive. The practical applications and real-world examples you incorporate. ",
+    rating: 3.5,
+  },
+  {
+    id: 5,
+    name: "Omar Khalid",
+    role: "Software Engineer",
+    organization: "TechNova",
+    image: "/u2.avif",
+    text: "Before enrolling in the LMS program, I struggled to keep up with the rapid pace of technological advancements. The structured curriculum, completely changed my approach to learning. The instructors' practical examples have been instrumental in my career growth. ",
+    rating: 5,
+  },
+  {
+    id: 6,
+    name: "Sophia Lee",
+    role: "Data Analyst",
+    organization: "Insight Analytics",
+    image: "/u3.avif",
+    text: "This platform exceeded my expectations in every possible way. The data analytics courses are not just theoretical; they are packed with practical case studies, hands-on projects, and datasets from real companies. The practical applications and real-world  you incorporate the theoretical knowledge. ",
+    rating: 4.5,
+  },
+  
+];
 
-      text: "Thanks for your amazing programming tutorial channel! Your teaching style is outstanding, and the quality of your tutorials is top-notch. Your ability to break down complex topics into manageable parts, and cover diverse programming languages and topics is truly impressive. The practical applications and real-world examples you incorporate reinforce the theoretical knowledge.",
-      rating: 4,
-    },
-    {
-      id: 3,
-      name: "Verna Santos",
-      role: "Full stack developer",
-      organization: "Quarter ltd.",
-      image: "/u3.avif",
 
-      text: "Thanks for your amazing programming tutorial channel! Your teaching style is outstanding, and the quality of your tutorials is top-notch. Your ability to break down complex topics into manageable parts, and cover diverse programming languages and topics is truly impressive. The practical applications and real-world examples you incorporate reinforce the theoretical knowledge and provide valuable insights.",
-      rating: 5,
-    },
-    {
-      id: 4.5,
-      name: "Mina Davidson",
-      role: "UX Designer",
-      organization: "Creative Solutions",
-      image: "/u4.jpg",
-
-      text: "The UI/UX Design Masterclass on this platform completely transformed my career. The instructor's teaching approach made complex design principles easy to understand and apply. Within weeks of completing the course, I was able to create more intuitive and visually appealing interfaces. The community support and feedback system also helped me refine my skills further.",
-      rating: 3.5,
-    },
-  ];
-
-  // const firstRow = testimonials.slice(0, testimonials.length / 2);
-  // const secondRow = testimonials.slice(testimonials.length / 2);
-
-  // Function to render stars
-  const renderStar = (count = 5) => {
-    return Array(count)
-      .fill(0)
-      .map((_, index) => (
-        <Star key={index} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-      ));
-  };
   return (
     <div className="border-b border-gray-400 dark:border-gray-700">
       <Container>
-        <section className="py-16 relative overflow-hidden ">
+        <section className="py-16 relative overflow-hidde ">
           {/* Background Elements */}
 
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
@@ -89,11 +95,11 @@ export default function TestimonialsSection() {
 
             {/*  card */}
             <div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+              <div className="columns-1 sm:columns-2 lg:columns-3 p-4 max-w-7xl mx-auto w-full space-y-4">
                 {testimonials.map((testimonial) => (
                   <div
                     key={testimonial.id}
-                    className="dark:bg-[#131c36]  rounded-lg p-6 shadow-lg border border-gray-400 dark:border-gray-700 h-full flex flex-col"
+                    className="dark:bg-[#131c36] rounded-lg p-6 shadow-lg border border-gray-400 dark:border-gray-700 break-inside-avoid "
                   >
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex items-center">
