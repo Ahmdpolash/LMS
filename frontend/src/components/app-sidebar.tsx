@@ -22,6 +22,8 @@ import { useAppSelector } from "@/redux/hooks";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAppSelector((state) => state.auth);
+  // const userInfo = localStorage.getItem("user");
+  // const user = userInfo ? JSON.parse(userInfo) : null;
 
   return (
     <Sidebar collapsible="icon" {...props}>

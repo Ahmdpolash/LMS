@@ -1,7 +1,11 @@
 "use client";
 
-import React, { ReactNode, useState } from "react";
+import { ReactNode, useState } from "react";
 
+import DesktopSidebar from "@/app/_components/dashboard/DesktopSidebar";
+import Container from "@/components/shared/Container";
+import ProtectedRoute from "@/hooks/userProtected";
+import { TUser } from "@/types";
 import {
   Book,
   LayoutDashboard,
@@ -11,31 +15,17 @@ import {
   SquareUser,
 } from "lucide-react";
 import Link from "next/link";
-import Container from "@/components/shared/Container";
-import sidebarRoutes from "@/constant/sidebar-routes";
 import { usePathname } from "next/navigation";
-import DesktopSidebar from "@/app/_components/dashboard/DesktopSidebar";
 import { useAppSelector } from "@/redux/hooks";
-import { TUser } from "@/types";
-import ProtectedRoute from "@/hooks/userProtected";
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   const { user } = useAppSelector((state) => state.auth) as {
     user: TUser | null;
   };
+  // const userInfo = localStorage.getItem("user");
+  // const user = userInfo ? JSON.parse(userInfo) : null;
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  // const [scroll, setScroll] = useState(false);
-
-  // if (typeof window !== "undefined") {
-  //   window.addEventListener("scroll", () => {
-  //     if (window.scrollY > 10) {
-  //       setScroll(true);
-  //     } else {
-  //       setScroll(false);
-  //     }
-  //   });
-  // }
 
   return (
     <div className="">
@@ -169,7 +159,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
 
         <Container>
           <div className="flex gap-4 lg:gap-7 lg:my-20 py-4">
-            <DesktopSidebar  user={user as TUser} />
+            <DesktopSidebar user={user as TUser} />
 
             <div className="flex-1/2 overflow-x-auto">
               <ProtectedRoute>{children}</ProtectedRoute>

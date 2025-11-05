@@ -43,6 +43,9 @@ const authApi = baseApi.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
+          // set the accessToken on localStorage
+          localStorage.setItem("accessToken", result.data.data.accessToken);
+          localStorage.setItem("user", JSON.stringify(result.data.data.user));
           dispatch(
             loggedUser({
               accessToken: result.data.data.accessToken,

@@ -32,6 +32,8 @@ export function NavUser({ user }: { user: TUser | null }) {
   const router = useRouter();
 
   const handleLogOut = async () => {
+    await localStorage.removeItem("accessToken");
+    await localStorage.removeItem("user");
     await logOut({}); // Your backend logout
     await persistor.purge(); // Clear Redux persisted store
     await signOut({ redirect: false }); // Sign out from NextAuth

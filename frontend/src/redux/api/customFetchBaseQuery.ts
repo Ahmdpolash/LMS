@@ -19,7 +19,7 @@ const getBaseUrl = () => {
       "https://lms-backend-zeta-opal.vercel.app/api/v1"
     );
   }
-  return process.env.NEXT_PUBLIC_API_URL_LOCAL;
+  return process.env.NEXT_PUBLIC_API_URL;
 };
 
 const baseQuery = fetchBaseQuery({

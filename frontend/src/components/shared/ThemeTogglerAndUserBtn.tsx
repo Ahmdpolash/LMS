@@ -1,24 +1,25 @@
 "use client";
-import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
-import MobileMenu from "./MobileMenu";
-import { Button } from "../ui/button";
-import { MenuIcon, Moon, Sun } from "lucide-react";
-import { useAppSelector } from "@/redux/hooks";
-import Image from "next/image";
-import { TUser } from "@/types";
 import { useLogoutMutation } from "@/redux/features/auth/authApi";
+import { useAppSelector } from "@/redux/hooks";
+import { MenuIcon, Moon, Sun } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { Button } from "../ui/button";
+import MobileMenu from "./MobileMenu";
 
-import { usePathname, useRouter } from "next/navigation";
 import { persistor } from "@/redux/store";
 import { signOut, useSession } from "next-auth/react";
+import { usePathname, useRouter } from "next/navigation";
 
 const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
   const pathname = usePathname();
   const { user: customUser } = useAppSelector((state) => state.auth) as {
     user: any | null;
   };
+  // const usersInfo = localStorage.getItem("user");
+  // const customUser = usersInfo ? JSON.parse(usersInfo) : null;
   const { data: session, status } = useSession();
   const user = customUser || session?.user || null;
 
@@ -26,15 +27,12 @@ const ThemeTogglerAndUserBtn = ({ setTheme, theme, toggleMenu, open }: any) => {
   const [logOut, { isLoading: isBackendLoggingOut }] = useLogoutMutation();
 
   // const handleLogOut = async () => {
-  //   await logOut({}); // Your backend logout
-  //   await persistor.purge(); // Clear Redux persisted store
-  //   await signOut({ redirect: false }); // Sign out from NextAuth
-  //   router.push("/"); // Redirect after logout
-  //   toast.success("Logged out successfully");
-  // };
+
 
   const handleLogOut = async () => {
     try {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("user");
       // 1. Clear Redux store immediately
       await persistor.purge();
 

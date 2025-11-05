@@ -8,7 +8,6 @@ import { Metadata } from "next";
 import { Josefin_Sans, Poppins } from "next/font/google";
 import Custom from "./_components/Custom";
 
-
 const poppins = Poppins({
   variable: "--font-Poppins",
   subsets: ["latin"],

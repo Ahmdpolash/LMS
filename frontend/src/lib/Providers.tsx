@@ -12,7 +12,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
     <Provider store={store}>
       <SessionProvider>
         <PersistGate loading={null} persistor={persistor}>
-          <DisableRightClick />
+          {/* <DisableRightClick /> */}
           {children}
         </PersistGate>
       </SessionProvider>
