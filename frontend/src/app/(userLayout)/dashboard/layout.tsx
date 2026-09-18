@@ -4,6 +4,7 @@ import { ReactNode, useState } from "react";
 
 import DesktopSidebar from "@/app/_components/dashboard/DesktopSidebar";
 import Container from "@/components/shared/Container";
+import Logo from "@/components/shared/Logo";
 import ProtectedRoute from "@/hooks/userProtected";
 import { TUser } from "@/types";
 import {
@@ -52,8 +53,8 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
             open ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
           } lg:hidden transition-all duration-500 fixed  z-[99999] border-r border-gray-600 shadow-lg backdrop-blur-sm transform h-full sm-device w-[320px] md:w-[390px] bg-white text-black top-0  left-0 dark:bg-[#0F1729]`}
         >
-          <div className="logo border-b py-4 border-slate-300 text-black dark:text-white pl-3 text-lg">
-            Elearning
+          <div className="logo border-b py-4 border-slate-300 dark:border-gray-800 px-4">
+            <Logo size="sm" />
           </div>
           <ul className="py-2 text-black dark:text-white  space-y-2">
             {user?.role === "admin" ? (

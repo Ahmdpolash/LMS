@@ -5,12 +5,9 @@ import React, { useEffect } from "react";
 import Loading from "../(auth)/loading";
 
 import socketIO from "socket.io-client";
-const ENDPOINT =
-  process.env.NODE_ENV === "production"
-    ? process.env.NEXT_PUBLIC_SOCKET_API_URL
-    : process.env.NEXT_PUBLIC_SOCKET_API_URL_LOCAL || "";
-// const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_API_URL || "";
-const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
+import { getSocketUrl } from "@/utils/endpoints";
+
+const socketId = socketIO(getSocketUrl(), { transports: ["websocket"] });
 
 const Custom = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {

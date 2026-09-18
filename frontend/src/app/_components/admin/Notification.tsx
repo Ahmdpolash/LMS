@@ -15,14 +15,10 @@ import { Bell } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 import socketIO from "socket.io-client";
+import { getSocketUrl } from "@/utils/endpoints";
 
 import { format } from "timeago.js";
-// const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_API_URL || "";
-const ENDPOINT =
-  process.env.NODE_ENV === "production"
-    ? process.env.NEXT_PUBLIC_SOCKET_API_URL
-    : process.env.NEXT_PUBLIC_SOCKET_API_URL_LOCAL || "";
-const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
+const socketId = socketIO(getSocketUrl(), { transports: ["websocket"] });
 
 const Notification = () => {
   const [notification, setNotification] = useState<any>([]);

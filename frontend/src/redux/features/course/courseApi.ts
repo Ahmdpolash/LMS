@@ -83,6 +83,16 @@ export const courseApi = baseApi.injectEndpoints({
         { type: tagTypes.course, id: arg.courseId },
       ],
     }),
+
+    updateCourseProgress: builder.mutation({
+      query: (data) => ({
+        url: "/course/update-progress",
+        method: "PUT",
+        body: data,
+        credentials: "include",
+      }),
+      invalidatesTags: [tagTypes.user, tagTypes.course],
+    }),
   }),
 });
 
@@ -95,4 +105,5 @@ export const {
   useAddQuestionMutation,
   useReplyQuestionMutation,
   useAddReviewMutation,
+  useUpdateCourseProgressMutation,
 } = courseApi;

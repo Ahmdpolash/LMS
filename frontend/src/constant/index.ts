@@ -163,14 +163,10 @@ export const footerData = {
   ],
   contactInfo: [
     { label: "Call Us", value: "+8801756213028", icon: Phone },
-    {
-      label: "Address",
-      value: "Kurigram,Bangladesh",
-      icon: MapPin,
-    },
+
     { label: "Mail", value: "elearning@academy.com", icon: Mail },
   ],
-  copyright: "Copyright © 2023 ELearning | All Rights Reserved",
+  copyright: "Copyright © 2026 ELearning | All Rights Reserved",
 };
 
 export const avatars = [

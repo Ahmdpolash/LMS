@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { loggedUser } from "../features/auth/authSlice";
-import { tagTypesList } from "../tag-type";
+import { tagTypes, tagTypesList } from "../tag-type";
 import customFetchBaseQuery from "./customFetchBaseQuery";
 
 // Define a service using a base URL and expected endpoints
@@ -25,6 +25,32 @@ export const baseApi = createApi({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: [tagTypes.user],
+      async onQueryStarted(arg, { queryFulfilled, dispatch, getState }) {
+        try {
+          const { data } = await queryFulfilled;
+          if (data?.data) {
+            const token =
+              (getState() as any).auth?.token ||
+              (typeof window !== "undefined"
+                ? localStorage.getItem("accessToken")
+                : null);
+
+            dispatch(
+              loggedUser({
+                accessToken: token,
+                user: data.data,
+              })
+            );
+
+            if (typeof window !== "undefined") {
+              localStorage.setItem("user", JSON.stringify(data.data));
+            }
+          }
+        } catch (error) {
+          // not logged in or invalid token
+        }
+      },
     }),
   }),
 });

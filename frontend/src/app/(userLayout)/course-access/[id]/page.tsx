@@ -3,37 +3,36 @@
 import CustomLoading from "@/app/_components/CustomLoading";
 import MainCourseContent from "@/app/_components/pages/module/MainCourseContent";
 import { useCurrentUserQuery } from "@/redux/api/baseApi";
-import { redirect, useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-// type Props = {
-//   params: { id: string };
-// };
-
-// disbale console/ right click feature
-
 const CourseAccessPage = () => {
+  const router = useRouter();
   const params = useParams();
   const id = params?.id as string;
   
-  const { data, isLoading, error } = useCurrentUserQuery(undefined, {});
+  const { data, isLoading, error } = useCurrentUserQuery({});
 
   useEffect(() => {
     if (error) {
-      redirect("/");
+      router.replace("/");
       return;
     }
 
-    if (!isLoading && data?.data?.courses) {
-      const isPurchased = data?.data?.courses?.find(
-        (item: any) => item.courseId?._id === id
-      );
+    if (!isLoading && data?.data) {
+      const user = data.data;
+      const isAdminOrInstructor =
+        user.role === "admin" || user.role === "instructor";
+      const isPurchased = user.courses?.some((item: any) => {
+        const userCourseId = item?.courseId?._id || item?.courseId || item;
+        return userCourseId?.toString() === id;
+      });
 
-      if (!isPurchased) {
-        redirect("/");
+      if (!isAdminOrInstructor && !isPurchased) {
+        router.replace("/");
       }
     }
-  }, [data, isLoading, error, id]);
+  }, [data, isLoading, error, id, router]);
 
   return (
     <div className="bg-gray-50 dark:bg-[#0C111B]  dark:bg-gradient-to-r from-[#0C111B] to-[#131c36] ">

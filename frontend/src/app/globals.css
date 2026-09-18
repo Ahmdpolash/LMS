@@ -186,15 +186,15 @@ body::-webkit-scrollbar-thumb {
     @apply w-full;
 
     .label {
-      @apply !text-light-100 !font-normal;
+      @apply text-gray-700 dark:text-gray-200 font-medium text-sm;
     }
 
     .input {
-      @apply !bg-dark-200 !rounded-full !min-h-12 !px-5 placeholder:!text-light-100;
+      @apply bg-gray-50 dark:bg-[#131b2e] border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-full min-h-12 px-5 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:bg-white dark:focus:bg-[#131b2e] focus:border-[rgb(37,150,190)] outline-none transition-all;
     }
 
     .btn {
-      @apply !w-full !bg-blue-400 !text-dark-100 hover:!bg-blue-300/80 !rounded-full !min-h-10 !font-bold !px-5 cursor-pointer;
+      @apply w-full bg-[rgb(37,150,190)] text-white hover:bg-[rgb(37,150,190)]/90 rounded-full min-h-12 font-semibold px-5 cursor-pointer shadow-sm transition-all;
     }
   }
 
@@ -225,7 +225,6 @@ body::-webkit-scrollbar-thumb {
     hsla(239, 76%, 53%, 0.456) 10.41%,
     hsla(0, 0%, 100%, 0) 89.25%
   );
-
   animation: changeBackgroundColor 8s infinite alternate;
 }
 

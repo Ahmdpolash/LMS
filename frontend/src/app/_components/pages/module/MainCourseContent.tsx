@@ -1,4 +1,7 @@
-import { useGetCourseContentQuery } from "@/redux/features/course/courseApi";
+import {
+  useGetCourseContentQuery,
+  useUpdateCourseProgressMutation,
+} from "@/redux/features/course/courseApi";
 import React, { useEffect, useState } from "react";
 import CustomLoading from "../../CustomLoading";
 import CourseContentMedia from "./CourseContentMedia";
@@ -17,10 +20,51 @@ import ModuleSidebar from "./ModuleSidebar";
 import Loading from "@/app/(userLayout)/course-access/[id]/loading";
 
 const MainCourseContent = ({ id, data }: { id: string; data: any }) => {
-  const { data: courseContent, isLoading } = useGetCourseContentQuery(id);
+  const { data: courseContent, isLoading, error } = useGetCourseContentQuery(id);
+  const [updateCourseProgress] = useUpdateCourseProgressMutation();
   const allContent = courseContent?.data;
   const [activeVideo, setActiveVideo] = useState(0);
   const [mark, setMark] = useState(false);
+
+  const userCourse = data?.data?.courses?.find((c: any) => {
+    const uCourseId = c?.courseId?._id || c?.courseId || c;
+    return uCourseId?.toString() === id?.toString();
+  });
+  const completedLessons: string[] = userCourse?.completedLessons || [];
+
+  const handleToggleLesson = async (lessonId: string) => {
+    const isCompleted = completedLessons.includes(lessonId);
+    try {
+      await updateCourseProgress({
+        courseId: id,
+        lessonId,
+        completed: !isCompleted,
+      }).unwrap();
+      toast.success(
+        !isCompleted
+          ? "Lecture marked as completed!"
+          : "Lecture marked as incomplete"
+      );
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to update progress");
+    }
+  };
+
+  const handleVideoEnded = async (lessonId: string) => {
+    if (!completedLessons.includes(lessonId)) {
+      try {
+        await updateCourseProgress({
+          courseId: id,
+          lessonId,
+          completed: true,
+        }).unwrap();
+        toast.success("Lecture completed! 🎓");
+      } catch (err) {
+        // ignore
+      }
+    }
+  };
+
   // grouping the video
   const [groupedCourseData, setGroupedCourseData] = useState<{
     [key: string]: any[];
@@ -67,9 +111,44 @@ const MainCourseContent = ({ id, data }: { id: string; data: any }) => {
     toast.success("Removed from bookmark");
   };
 
+  if (error) {
+    const errorMsg =
+      (error as any)?.data?.message || "Failed to load course content.";
+    return (
+      <Container>
+        <div className="flex flex-col items-center justify-center min-h-[60vh] gap-3">
+          <p className="text-red-500 font-medium text-lg">{errorMsg}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700 transition"
+          >
+            Retry
+          </button>
+        </div>
+      </Container>
+    );
+  }
+
+  // allContent could still be undefined after isLoading=false (race condition)
+  if (!isLoading && (!allContent || allContent.length === 0)) {
+    return (
+      <Container>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <p className="text-gray-500 dark:text-gray-400">No course content available.</p>
+        </div>
+      </Container>
+    );
+  }
+
+  const currentVideo = allContent?.[activeVideo];
+  const currentSectionLength =
+    currentVideo?.videoSection && groupedCourseData[currentVideo.videoSection]
+      ? groupedCourseData[currentVideo.videoSection].length
+      : 0;
+
   return (
     <Container>
-      {isLoading ? (
+      {isLoading || !allContent ? (
         <Loading />
       ) : (
         <>
@@ -79,12 +158,7 @@ const MainCourseContent = ({ id, data }: { id: string; data: any }) => {
                 <CircleArrowLeft className="text-blue-500" />
               </button>
               <h3 className="text-[21px]  bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
-                {activeVideo + 1}-
-                {
-                  groupedCourseData[allContent[activeVideo]?.videoSection]
-                    ?.length
-                }{" "}
-                : {allContent[activeVideo]?.title}
+                {activeVideo + 1}-{currentSectionLength} : {currentVideo?.title}
               </h3>
             </div>
             <div className="flex items-center gap-5">
@@ -112,6 +186,7 @@ const MainCourseContent = ({ id, data }: { id: string; data: any }) => {
                 allContent={allContent}
                 activeVideo={activeVideo}
                 setActiveVideo={setActiveVideo}
+                onVideoEnded={handleVideoEnded}
               />
               {/* prev and next button */}
               <div className="w-full flex items-center justify-between my-3">
@@ -154,6 +229,8 @@ const MainCourseContent = ({ id, data }: { id: string; data: any }) => {
                 allContent={allContent}
                 activeVideo={activeVideo}
                 setActiveVideo={setActiveVideo}
+                completedLessons={completedLessons}
+                onToggleLesson={handleToggleLesson}
               />
             </div>
           </div>

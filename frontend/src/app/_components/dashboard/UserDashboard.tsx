@@ -30,12 +30,39 @@ import { toast } from "sonner";
 export default function StudentDashboard() {
   const { data } = useCurrentUserQuery({});
   const courseInfo = data?.data;
-  console.log(courseInfo);
+
+  // Compute total hours learned from completed lessons
+  const totalMinutesLearned = (courseInfo?.courses || []).reduce(
+    (total: number, courseItem: any) => {
+      const completedLessons: string[] = courseItem?.completedLessons || [];
+      const courseData: any[] = courseItem?.courseId?.courseData || [];
+      const courseMinutes = courseData
+        .filter((lesson: any) =>
+          completedLessons.includes(lesson._id?.toString())
+        )
+        .reduce((sum: number, lesson: any) => sum + (lesson.videoLength || 0), 0);
+      return total + courseMinutes;
+    },
+    0
+  );
+
+  const hoursLearned =
+    totalMinutesLearned > 0
+      ? totalMinutesLearned >= 60
+        ? `${(totalMinutesLearned / 60).toFixed(1)} hrs`
+        : `${totalMinutesLearned} min`
+      : "0 hrs";
+
+  // Certificates: completed courses count
+  const certificatesCount = (courseInfo?.courses || []).filter(
+    (course: any) =>
+      course?.progress === 100 || course?.status === "Completed"
+  ).length;
+
+  // Day streak
+  const streakDays = courseInfo?.loginStreak?.currentStreak || 1;
 
   const handleDownload = () => {
-    // const url = `https://drive.google.com/uc?export=download&id=${id}`;
-    // window.location.href = url;
-
     toast.success("This Feature Will be added soon 🚀");
   };
 
@@ -46,10 +73,13 @@ export default function StudentDashboard() {
         <div className=" mb-4">
           <div className="flex items-center justify-between ">
             <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
-              Welcome back, {courseInfo?.name}
+              Welcome back, {courseInfo?.name || "Student"}
             </h1>
-            <p className="text-gray-600 dark:text-gray-400  text-sm">
-              Last login: 5 Minute Ago
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Last login:{" "}
+              {courseInfo?.lastLogin
+                ? format(courseInfo.lastLogin)
+                : "Just now"}
             </p>
           </div>
         </div>
@@ -82,7 +112,7 @@ export default function StudentDashboard() {
                   Hours Learned
                 </p>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                  0
+                  {hoursLearned}
                 </h3>
               </div>
             </CardContent>
@@ -98,7 +128,7 @@ export default function StudentDashboard() {
                   Certificates
                 </p>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                  0
+                  {certificatesCount}
                 </h3>
               </div>
             </CardContent>
@@ -114,7 +144,7 @@ export default function StudentDashboard() {
                   Day Streak
                 </p>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                  10 days
+                  {streakDays} {streakDays === 1 ? "day" : "days"}
                 </h3>
               </div>
             </CardContent>
@@ -144,62 +174,91 @@ export default function StudentDashboard() {
                     Purchase Date
                   </TableHead>
                   <TableHead>Price</TableHead>
-
+                  <TableHead>Progress</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {courseInfo?.courses?.length > 0 ? (
-                  courseInfo.courses?.map((course: any, idx: number) => (
-                    <TableRow key={idx}>
-                      <TableCell className="font-medium">
-                        {course?.courseId._id.slice(0, 8)}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {course.courseId.name}
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        {format(course?.purchasedDate || "-")}
-                      </TableCell>
-                      <TableCell>${course?.courseId.price}</TableCell>
+                  courseInfo.courses?.map((course: any, idx: number) => {
+                    const isCompleted =
+                      course?.progress === 100 || course?.status === "Completed";
+                    const courseName = course?.courseId?.name || "Course";
+                    const courseIdDisplay = course?.courseId?._id
+                      ? course.courseId._id.slice(0, 8)
+                      : String(course?.courseId || "").slice(0, 8);
+                    const courseTargetId =
+                      course?.courseId?._id || course?.courseId;
 
-                      <TableCell>
-                        <Badge
-                          className={
-                            course.status === "Completed"
-                              ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                              : "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400"
-                          }
-                        >
-                          Active
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex space-x-1 md:space-x-2">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="h-8 w-8 p-0 cursor-pointer"
-                            onClick={handleDownload}
+                    return (
+                      <TableRow key={idx}>
+                        <TableCell className="font-medium">
+                          {courseIdDisplay}
+                        </TableCell>
+                        <TableCell className="font-medium">
+                          {courseName}
+                        </TableCell>
+                        <TableCell className="hidden sm:table-cell">
+                          {course?.purchasedDate
+                            ? format(course.purchasedDate)
+                            : "-"}
+                        </TableCell>
+                        <TableCell>${course?.courseId?.price || 0}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-semibold">
+                              {course?.progress || 0}%
+                            </span>
+                            <div className="w-16 bg-gray-200 dark:bg-gray-700 h-1.5 rounded-full overflow-hidden">
+                              <div
+                                className={`h-full rounded-full transition-all duration-300 ${
+                                  isCompleted ? "bg-emerald-500" : "bg-purple-500"
+                                }`}
+                                style={{ width: `${course?.progress || 0}%` }}
+                              />
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            className={
+                              isCompleted
+                                ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+                                : "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400"
+                            }
                           >
-                            <Download className="h-4 w-4" />
-                            <span className="sr-only">Download Resources</span>
-                          </Button>
-                          <Link href={`/course-access/${course?.courseId._id}`}>
+                            {isCompleted ? "Completed" : "In Progress"}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex space-x-1 md:space-x-2">
                             <Button
                               size="sm"
                               variant="outline"
                               className="h-8 w-8 p-0 cursor-pointer"
+                              onClick={handleDownload}
                             >
-                              <ExternalLink className="h-4 w-4" />
-                              <span className="sr-only">Go to Course</span>
+                              <Download className="h-4 w-4" />
+                              <span className="sr-only">Download Resources</span>
                             </Button>
-                          </Link>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))
+                            {courseTargetId && (
+                              <Link href={`/course-access/${courseTargetId}`}>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="h-8 w-8 p-0 cursor-pointer"
+                                >
+                                  <ExternalLink className="h-4 w-4" />
+                                  <span className="sr-only">Go to Course</span>
+                                </Button>
+                              </Link>
+                            )}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
                 ) : (
                   <TableRow>
                     <TableCell colSpan={7} className="text-center py-8">

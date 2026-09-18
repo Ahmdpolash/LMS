@@ -25,6 +25,7 @@ type TProps = {
   allContent: any[];
   activeVideo: number;
   setActiveVideo: (activevideo: number) => void;
+  onVideoEnded?: (lessonId: string) => void;
 };
 
 const CourseContentMedia = ({
@@ -33,17 +34,25 @@ const CourseContentMedia = ({
   allContent,
   activeVideo,
   setActiveVideo,
+  onVideoEnded,
 }: TProps) => {
+  const currentLesson = allContent?.[activeVideo];
+
   return (
     <div className="w-full ">
-      {allContent && allContent[activeVideo]?.videoUrl ? (
-        <div className=" mb-3 rounded-md overflow-hidden border">
+      {currentLesson?.videoUrl ? (
+        <div className=" mb-3 rounded-md overflow-hidden border border-gray-300 dark:border-gray-700">
           <ReactPlayer
-            url={allContent[activeVideo]?.videoUrl}
+            url={currentLesson.videoUrl}
             controls
             width="100%"
             height="430px"
             className="rounded-md"
+            onEnded={() => {
+              if (onVideoEnded && currentLesson?._id) {
+                onVideoEnded(currentLesson._id);
+              }
+            }}
           />
         </div>
       ) : (

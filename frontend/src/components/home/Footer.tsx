@@ -82,7 +82,7 @@ export default function Footer() {
 
           {/* Copyright */}
           <div className="border-t border-gray-800 mt-8 mb-5 lg:mb-0 pt-8 text-center dark:text-gray-400 text-black">
-            Copyright © 2025 ELearning | All Rights Reserved
+            Copyright © 2026 ELearning | All Rights Reserved
           </div>
         </div>
       </Container>

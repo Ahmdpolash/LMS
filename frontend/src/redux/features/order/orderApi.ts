@@ -10,7 +10,7 @@ export const orderApi = baseApi.injectEndpoints({
         body: data,
         credentials: "include",
       }),
-      invalidatesTags: [tagTypes.order],
+      invalidatesTags: [tagTypes.order, tagTypes.user, tagTypes.course],
     }),
 
     getAllOrders: builder.query({

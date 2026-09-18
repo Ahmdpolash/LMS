@@ -81,9 +81,14 @@ export default function CourseDetails({ slug }: { slug: string }) {
   }, [data]);
 
   const isPurchased =
-    user &&
-    user?.courses?.find(
-      (item: any) => item?.courseId?._id === courseInfo?._id?.toString()
+    Boolean(
+      user &&
+        (user?.role === "admin" ||
+          user?.role === "instructor" ||
+          user?.courses?.some((item: any) => {
+            const userCourseId = item?.courseId?._id || item?.courseId || item;
+            return userCourseId?.toString() === courseInfo?._id?.toString();
+          }))
     );
 
   // payment
@@ -118,9 +123,6 @@ export default function CourseDetails({ slug }: { slug: string }) {
   const handleOrder = () => {
     setOpen(true);
   };
-
-
-  console.log(courseInfo, "allCourse");
 
 
   return (

@@ -8,9 +8,6 @@ const router = Router();
 // SIGNUP ROUTES
 router.post("/signup", UserControllers.CreateUser);
 
-// SIGNIN ROUTES
-router.post("/signin", UserControllers.CreateUser);
-
 // ACTIVATE USER ROUTES
 router.post("/activate-user", UserControllers.ActivateUser);
 

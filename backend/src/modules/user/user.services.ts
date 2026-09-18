@@ -10,6 +10,7 @@ import { sendToken } from "../../utils/sentToken";
 import { Response } from "express";
 import redis from "../../redis";
 import { generateStudentId } from "../../utils/generateRandomId";
+import mongoose from "mongoose";
 
 // CREATE USER
 const CreateUser = async (payload: IUser) => {
@@ -88,7 +89,8 @@ const GetAllUSers = async () => {
 const getMe = async (id: string) => {
   const result = await User.findById(id).populate({
     path: "courses.courseId",
-    select: 'thumbnail.url name purchasedDate price'
+    select:
+      "thumbnail.url name purchasedDate price courseData.videoLength courseData._id courseData.title courseData.videoSection",
   });
 
   return result;
@@ -137,8 +139,11 @@ const updateUserRole = async (payload: { id: string; role: string }) => {
     throw new AppError("Invalid role", httpStatus.BAD_REQUEST);
   }
 
-  // Find user
-  const user = await User.findById(payload.id);
+  // Find user by _id or by email
+  const isObjectId = mongoose.Types.ObjectId.isValid(payload.id);
+  const user = isObjectId
+    ? await User.findById(payload.id)
+    : await User.findOne({ email: payload.id });
 
   if (!user) {
     throw new AppError("User not found", httpStatus.NOT_FOUND);
@@ -152,13 +157,17 @@ const updateUserRole = async (payload: { id: string; role: string }) => {
     );
   }
 
-  const result = await User.findByIdAndUpdate(
-    payload.id,
-    { role: payload.role },
-    { new: true }
-  );
+  user.role = payload.role as any;
+  await user.save();
 
-  return result;
+  // Update Redis session so changes take effect immediately
+  try {
+    await redis.set(user._id.toString(), JSON.stringify(user));
+  } catch (e) {
+    console.error("Failed to update Redis for role change:", e);
+  }
+
+  return user;
 };
 
 // DELETE USR

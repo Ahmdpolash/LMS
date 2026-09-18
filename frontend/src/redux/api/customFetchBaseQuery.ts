@@ -5,28 +5,33 @@ import type {
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query";
 import { Mutex } from "async-mutex";
-import { persistor } from "../store";
+import { persistor, RootState } from "../store";
 import { logout } from "../features/auth/authSlice";
 
 // Create a mutex to prevent multiple refresh token requests
 const mutex = new Mutex();
 
-const getBaseUrl = () => {
-  // Use the production API URL when deployed, otherwise use the local URL
-  if (process.env.NODE_ENV === "production") {
-    return (
-      process.env.NEXT_PUBLIC_API_URL ||
-      "https://lms-backend-zeta-opal.vercel.app/api/v1"
-    );
-  }
-  return process.env.NEXT_PUBLIC_API_URL;
-};
+import { getBaseApiUrl } from "@/utils/endpoints";
 
-const baseQuery = fetchBaseQuery({
-  // baseUrl: process.env.NEXT_PUBLIC_API_URL,
-  baseUrl: getBaseUrl(),
-  credentials: "include",
-});
+export const getBaseUrl = getBaseApiUrl;
+
+const getDynamicBaseQuery = () =>
+  fetchBaseQuery({
+    baseUrl: getBaseUrl(),
+    credentials: "include",
+    prepareHeaders: (headers, { getState }) => {
+      const token =
+        (getState() as RootState)?.auth?.token ||
+        (typeof window !== "undefined"
+          ? localStorage.getItem("accessToken")
+          : null);
+
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
+  });
 
 const customFetchBaseQuery: BaseQueryFn<
   string | FetchArgs,
@@ -35,6 +40,7 @@ const customFetchBaseQuery: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   // Wait for any ongoing token refresh to complete
   await mutex.waitForUnlock();
+  const baseQuery = getDynamicBaseQuery();
   let result = await baseQuery(args, api, extraOptions);
 
   // Check if the request failed due to an expired token (401 Unauthorized)

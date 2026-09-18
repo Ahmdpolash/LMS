@@ -96,13 +96,18 @@ const FormField = <T extends FieldValues>({
       control={control}
       name={name}
       render={({ field, fieldState }) => (
-        <FormItem>
-          <FormLabel className="label">{label}</FormLabel>
+        <FormItem className="space-y-1.5">
+          <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-200">
+            {label}
+          </FormLabel>
           <FormControl>
             {as === "select" ? (
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <SelectTrigger
-                  className={cn("input space-y-1 mb-1", className)}
+                  className={cn(
+                    "input w-full rounded-full min-h-12 px-5 bg-gray-50 dark:bg-[#131b2e] border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white focus:bg-white dark:focus:bg-[#131b2e] focus:border-[rgb(37,150,190)]",
+                    className
+                  )}
                 >
                   <SelectValue placeholder={placeholder} />
                 </SelectTrigger>
@@ -116,29 +121,38 @@ const FormField = <T extends FieldValues>({
               </Select>
             ) : as === "textarea" ? (
               <Textarea
-                className={cn("input space-y-1 mb-1", className)}
+                className={cn(
+                  "input w-full rounded-2xl min-h-24 p-4 bg-gray-50 dark:bg-[#131b2e] border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:bg-white dark:focus:bg-[#131b2e] focus:border-[rgb(37,150,190)]",
+                  className
+                )}
                 placeholder={placeholder}
                 {...field}
               />
             ) : type === "file" ? (
               <Input
                 type="file"
-                className={cn("input space-y-1 mb-1", className)}
+                className={cn(
+                  "input w-full rounded-full min-h-12 px-5 bg-gray-50 dark:bg-[#131b2e] border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white",
+                  className
+                )}
                 onChange={(e) => {
-                  field.onChange(e.target.files?.[0]); // Register the file
+                  field.onChange(e.target.files?.[0]);
                 }}
               />
             ) : (
               <Input
                 type={type}
-                className={cn("input space-y-1 mb-1", className)}
+                className={cn(
+                  "input w-full rounded-full min-h-12 px-5 bg-gray-50 dark:bg-[#131b2e] border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:bg-white dark:focus:bg-[#131b2e] focus:border-[rgb(37,150,190)] shadow-none",
+                  className
+                )}
                 placeholder={placeholder}
                 {...field}
               />
             )}
           </FormControl>
           {fieldState.error && (
-            <FormMessage>{fieldState.error.message}</FormMessage>
+            <FormMessage className="text-xs text-red-500 mt-1 font-medium">{fieldState.error.message}</FormMessage>
           )}
         </FormItem>
       )}

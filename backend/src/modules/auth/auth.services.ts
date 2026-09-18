@@ -60,14 +60,46 @@ const LoginUser = async (payload: ILogin) => {
     config.jwt.jwt_refresh_token_expiresIn as string
   );
 
+  // Update login streak and lastLogin
+  const now = new Date();
+  const lastActive = user.loginStreak?.lastActiveDate
+    ? new Date(user.loginStreak.lastActiveDate)
+    : null;
+
+  let streak = user.loginStreak?.currentStreak || 1;
+
+  if (lastActive) {
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const lastActiveDay = new Date(
+      lastActive.getFullYear(),
+      lastActive.getMonth(),
+      lastActive.getDate()
+    );
+    const diffDays = Math.round(
+      (today.getTime() - lastActiveDay.getTime()) / (1000 * 60 * 60 * 24)
+    );
+
+    if (diffDays === 1) {
+      streak += 1;
+    } else if (diffDays > 1) {
+      streak = 1;
+    }
+  }
+
+  user.lastLogin = now;
+  user.loginStreak = {
+    currentStreak: streak,
+    lastActiveDate: now,
+  };
+
+  await user.save();
+
   await redis.set(
     user._id.toString(),
     JSON.stringify(user),
     "EX",
     config.jwt.redis_session_expiresIn_seconds || 30 * 24 * 60 * 60
   );
-
-  // storeSession(user);
 
   return { accessToken, refreshToken, user };
 };

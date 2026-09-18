@@ -1,49 +1,50 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useAppSelector } from "@/redux/hooks";
+import { useRouter } from "next/navigation";
+import { useCurrentUserQuery } from "@/redux/api/baseApi";
+import CustomLoading from "@/app/_components/CustomLoading";
 
-import { redirect, useRouter } from "next/navigation";
-import { useCurrentUserQuery } from "@/redux/features/auth/authApi";
-import jwt, { JwtPayload } from "jsonwebtoken";
-
-// export default function AdminProtectedRoute({
-//   children,
-// }: {
-//   children: React.ReactNode;
-// }) {
-//   const router = useRouter();
-//   const token = localStorage.getItem("accessToken");
-
-//   if (!token) {
-//     router.push("/sign-in");
-//   } else {
-//     try {
-//       const user = jwt.decode(token) as JwtPayload;
-//       const isAdmin = user?.role === "admin";
-//       if (!isAdmin) {
-//         redirect("/");
-//       }
-
-//       return children;
-//     } catch (error) {
-//       // Handle invalid token
-//       localStorage.removeItem("accessToken");
-//       router.push("/sign-in");
-//     }
-//   }
-// }
 export default function AdminProtectedRoute({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { user } = useAppSelector((state) => state.auth) as {
+  const router = useRouter();
+  const { user: authUser } = useAppSelector((state) => state.auth) as {
     user: { role: string } | null;
   };
+  const { data: currentUserData, isLoading, isFetching } = useCurrentUserQuery({});
 
-  if (user) {
-    const isAdmin = user?.role === "admin";
-    return isAdmin ? children : redirect("/");
+  const user = currentUserData?.data || authUser;
+  const isAdmin = user?.role === "admin";
+
+  useEffect(() => {
+    if (!isLoading && !isFetching) {
+      if (!user) {
+        router.replace("/sign-in");
+      } else if (!isAdmin) {
+        router.replace("/");
+      }
+    }
+  }, [user, isAdmin, isLoading, isFetching, router]);
+
+  if (isLoading || isFetching) {
+    return (
+      <div className="flex items-center justify-center min-h-[70vh]">
+        <CustomLoading />
+      </div>
+    );
   }
+
+  if (isAdmin) {
+    return <>{children}</>;
+  }
+
+  return (
+    <div className="flex items-center justify-center min-h-[70vh]">
+      <CustomLoading />
+    </div>
+  );
 }

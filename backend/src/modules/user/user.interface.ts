@@ -1,6 +1,15 @@
 import { Model } from "mongoose";
 import { USER_ROLE } from "./user.constant";
 
+export type IUserCourse = {
+  courseId: string;
+  purchasedDate: Date;
+  completedLessons?: string[];
+  progress?: number;
+  status?: "Active" | "Completed";
+  completedDate?: Date;
+};
+
 export type IUser = {
   userId: string;
   _id: string;
@@ -20,7 +29,12 @@ export type IUser = {
   age_range?: string;
   internet_type?: string;
   area_type?: string;
-  courses: Array<{ courseId: string; purchasedDate: Date }>;
+  courses: IUserCourse[];
+  lastLogin?: Date;
+  loginStreak?: {
+    currentStreak: number;
+    lastActiveDate: Date;
+  };
   comparePassword: (password: string) => Promise<boolean>;
 };
 

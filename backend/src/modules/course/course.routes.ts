@@ -26,6 +26,13 @@ router.get(
   CourseControllers.getCourseContentByUser
 );
 
+// UPDATE COURSE PROGRESS
+router.put(
+  "/update-progress",
+  auth(),
+  CourseControllers.updateCourseProgress
+);
+
 // EDIT COURSE ROUTE
 router.patch(
   "/:id",

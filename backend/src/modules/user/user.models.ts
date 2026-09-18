@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 import { IDeviceActivity, IUser, UserModel } from "./user.interface";
 
 import bcrypt from "bcryptjs";
@@ -50,14 +50,46 @@ const UserSchema = new Schema<IUser, UserModel>(
     courses: [
       {
         courseId: {
-          type: String,
+          type: mongoose.Schema.Types.ObjectId,
           ref: "Course",
         },
         purchasedDate: {
           type: Date,
+          default: Date.now,
+        },
+        completedLessons: [
+          {
+            type: String,
+          },
+        ],
+        progress: {
+          type: Number,
+          default: 0,
+        },
+        status: {
+          type: String,
+          enum: ["Active", "Completed"],
+          default: "Active",
+        },
+        completedDate: {
+          type: Date,
         },
       },
     ],
+    lastLogin: {
+      type: Date,
+      default: Date.now,
+    },
+    loginStreak: {
+      currentStreak: {
+        type: Number,
+        default: 1,
+      },
+      lastActiveDate: {
+        type: Date,
+        default: Date.now,
+      },
+    },
 
     // additional
     number: {

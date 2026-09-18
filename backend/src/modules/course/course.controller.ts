@@ -45,13 +45,12 @@ const getAllCourse = catchAsync(async (req, res) => {
 // GET COURSE CONTENT BY VALID USER
 
 const getCourseContentByUser = catchAsync(async (req, res) => {
-  const courseList = req.user?.courses;
+  const user = req.user;
   const courseId = req.params.id;
- 
 
   const result = await CourseServices.getCourseContentByUser(
     courseId,
-    courseList
+    user
   );
 
   res.status(200).json({
@@ -153,12 +152,25 @@ const generateVideoURL = catchAsync(async (req, res) => {
   }
 });
 
+// UPDATE COURSE PROGRESS
+const updateCourseProgress = catchAsync(async (req, res) => {
+  const userId = req.user?._id;
+  const result = await CourseServices.updateCourseProgress(userId, req.body);
+
+  res.status(200).json({
+    success: true,
+    message: "Course progress updated successfully",
+    data: result,
+  });
+});
+
 export const CourseControllers = {
   uploadCourse,
   editCourse,
   getSingleCourse,
   getAllCourse,
   getCourseContentByUser,
+  updateCourseProgress,
   addQuestion,
   replieQuestionAnswer,
   addReviews,

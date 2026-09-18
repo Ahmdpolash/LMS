@@ -7,6 +7,7 @@ import config from "../config";
 import redis from "../redis";
 import { JwtPayload } from "jsonwebtoken";
 import { TUserRole } from "../modules/user/user.interface";
+import { User } from "../modules/user/user.models";
 
 export const auth = (...role: TUserRole[]) => {
   return catchAsync(
@@ -15,11 +16,19 @@ export const auth = (...role: TUserRole[]) => {
       res: Response,
       next: NextFunction
     ) => {
-      // const token = req.headers.authorization;
-      // / const token = req.headers.authorization?.split(' ')[1];
-      const token = req.cookies.accessToken;
+      // Support both cookie and Bearer Authorization header
+      const authHeader = req.headers.authorization;
+      let token = req.cookies?.accessToken;
 
-      //check if token is exist
+      if (!token && authHeader) {
+        if (authHeader.startsWith("Bearer ")) {
+          token = authHeader.split(" ")[1];
+        } else {
+          token = authHeader;
+        }
+      }
+
+      //check if token exists
       if (!token) {
         throw new AppError(
           "You are not Authorized!! Please login First",
@@ -28,28 +37,52 @@ export const auth = (...role: TUserRole[]) => {
       }
 
       // verify token
-      const decoded = jwtHelper.verifyToken(
-        token,
-        config.jwt.jwt_access_token as string
-      );
-
-      if (!decoded) {
+      let decoded: JwtPayload;
+      try {
+        decoded = jwtHelper.verifyToken(
+          token,
+          config.jwt.jwt_access_token as string
+        );
+      } catch (err) {
         throw new AppError(
           "access token is not valid",
           httpStatus.UNAUTHORIZED
         );
       }
 
-      // verify user from redis
-      const user = await redis.get(decoded.userId);
-
-      if (!user) {
+      if (!decoded || !decoded.userId) {
         throw new AppError(
-          "please login to access this resource !",
+          "access token is not valid",
           httpStatus.UNAUTHORIZED
         );
       }
-      const userData = user ? JSON.parse(user) : null;
+
+      // verify user from redis with MongoDB fallback
+      let userData: any = null;
+      try {
+        const userFromRedis = await redis.get(decoded.userId);
+        if (userFromRedis) {
+          userData = JSON.parse(userFromRedis);
+        }
+      } catch (e) {
+        userData = null;
+      }
+
+      if (!userData) {
+        userData = await User.findById(decoded.userId);
+        if (userData) {
+          try {
+            await redis.set(
+              decoded.userId,
+              JSON.stringify(userData),
+              "EX",
+              7 * 24 * 60 * 60
+            );
+          } catch (e) {
+            // ignore redis set failure
+          }
+        }
+      }
 
       if (!userData) {
         throw new AppError("User not found", httpStatus.NOT_FOUND);

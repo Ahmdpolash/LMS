@@ -15,6 +15,7 @@ import { User } from "../user/user.models";
 import { Request } from "express";
 
 import { Notification } from "../notification/notification.model";
+import config from "../../config";
 
 // create a new Course
 
@@ -113,25 +114,49 @@ const getSingleCourse = async (id: string) => {
   }
 };
 
-// GET COURSE CONTENT-- 0NLY FOR VALID USER
-const getCourseContentByUser = async (courseId: string, courseList: any) => {
-  // find the course is available or not
-  const courseExists = courseList.find(
-    (c: any) => c?.courseId.toString() === courseId
-  );
-
-  if (!courseExists) {
-    throw new AppError("Course not found", 404);
+// GET COURSE CONTENT-- ONLY FOR VALID USER OR ADMIN/INSTRUCTOR
+const getCourseContentByUser = async (courseId: string, user: any) => {
+  if (!mongoose.Types.ObjectId.isValid(courseId)) {
+    throw new AppError("Invalid Course ID", 400);
   }
 
-  // if exists then fetch from Course
+  const isAdminOrInstructor =
+    user?.role === "admin" || user?.role === "instructor";
+  let courseList = user?.courses || [];
+
+  // find whether the course is purchased
+  let courseExists = courseList.some((c: any) => {
+    const userCourseId = c?.courseId?._id || c?.courseId || c;
+    return userCourseId?.toString() === courseId?.toString();
+  });
+
+  // If not found in cache/session, check MongoDB directly in case of recent purchase
+  if (!courseExists && !isAdminOrInstructor && user?._id) {
+    const freshUser = await User.findById(user._id);
+    if (freshUser?.courses?.length) {
+      courseExists = freshUser.courses.some((c: any) => {
+        const userCourseId = c?.courseId?._id || c?.courseId || c;
+        return userCourseId?.toString() === courseId?.toString();
+      });
+    }
+  }
+
+  if (!courseExists && !isAdminOrInstructor) {
+    throw new AppError("You have not purchased this course yet", 403);
+  }
+
+  // fetch course data
   const course = await Course.findById(courseId).populate({
     path: "courseData",
     populate: {
-      path: "questions.user questions.questionReplies.userId ",
+      path: "questions.user questions.questionReplies.userId",
       select: "name avatar.url role",
     },
   });
+
+  if (!course) {
+    throw new AppError("Course not found", 404);
+  }
 
   const content = course?.courseData;
 
@@ -142,25 +167,36 @@ const getCourseContentByUser = async (courseId: string, courseList: any) => {
 const editCourse = async (id: string, payload: Partial<ICourse>) => {
   const thumbnail = payload.thumbnail;
 
-  if (thumbnail) {
-    // delete this thumbnail if have
+  if (thumbnail && typeof thumbnail === "object" && "url" in thumbnail && !thumbnail.url.startsWith("http")) {
+    try {
+      if (thumbnail.public_id) {
+        await cloudinary.v2.uploader.destroy(thumbnail.public_id);
+      }
+      const myCloud = await cloudinary.v2.uploader.upload(thumbnail.url as any, {
+        folder: "courses",
+      });
 
-    await cloudinary.v2.uploader.destroy(thumbnail.public_id);
-    // Upload thumbnail to Cloudinary
-    const myCloud = await cloudinary.v2.uploader.upload(thumbnail as any, {
-      folder: "courses",
-    });
-
-    payload.thumbnail = {
-      public_id: myCloud.public_id,
-      url: myCloud.secure_url,
-    };
+      payload.thumbnail = {
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url,
+      };
+    } catch (err) {
+      console.error("Cloudinary upload failed during course edit:", err);
+    }
   }
 
   // Save course to database
   const course = await Course.findByIdAndUpdate(id, payload, {
     new: true,
   });
+
+  // Clear caches
+  try {
+    await redis.del("allCourses");
+    await redis.del(id);
+  } catch (e) {
+    console.error("Failed to clear course redis cache:", e);
+  }
 
   return course;
 };
@@ -422,12 +458,104 @@ const deleteCourse = async (id: string) => {
   return { message: "Course marked as deleted" };
 };
 
+// UPDATE COURSE PROGRESS
+const updateCourseProgress = async (
+  userId: string,
+  payload: { courseId: string; lessonId: string; completed: boolean }
+) => {
+  const { courseId, lessonId, completed } = payload;
+
+  if (!mongoose.Types.ObjectId.isValid(courseId)) {
+    throw new AppError("Invalid Course ID", 400);
+  }
+
+  const courseDoc = await Course.findById(courseId);
+  if (!courseDoc) {
+    throw new AppError("Course not found", 404);
+  }
+
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+
+  // Find course entry in user.courses
+  let userCourse = user.courses?.find((c: any) => {
+    const uCourseId = c?.courseId?._id || c?.courseId || c;
+    return uCourseId?.toString() === courseId.toString();
+  });
+
+  if (!userCourse) {
+    // If admin or instructor is viewing, create course tracking entry
+    if (user.role === "admin" || user.role === "instructor") {
+      userCourse = {
+        courseId: courseId as any,
+        purchasedDate: new Date(),
+        completedLessons: [],
+        progress: 0,
+        status: "Active",
+      };
+      user.courses.push(userCourse);
+    } else {
+      throw new AppError("You have not purchased this course yet", 403);
+    }
+  }
+
+  if (!userCourse.completedLessons) {
+    userCourse.completedLessons = [];
+  }
+
+  const lessonIdStr = lessonId?.toString();
+  const existingIdx = userCourse.completedLessons.indexOf(lessonIdStr);
+
+  if (completed && existingIdx === -1) {
+    userCourse.completedLessons.push(lessonIdStr);
+  } else if (!completed && existingIdx !== -1) {
+    userCourse.completedLessons.splice(existingIdx, 1);
+  }
+
+  const totalLessons = courseDoc.courseData?.length || 0;
+  const completedCount = userCourse.completedLessons.length;
+  const progress =
+    totalLessons > 0
+      ? Math.min(100, Math.round((completedCount / totalLessons) * 100))
+      : 0;
+
+  userCourse.progress = progress;
+  userCourse.status = progress === 100 ? "Completed" : "Active";
+  if (progress === 100 && !userCourse.completedDate) {
+    userCourse.completedDate = new Date();
+  }
+
+  await user.save();
+
+  // Update Redis cache for user session
+  try {
+    await redis.set(
+      user._id.toString(),
+      JSON.stringify(user),
+      "EX",
+      config.jwt.redis_session_expiresIn_seconds || 30 * 24 * 60 * 60
+    );
+  } catch (err) {
+    console.error("Failed to update user session in redis:", err);
+  }
+
+  return {
+    courseId,
+    progress,
+    completedLessons: userCourse.completedLessons,
+    status: userCourse.status,
+  };
+};
+
 export const CourseServices = {
   uploadCourse,
   editCourse,
   getSingleCourse,
   getAllCourse,
   getCourseContentByUser,
+  updateCourseProgress,
   addQuestion,
   replieQuestionAnswer,
   addReviews,
