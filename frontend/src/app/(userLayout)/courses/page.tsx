@@ -75,9 +75,17 @@ export default function CoursesPage() {
           return b.purchased - a.purchased; // most popular
       }
     })
-    ?.filter((course: any) =>
-      category === "All" ? true : course.category === category
-    );
+    ?.filter((course: any) => {
+      if (category === "All") return true;
+      const targetCat = category.toLowerCase();
+      const courseCat = course.category?.toLowerCase() || "";
+      return (
+        courseCat === targetCat ||
+        courseCat.includes(targetCat) ||
+        targetCat.includes(courseCat) ||
+        course.tags?.some((t: string) => t.toLowerCase().includes(targetCat))
+      );
+    });
 
   // Function to render stars based on rating
   const renderStars = (rating: number) => {

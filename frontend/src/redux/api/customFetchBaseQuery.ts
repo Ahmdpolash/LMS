@@ -11,13 +11,13 @@ import { logout } from "../features/auth/authSlice";
 // Create a mutex to prevent multiple refresh token requests
 const mutex = new Mutex();
 
-import { getBaseApiUrl } from "@/utils/endpoints";
+// import { getBaseApiUrl } from "@/utils/endpoints";
 
-export const getBaseUrl = getBaseApiUrl;
+export const getBaseUrl = "https://lms-backend-zeta-opal.vercel.app/api/v1";
 
 const getDynamicBaseQuery = () =>
   fetchBaseQuery({
-    baseUrl: getBaseUrl(),
+    baseUrl: getBaseUrl,
     credentials: "include",
     prepareHeaders: (headers, { getState }) => {
       const token =
@@ -55,7 +55,7 @@ const customFetchBaseQuery: BaseQueryFn<
             method: "POST",
           },
           api,
-          extraOptions
+          extraOptions,
         );
 
         if (refreshResult.data) {
